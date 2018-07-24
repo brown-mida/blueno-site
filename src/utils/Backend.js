@@ -18,7 +18,6 @@ export function get(url) {
                 'content-type': 'application/json',
             },
             method: 'GET',
-            credentials: 'include',
         })
         .then(res => {
             if (res.ok) return resolve(res.json());
