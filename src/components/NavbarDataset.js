@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import '../assets/NavbarDataset.css';
+
 class Comp extends Component {
   render() {
     return (
@@ -19,7 +21,7 @@ class Comp extends Component {
               <Link className="nav-link" to={`/u/${this.props.user}/upload`}>Upload</Link>
             </li>
             <li className="nav-item active">
-              <Link className="nav-link" to={`/u/${this.props.user}`}>Preprocessing</Link>
+              <Link className="nav-link" to={`/u/${this.props.user}/preprocess`}>Preprocessing</Link>
             </li>
             <li className="nav-item active">
               <Link className="nav-link" to={`/u/${this.props.user}`}>Train</Link>

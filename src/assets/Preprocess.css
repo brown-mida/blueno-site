@@ -1,0 +1,21 @@
+.preprocess-options {
+    position: fixed;
+    top: 8vh;
+    left: 0;
+    height: 92vh;
+    width: 30vw;
+}
+
+.visual-container {
+    margin-left: 30vw;
+    width: 70vw;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding-top: 20px;
+}
+
+
+.image-card {
+    margin-bottom: 20px;
+    text-align: center;
+}

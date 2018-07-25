@@ -73,7 +73,7 @@ class App extends Component {
           recentFiles: res.data
         });
       });
-    }, 5000);
+    }, 20000);
   }
 
   render() {
