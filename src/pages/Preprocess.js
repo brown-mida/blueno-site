@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { get } from '../utils/Backend';
+import { BASE_URI, get } from '../utils/Backend';
 
 import VisTab from '../components/VisTab';
 import CreateTab from '../components/CreateTab';
@@ -52,7 +52,7 @@ class App extends Component {
         fileImages.push({
           name: each.name,
           shape: each.shape,
-          url: `http://localhost:8080/get-dataset-image?user=${this.props.match.params.user}` +
+          url: `${BASE_URI}/get-dataset-image?user=${this.props.match.params.user}` +
                `&dataset=default&type=${this.state.visMode}&name=${each.name}`
         });
       });
@@ -69,7 +69,7 @@ class App extends Component {
       fileImages.push({
         name: each.name,
         shape: each.shape,
-        url: `http://localhost:8080/get-dataset-image?user=${this.props.match.params.user}` +
+        url: `${BASE_URI}/get-dataset-image?user=${this.props.match.params.user}` +
              `&dataset=${this.state.currentDataset}&type=${visMode}&name=${each.name}`
       });
     });
@@ -96,7 +96,7 @@ class App extends Component {
         fileImages.push({
           name: each.name,
           shape: each.shape,
-          url: `http://localhost:8080/get-dataset-image?user=${this.props.match.params.user}` +
+          url: `${BASE_URI}/get-dataset-image?user=${this.props.match.params.user}` +
                `&dataset=${currentDataset}&type=${mipped ? 'mip' : this.state.visMode}&name=${each.name}`
         });
       });
@@ -122,7 +122,7 @@ class App extends Component {
         fileImages.push({
           name: each.name,
           shape: each.shape,
-          url: `http://localhost:8080/get-dataset-image?user=${this.props.match.params.user}` +
+          url: `${BASE_URI}/get-dataset-image?user=${this.props.match.params.user}` +
                `&dataset=${currentDataset}&type=${mipped ? 'mip' : this.state.visMode}&name=${each.name}`
         });
       });

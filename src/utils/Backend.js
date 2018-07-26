@@ -1,5 +1,5 @@
 // Should be changed as appropriate
-const BASE_URI = 'http://localhost:8080/';
+export const BASE_URI = 'http://localhost:8080';
 // const BASE_URI = 'http://ec2-34-229-105-203.compute-1.amazonaws.com:5000/';
 
 function handleError(reject, err) {
@@ -13,7 +13,7 @@ function handleError(reject, err) {
 
 export function get(url) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}${url}`, {
+        fetch(`${BASE_URI}/${url}`, {
             headers: {
                 'content-type': 'application/json',
             },
@@ -29,7 +29,7 @@ export function get(url) {
 
 export function post(url, data) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}${url}`, {
+        fetch(`${BASE_URI}/${url}`, {
             body: JSON.stringify(data),
             headers: {
                 'content-type': 'application/json',
@@ -46,7 +46,7 @@ export function post(url, data) {
 
 export function postFormData(url, data) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}${url}`, {
+        fetch(`${BASE_URI}/${url}`, {
             body: data,
             method: 'POST',
         })
