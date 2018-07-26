@@ -45,11 +45,13 @@ class App extends Component {
           files.push(each);
         }
       });
+      console.log(files);
 
       const fileImages = []
       files.forEach((each) => {
         fileImages.push({
           name: each.name,
+          shape: each.shape,
           url: `http://localhost:8080/get-dataset-image?user=${this.props.match.params.user}` +
                `&dataset=default&type=${this.state.visMode}&name=${each.name}`
         });
@@ -66,6 +68,7 @@ class App extends Component {
     this.state.datasetFiles.forEach((each) => {
       fileImages.push({
         name: each.name,
+        shape: each.shape,
         url: `http://localhost:8080/get-dataset-image?user=${this.props.match.params.user}` +
              `&dataset=${this.state.currentDataset}&type=${visMode}&name=${each.name}`
       });
@@ -92,6 +95,7 @@ class App extends Component {
       files.forEach((each) => {
         fileImages.push({
           name: each.name,
+          shape: each.shape,
           url: `http://localhost:8080/get-dataset-image?user=${this.props.match.params.user}` +
                `&dataset=${currentDataset}&type=${mipped ? 'mip' : this.state.visMode}&name=${each.name}`
         });
@@ -117,6 +121,7 @@ class App extends Component {
       this.state.datasetFiles.forEach((each) => {
         fileImages.push({
           name: each.name,
+          shape: each.shape,
           url: `http://localhost:8080/get-dataset-image?user=${this.props.match.params.user}` +
                `&dataset=${currentDataset}&type=${mipped ? 'mip' : this.state.visMode}&name=${each.name}`
         });
@@ -187,8 +192,9 @@ class App extends Component {
             this.state.fileImages.map((each) => {
               return (
                 <div key={each.url} className='image-card'>
-                  <img src={each.url} style={{width: '15vw'}}/>
+                  <img src={each.url} style={{width: '15vw', height: '15vw'}}/>
                   <p>{each.name}</p>
+                  <p>({each.shape.toString()})</p>
                 </div>
               );
             })

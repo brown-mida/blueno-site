@@ -13,6 +13,7 @@ class CreateTab extends Component {
       name: 'My New Preprocessing',
       mip: false,
       multichannelMip: false,
+      flipZ: false,
       cropZ: false,
       cropZmin: '0',
       cropZmax: '100',
@@ -107,6 +108,20 @@ class CreateTab extends Component {
             onClick={this.handleChangeByValue('multichannelMip', !this.state.multichannelMip, this.state.mip)}
           >
             Multichannel
+          </label>
+        </div>
+        <div className="input-item">
+          <input
+            name="flipZ"
+            className="form-check-input"
+            type="checkbox"
+            checked={this.state.flipZ}
+            onChange={this.handleInputChange} />
+          <label
+            className="form-check-label"
+            onClick={this.handleChangeByValue('flipZ', !this.state.flipZ, true)}
+          >
+            Flip Z axis
           </label>
         </div>
         <div className="input-item">

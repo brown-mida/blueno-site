@@ -16,6 +16,7 @@ class App extends Component {
     }
 
     this.handleClickDataset = this.handleClickDataset.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +64,23 @@ class App extends Component {
     }
   }
 
+  handleRefresh() {
+    get(`get-dataset?user=${this.props.user}&dataset=${this.state.currentDataset}`).then((res) => {
+      const fileLoading = [];
+      res.data.forEach((each) => {
+        fileLoading.push(each);
+      });
+
+      res.data.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      this.setState({
+        dataLog: res.data
+      });
+    });
+  }
+
   render() {
     return (
       <div>
@@ -91,6 +109,9 @@ class App extends Component {
               }
             </div>
           </div>
+          <button className="btn btn-secondary btn-sm" type="button" onClick={this.handleRefresh}>
+            Refresh
+          </button>
         </div>
       </div>
     );
