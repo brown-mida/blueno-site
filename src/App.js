@@ -7,6 +7,8 @@ import MainPage from './pages/Main';
 import UserPage from './pages/User';
 import UploadPage from './pages/Upload';
 import PreprocessPage from './pages/Preprocess';
+import AnnotatePage from './pages/Annotate';
+import TrainPage from './pages/Train';
 import PageNotFound from './pages/PageNotFound';
 
 class App extends Component {
@@ -18,6 +20,8 @@ class App extends Component {
           <Route exact path='/u/:user' component={UserPage}/>
           <Route exact path='/u/:user/upload' component={UploadPage}/>
           <Route exact path='/u/:user/preprocess' component={PreprocessPage}/>
+          <Route exact path='/annotator' component={AnnotatePage}/>
+          <Route exact path='/trainer' component={TrainPage}/>
           <Route path="*" component={PageNotFound} />
         </Switch>
       </div>
