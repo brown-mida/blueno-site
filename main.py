@@ -1,11 +1,14 @@
 import logging
 
+import dotenv
 import flask
 import flask_cors
 
-from routes.annotator import app_annotate
-from routes.preprocess import app_preprocess
-from routes.train import app_train
+dotenv.load_dotenv(verbose=True)
+
+from routes.annotator import app_annotate  # noqa: E402
+from routes.preprocess import app_preprocess  # noqa: E402
+from routes.train import app_train  # noqa: E402
 
 app = flask.Flask(__name__,
                   template_folder='build',
