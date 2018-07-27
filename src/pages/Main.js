@@ -5,12 +5,20 @@ import NavbarMain from '../components/NavbarMain';
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <NavbarMain />
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+        <div className="App">
+          <NavbarMain/>
+          <p>
+            <h5>
+            Welcome!
+
+            The new elvo site is under renovation but all of the original
+              features are still available.
+            </h5>
+            <p>Annotating ELVOs (if you have access to the ID spreadsheet)</p>
+            <p>Training customized models on the ELVO dataset</p>
+            <p>Uploading data from Dropbox. (through the sign-in menu)</p>
+          </p>
+        </div>
     );
   }
 }

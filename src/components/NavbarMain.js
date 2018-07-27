@@ -13,16 +13,18 @@ class Comp extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <Link className="nav-link" to={`/u/${this.props.user}`}>
-                About <span className="sr-only">(current)</span>
+              <Link className="nav-link" to={'/annotator'}>
+                Annotate ELVOs (beta) <span className="sr-only">(current)</span>
               </Link>
             </li>
-            <li className="nav-item active">
-              <Link className="nav-link" to={`/u/${this.props.user}/upload`}>idk</Link>
-            </li>
+             <li className="nav-item active">
+              <Link className="nav-link" to={`/trainer`}>
+                Train ELVOs (beta) <span className="sr-only">(current)</span>
+              </Link>
+             </li>
           </ul>
             <Link className="nav-link" to={`/u/abc`}>
-              Sign in <span className="sr-only">(current)</span>
+              Sign in (alpha) <span className="sr-only">(current)</span>
             </Link>
         </div>
       </nav>
