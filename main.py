@@ -8,8 +8,8 @@ from routes.preprocess import app_preprocess
 from routes.train import app_train
 
 app = flask.Flask(__name__,
-                  template_folder='../build',
-                  static_folder='../build/static',
+                  template_folder='build',
+                  static_folder='build/static',
                   static_url_path='/static')
 # TODO(luke): Migrate the JS code to blueno-ui
 app.register_blueprint(app_preprocess)
@@ -29,8 +29,9 @@ def configure_logger():
     root_logger.addHandler(handler)
 
 
-@app.route('/')
-def index():
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path):
     return flask.render_template('index.html')
 
 
