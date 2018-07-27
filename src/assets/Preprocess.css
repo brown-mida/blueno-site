@@ -1,0 +1,30 @@
+.preprocess-options {
+    position: fixed;
+    top: 8vh;
+    left: 0;
+    height: 92vh;
+    width: 25vw;
+    overflow: scroll;
+}
+
+.visual-container {
+    margin-left: 25vw;
+    width: 75vw;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding-top: 20px;
+}
+
+
+.image-card {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.image-card p {
+    font-size: 0.8em;
+}
+
+.dataset-tabs {
+    margin-bottom: 20px;
+}

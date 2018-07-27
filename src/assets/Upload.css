@@ -10,9 +10,14 @@
     overflow: hidden;
 }
 
-.data-dropzone {
+.data-upload-card {
     width: 100%;
     height: 500px;
+}
+
+.data-dropzone {
+    width: 100%;
+    height: 100%;
     border: 3px dashed #ccc;
 }
 
@@ -20,4 +25,9 @@
     margin-bottom: 20px;
     height: 35vh;
     overflow-y: scroll;
+}
+
+.text-caption {
+    text-align: left;
+    margin-bottom: 50px;
 }
