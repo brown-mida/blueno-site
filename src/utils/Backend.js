@@ -1,10 +1,12 @@
 // Should be changed as appropriate
 export const BASE_URI = 'http://localhost:8080';
-// const BASE_URI = 'http://ec2-34-229-105-203.compute-1.amazonaws.com:5000/';
+// const BASE_URI = window.location.host;
 
 function handleError(reject, err) {
     console.log('FETCH ERROR: ', err);
-    if (err.includes('err') && err.includes('field')) {
+    if (err instanceof TypeError) {
+        reject({ err: `Failed to connect to ${BASE_URI}`})
+    } else if (err.includes('err') && err.includes('field')) {
         reject(err);
     } else {
         reject({ err: 'An unknown error has occurred. Please try again later.' });

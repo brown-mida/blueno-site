@@ -51,7 +51,10 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "flask": "GOOGLE_APPLICATION_CREDENTIALS='elvo-7136c1299dea.json' SPREADSHEET_CREDENTIALS='elvo-de539f4b4cd3.json' python server/main.py",
+    "pytest": "GOOGLE_APPLICATION_CREDENTIALS='elvo-7136c1299dea.json' SPREADSHEET_CREDENTIALS='elvo-de539f4b4cd3.json' pytest",
+    "deploy": "gcloud beta app deploy --quiet"
   },
   "jest": {
     "collectCoverageFrom": [
