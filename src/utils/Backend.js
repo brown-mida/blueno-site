@@ -1,12 +1,20 @@
 // Should be changed as appropriate
 
 // TODO(luke): This won't work with HTTPS
-export const BASE_URI = 'http://' + window.location.host;
+let BASE_URI = 'http://' + window.location.host;
+if (window.location.host.startsWith('localhost')) {
+    const lastColon = BASE_URI.lastIndexOf(':');
+    BASE_URI = 'http://' + window.location.host.slice(0, lastColon);
+} else {
+    BASE_URI = 'http://' + window.location.host;
+}
+
+export { BASE_URI }
 
 function handleError(reject, err) {
     console.log('FETCH ERROR: ', err);
     if (err instanceof TypeError) {
-        reject({ err: `Failed to connect to ${BASE_URI}`})
+        reject({ err: `Failed to connect to ${BASE_URI}` })
     } else if (err.includes('err') && err.includes('field')) {
         reject(err);
     } else {
