@@ -1,14 +1,6 @@
 // Should be changed as appropriate
 
-let BASE_URI;
-if (window.location.host.startsWith('http')) {
-    BASE_URI = window.location.host;
-} else {
-    // Do we still need this?
-    BASE_URI = 'http://localhost:8080';
-}
-
-export { BASE_URI };
+export const BASE_URI = window.location.host;
 
 function handleError(reject, err) {
     console.log('FETCH ERROR: ', err);
