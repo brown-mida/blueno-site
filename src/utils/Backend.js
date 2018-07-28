@@ -1,6 +1,7 @@
 // Should be changed as appropriate
 
-export const BASE_URI = window.location.host;
+// TODO(luke): This won't work with HTTPS
+export const BASE_URI = 'http://' + window.location.host;
 
 function handleError(reject, err) {
     console.log('FETCH ERROR: ', err);
