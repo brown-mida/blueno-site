@@ -12,14 +12,7 @@ from google.cloud import storage
 
 
 def authenticate():
-    # TODO(luke): This won't work on app engine
-    return storage.Client.from_service_account_json(
-        # for running on the airflow GPU
-        # '/home/lukezhu/elvo-analysis/credentials/client_secret.json'
-
-        # for running locally
-        '../credentials/client_secret.json'
-    )
+    return storage.Client(project='elvo-198322')
 
 
 def upload_to_gcs(file, filename, bucket):
