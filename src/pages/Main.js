@@ -16,7 +16,7 @@ class App extends Component {
             </h5>
             <p>Annotating ELVOs (if you have access to the ID spreadsheet)</p>
             <p>Training customized models on the ELVO dataset</p>
-            <p>Uploading data from Dropbox. (through the sign-in menu)</p>
+            <p>Preprocessing pipeline (Uploading Data, applying preprocessing) (through the sign-in menu)</p>
           </p>
         </div>
     );
