@@ -67,7 +67,7 @@ class Trainer extends Component {
       processedName: 'my-processed-v1',
 
       allDataNames: [],
-      imageNames: [],
+      imageInfos: [],
       offset: 0,
 
       allPlots: [],
@@ -106,11 +106,11 @@ class Trainer extends Component {
           });
           const dataName = response.data[0];
           // Set the selectedData so urls also load
-          axios.get('/data/' + dataName)
+          axios.get('/data/' + dataName + '/labels')
               .then(response => {
                 this.setState({
                   dataName,
-                  imageNames: response.data,
+                  imageInfos: response.data,
                 });
               })
               .catch((error) => {
@@ -176,12 +176,12 @@ class Trainer extends Component {
   // When the  data is changed, ImageURLs is also updated
   handleDataChange(event) {
     const dataName = event.target.value;
-    // Update imageNames
-    axios.get('/data/' + dataName)
+    // Update imageInfos
+    axios.get('/data/' + dataName + '/labels')
         .then(response => {
           this.setState({
             dataName,
-            imageNames: response.data,
+            imageInfos: response.data,
             viewType: 'data',
           });
         })
@@ -250,7 +250,7 @@ class Trainer extends Component {
         bodyView = (
             <DataView
                 dataName={this.state.dataName}
-                imageNames={this.state.imageNames}
+                imageInfos={this.state.imageInfos}
                 offset={this.state.offset}
                 parentStyles={styles}
             />
