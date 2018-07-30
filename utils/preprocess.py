@@ -25,6 +25,7 @@ def process_cab_from_file(file, filename, tmp_dir):
     :return:
     """
     # TODO: Fix issues with process_cab workingdir failing
+    os.makedirs(tmp_dir, exist_ok=True)
     file.save(os.path.join(tmp_dir, filename))
     return process_cab(filename, tmp_dir)
 
@@ -39,6 +40,7 @@ def process_cab(filename, tmp_dir):
     """
     # TODO: Fix issues with process_cab workingdir failing
     current_dir = os.getcwd()
+    os.makedirs(tmp_dir, exist_ok=True)
     os.chdir(tmp_dir)
 
     subprocess.call(['cabextract', filename], stdout=open(os.devnull, 'wb'))
@@ -85,6 +87,7 @@ def preprocess_scan(slices: List[pydicom.FileDataset]) -> np.array:
 
 
 def generate_images(arr, user, dataset, filename, bucket, tmp_dir):
+    os.makedirs(tmp_dir, exist_ok=True)
     axial = arr.max(axis=0)
     coronal = arr.max(axis=1)
     sagittal = arr.max(axis=2)
@@ -97,6 +100,7 @@ def generate_images(arr, user, dataset, filename, bucket, tmp_dir):
 
 
 def generate_mip_images(arr, user, dataset, filename, bucket, tmp_dir):
+    os.makedirs(tmp_dir, exist_ok=True)
     save_npy_as_image_and_upload(arr, user, dataset, 'mip',
                                  filename, bucket, tmp_dir)
 
