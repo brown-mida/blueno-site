@@ -27,7 +27,7 @@ const styles = {
     height: '90vh',
     width: '300px',
     overflowY: 'scroll',
-    paddingLeft: 10,
+    padding: 10,
   },
   mainView: { height: '90vh', overflow: 'scroll' },
   inputField: {
@@ -55,6 +55,7 @@ class Trainer extends Component {
       batchSize: '8',
       maxEpochs: '70',
 
+      dataType: 'CTA',
       allTransforms: [],
       selectedTransforms: [],
       numTransforms: 3,
@@ -209,8 +210,6 @@ class Trainer extends Component {
 
   render() {
     // TODO(luke): Descriptions of the different fields.
-    console.log('state', this.state);
-
     const transformOptions = this.state.allTransforms.map(name => {
       return <option value={name}>{name}</option>;
     });
@@ -226,23 +225,24 @@ class Trainer extends Component {
     });
 
     // TODO(luke): Consider at another time
-    // const transformSelects = [];
-    // for (let i = 0; i < this.state.numTransforms; i++) {
-    //   let selected = '';
-    //   if (this.state.selectedTransforms.length > 0) {
-    //      selected = this.state.selectedTransforms[i];
-    //   }
-    //   transformSelects.push(<FormControl style={styles.inputField}>
-    //     <InputLabel>Transform {i + 1}</InputLabel>
-    //     <Select
-    //         native
-    //         value={selected}
-    //         onChange={this.handleTransformChange(i)}
-    //     >
-    //       {transformOptions}
-    //     </Select>
-    //   </FormControl>);
-    // }
+    const transformSelects = [];
+    for (let i = 0; i < this.state.numTransforms; i++) {
+      let selected = '';
+      if (this.state.selectedTransforms.length > 0) {
+         selected = this.state.selectedTransforms[i];
+      }
+      transformSelects.push(<FormControl style={styles.inputField}>
+        <InputLabel>Transform {i + 1}</InputLabel>
+        <Select
+            native
+            disabled
+            value={selected}
+            onChange={this.handleTransformChange(i)}
+        >
+          {transformOptions}
+        </Select>
+      </FormControl>);
+    }
 
     let bodyView;
     switch (this.state.viewType) {
@@ -299,10 +299,10 @@ class Trainer extends Component {
             >
               <Toolbar><IconButton color="inherit" href="/">Blueno</IconButton>
               </Toolbar>
-              <Tab label="Progress"
-                   value="progress"/>
               <Tab label="Data" value="data"/>
               <Tab label="Results" value="results"/>
+              <Tab label="Progress"
+                   value="progress"/>
               <Tab label="Guide" value="guide"/>
             </Tabs>
           </AppBar>
@@ -313,8 +313,6 @@ class Trainer extends Component {
               <List component="nav"
                     style={styles.sidebarList}>
                 <h3 style={{ paddingLeft: 10 }}>Preprocessing Options</h3>
-
-                {/*{transformSelects}*/}
                 <TextField
                     id="processedName"
                     label={'Preprocessed Data'}
@@ -368,6 +366,25 @@ class Trainer extends Component {
                     margin="normal"
                     style={styles.inputField}
                 />
+
+                <FormControl style={styles.inputField}>
+                  <InputLabel>Data Type</InputLabel>
+                  <Select
+                      native
+                      disabled
+                      value={this.state.dataType}
+                      onChange={this.handleChange('dataType')}
+                  >
+                    <option value={'CTA'}>CTA</option>
+                    <option value={'CTA - Multiphase'}>CTA - Multiphase</option>
+                    <option value={'MRI - T1'}>MRI - T1</option>
+                    <option value={'MRI - T2'}>MRI - T2</option>
+                    <option value={'MRI - Flair'}>MRI - Flair</option>
+                  </Select>
+                </FormControl>
+                <br/>
+
+                {transformSelects}
 
                 <Button
                     variant="contained" color="primary"
