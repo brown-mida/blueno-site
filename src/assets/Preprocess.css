@@ -4,7 +4,7 @@
     left: 0;
     height: 92vh;
     width: 25vw;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .visual-container {
@@ -13,6 +13,8 @@
     display: grid;
     grid-template-columns: auto auto auto auto;
     padding-top: 20px;
+    height: 92vh;
+    overflow-y: scroll;
 }
 
 

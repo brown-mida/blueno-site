@@ -1,10 +1,8 @@
-// Should be changed as appropriate
-export const BASE_URI = 'http://localhost:8080';
-// const BASE_URI = 'http://ec2-34-229-105-203.compute-1.amazonaws.com:5000/';
-
 function handleError(reject, err) {
     console.log('FETCH ERROR: ', err);
-    if (err.includes('err') && err.includes('field')) {
+    if (err instanceof TypeError) {
+        reject({ err: `Failed to connect to Backend` })
+    } else if (err.includes('err') && err.includes('field')) {
         reject(err);
     } else {
         reject({ err: 'An unknown error has occurred. Please try again later.' });
@@ -13,7 +11,7 @@ function handleError(reject, err) {
 
 export function get(url) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             headers: {
                 'content-type': 'application/json',
             },
@@ -29,7 +27,7 @@ export function get(url) {
 
 export function post(url, data) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             body: JSON.stringify(data),
             headers: {
                 'content-type': 'application/json',
@@ -46,7 +44,7 @@ export function post(url, data) {
 
 export function postFormData(url, data) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             body: data,
             method: 'POST',
         })
