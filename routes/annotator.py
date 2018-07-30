@@ -20,7 +20,7 @@ bucket = client.bucket('elvos')
 
 # TODO(#116): Cache that works >1 instance
 cache = {}
-# SPREADSHEET_CREDENTIALS = os.environ['SPREADSHEET_CREDENTIALS']
+SPREADSHEET_CREDENTIALS = os.getenv('SPREADSHEET_CREDENTIALS')
 
 app_annotate = flask.Blueprint('app_annotate', __name__)
 
