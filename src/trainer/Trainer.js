@@ -12,6 +12,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Divider from '@material-ui/core/Divider';
+import IconButton from "@material-ui/core/IconButton/";
+import Toolbar from "@material-ui/core/Toolbar/";
+
 import ResultsView from './ResultsView';
 import DataView from './DataView';
 import GuideView from './GuideView';
@@ -287,9 +290,15 @@ class Trainer extends Component {
             <Tabs
                 value={this.state.viewType}
                 onChange={(event, viewType) => {
-                  this.setState({ viewType });
+                  // 'if' needed to avoid displaying error on
+                  // href change
+                  if (viewType) {
+                    this.setState({ viewType });
+                  }
                 }}
             >
+              <Toolbar><IconButton color="inherit" href="/">Blueno</IconButton>
+              </Toolbar>
               <Tab label="Progress"
                    value="progress"/>
               <Tab label="Data" value="data"/>
