@@ -1,20 +1,7 @@
-// Should be changed as appropriate
-
-// TODO(luke): This won't work with HTTPS
-let BASE_URI = 'http://' + window.location.host;
-if (window.location.host.startsWith('localhost')) {
-    const lastColon = BASE_URI.lastIndexOf(':');
-    BASE_URI = 'http://' + window.location.host.slice(0, lastColon);
-} else {
-    BASE_URI = 'http://' + window.location.host;
-}
-
-export { BASE_URI }
-
 function handleError(reject, err) {
     console.log('FETCH ERROR: ', err);
     if (err instanceof TypeError) {
-        reject({ err: `Failed to connect to ${BASE_URI}` })
+        reject({ err: `Failed to connect to Backend` })
     } else if (err.includes('err') && err.includes('field')) {
         reject(err);
     } else {
@@ -24,7 +11,7 @@ function handleError(reject, err) {
 
 export function get(url) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             headers: {
                 'content-type': 'application/json',
             },
@@ -40,7 +27,7 @@ export function get(url) {
 
 export function post(url, data) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             body: JSON.stringify(data),
             headers: {
                 'content-type': 'application/json',
@@ -57,7 +44,7 @@ export function post(url, data) {
 
 export function postFormData(url, data) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             body: data,
             method: 'POST',
         })

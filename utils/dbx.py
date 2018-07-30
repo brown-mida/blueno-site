@@ -24,6 +24,7 @@ def get_cab_from_folder(dbx, dbx_folder):
 
 
 def download_from_dropbox(dbx, tmp_folder, dbx_folder, filename):
+    os.makedirs(tmp_folder, exist_ok=True)
     if dbx_folder[0] != '/':
         dbx_folder = '/' + dbx_folder
     return dbx.files_download_to_file(os.path.join(tmp_folder, filename),
