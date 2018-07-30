@@ -21,6 +21,13 @@ app.register_blueprint(app_annotate)
 flask_cors.CORS(app, resources={r"/*": {"origins": "*"}})
 
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path):
+    # To avoid errors, run `yarn build` to generate build/index.html
+    return flask.render_template('index.html')
+
+
 def configure_logger():
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
