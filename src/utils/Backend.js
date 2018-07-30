@@ -24,7 +24,7 @@ function handleError(reject, err) {
 
 export function get(url) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             headers: {
                 'content-type': 'application/json',
             },
@@ -40,7 +40,7 @@ export function get(url) {
 
 export function post(url, data) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             body: JSON.stringify(data),
             headers: {
                 'content-type': 'application/json',
@@ -57,7 +57,7 @@ export function post(url, data) {
 
 export function postFormData(url, data) {
     return new Promise((resolve, reject) => {
-        fetch(`${BASE_URI}/${url}`, {
+        fetch(`/${url}`, {
             body: data,
             method: 'POST',
         })

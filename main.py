@@ -32,10 +32,10 @@ def configure_logger():
     root_logger.addHandler(handler)
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def index(path):
-    return flask.render_template('index.html')
+# @app.route('/', defaults={'path': ''})
+# @app.route('/<path:path>')
+# def index(path):
+#     return flask.render_template('index.html')
 
 
 def validator():
