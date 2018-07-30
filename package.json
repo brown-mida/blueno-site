@@ -54,7 +54,7 @@
     "test": "node scripts/test.js --env=jsdom",
     "flask": "python main.py",
     "pytest": "pytest",
-    "deploy": "node scripts/build.js && gcloud beta app deploy --quiet"
+    "deploy": "node scripts/build.js && gcloud beta app deploy --quiet --promote"
   },
   "jest": {
     "collectCoverageFrom": [
