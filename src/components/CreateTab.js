@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { get, post } from '../utils/Backend';
+import { post } from '../utils/Backend';
 
 import '../assets/Preprocess.css';
 import '../assets/CreateTab.css';

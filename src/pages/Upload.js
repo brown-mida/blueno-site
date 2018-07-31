@@ -127,14 +127,14 @@ class App extends Component {
                   <li className="nav-item">
                     <a
                       className={`nav-link ${this.state.currentTab === 'local' && 'active'}`}
-                      href="#"
+                      href=""
                       onClick={this.handleClickTab('local')}
                     >Local</a>
                   </li>
                   <li className="nav-item">
                     <a
                       className={`nav-link ${this.state.currentTab === 'dropbox' && 'active'}`}
-                      href="#"
+                      href=""
                       onClick={this.handleClickTab('dropbox')}
                     >Dropbox</a>
                   </li>

@@ -47,12 +47,14 @@ const GuideView = ({ parentStyles }) => {
         </p>
         <img src={'https://storage.googleapis.com/elvos-public/crop_length.png'}
              style={{ maxWidth: 200 }}
+             alt="crop length"
         />
         <h4>Mip Thickness</h4>
         The mip thickness represents the length between the two green lines
         below, in millimeters. The below example is a mip thickness of 25.
         <img src={'https://storage.googleapis.com/elvos-public/mip_thickness.png'}
              style={{ maxWidth: 200 }}
+             alt="mip thickness"
         />
 
         <p><em>Note that a 2D resnet will ingest <b>3</b> slices.</em> The default thickness and
