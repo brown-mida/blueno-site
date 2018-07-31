@@ -44,6 +44,8 @@ class Annotator extends Component {
       z1 = Annotator.getQueryVariable('z1');
       z2 = Annotator.getQueryVariable('z2');
       console.log('initial state:', initialPatientId, x1, x2, y1, y2, z1, z2);
+    } else {
+      initialPatientId = '0KSBX96F8BU1FCFQ';
     }
 
     this.state = {
