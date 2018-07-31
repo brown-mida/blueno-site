@@ -1,0 +1,11 @@
+.labeled {
+    border: 2px solid #2ECC40;
+}
+
+.not-labeled {
+    border: 2px solid #FF4136;
+}
+
+.image-card p {
+    margin-bottom: 0;
+}

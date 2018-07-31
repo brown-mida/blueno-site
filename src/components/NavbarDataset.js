@@ -24,7 +24,10 @@ class Comp extends Component {
               <Link className="nav-link" to={`/u/${this.props.user}/preprocess`}>Preprocessing</Link>
             </li>
             <li className="nav-item active">
-              <Link className="nav-link" to={`/u/${this.props.user}`}>Train</Link>
+              <Link className="nav-link" to={`/u/${this.props.user}/annotate`}>Annotate</Link>
+            </li>
+            <li className="nav-item active">
+              <Link className="nav-link" to={`/u/${this.props.user}/train`}>Train</Link>
             </li>
           </ul>
         </div>

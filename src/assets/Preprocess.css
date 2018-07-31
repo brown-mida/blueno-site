@@ -11,7 +11,7 @@
     margin-left: 25vw;
     width: 75vw;
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 18.5vw 18.5vw 18.5vw 18.5vw;
     padding-top: 20px;
     height: 92vh;
     overflow-y: scroll;
@@ -29,4 +29,9 @@
 
 .dataset-tabs {
     margin-bottom: 20px;
+}
+
+.image-thumbnail {
+    width: 15vw;
+    height: 15vw;
 }

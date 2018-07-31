@@ -9,6 +9,7 @@ dotenv.load_dotenv(verbose=True)
 from routes.annotator import app_annotate  # noqa: E402
 from routes.preprocess import app_preprocess  # noqa: E402
 from routes.train import app_train  # noqa: E402
+from routes.new_annotator import app_annotate_new
 
 app = flask.Flask(__name__,
                   template_folder='build',
@@ -18,6 +19,7 @@ app = flask.Flask(__name__,
 app.register_blueprint(app_preprocess)
 app.register_blueprint(app_train)
 app.register_blueprint(app_annotate)
+app.register_blueprint(app_annotate_new)
 flask_cors.CORS(app, resources={r"/*": {"origins": "*"}})
 
 

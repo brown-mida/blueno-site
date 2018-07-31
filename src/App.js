@@ -8,7 +8,10 @@ import UserPage from './pages/User';
 import UploadPage from './pages/Upload';
 import PreprocessPage from './pages/Preprocess';
 import AnnotatePage from './pages/Annotate';
+import AnnotateOnePage from './pages/AnnotateOne';
 import TrainPage from './pages/Train';
+import ElvoAnnotatePage from './pages/ElvoAnnotate';
+import ElvoTrainPage from './pages/ElvoTrain';
 import PageNotFound from './pages/PageNotFound';
 
 class App extends Component {
@@ -20,8 +23,11 @@ class App extends Component {
           <Route exact path='/u/:user' component={UserPage}/>
           <Route exact path='/u/:user/upload' component={UploadPage}/>
           <Route exact path='/u/:user/preprocess' component={PreprocessPage}/>
-          <Route exact path='/annotator' component={AnnotatePage}/>
-          <Route exact path='/trainer' component={TrainPage}/>
+          <Route exact path='/u/:user/annotate' component={AnnotatePage}/>
+          <Route exact path='/u/:user/annotate/:group/:id' component={AnnotateOnePage}/>
+          <Route exact path='/u/:user/train' component={TrainPage}/>
+          <Route exact path='/annotator' component={ElvoAnnotatePage}/>
+          <Route exact path='/trainer' component={ElvoTrainPage}/>
           <Route path="*" component={PageNotFound} />
         </Switch>
       </div>

@@ -83,6 +83,9 @@ def preprocess_scan(slices: List[pydicom.FileDataset]) -> np.array:
     """
     scan = t.get_pixels_hu(slices)
     scan = t.standardize_spacing(scan, slices)
+
+    # TODO: Put this z-axis, as z=0 is the chest as opposed to head
+    scan = np.flip(scan, axis=0)
     return scan
 
 
@@ -100,6 +103,7 @@ def generate_images(arr, user, dataset, filename, bucket, tmp_dir):
 
 
 def generate_mip_images(arr, user, dataset, filename, bucket, tmp_dir):
+    print(np.shape(arr))
     os.makedirs(tmp_dir, exist_ok=True)
     save_npy_as_image_and_upload(arr, user, dataset, 'mip',
                                  filename, bucket, tmp_dir)
