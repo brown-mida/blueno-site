@@ -125,18 +125,16 @@ class App extends Component {
               <div className="card-header">
                 <ul className="nav nav-pills card-header-pills">
                   <li className="nav-item">
-                    <a
-                      className={`nav-link ${this.state.currentTab === 'local' && 'active'}`}
-                      href=""
+                    <button
+                      className={`btn btn-light ${this.state.currentTab === 'local' && 'active'}`}
                       onClick={this.handleClickTab('local')}
-                    >Local</a>
+                    >Local</button>
                   </li>
                   <li className="nav-item">
-                    <a
-                      className={`nav-link ${this.state.currentTab === 'dropbox' && 'active'}`}
-                      href=""
+                    <button
+                      className={`btn btn-light ${this.state.currentTab === 'dropbox' && 'active'}`}
                       onClick={this.handleClickTab('dropbox')}
-                    >Dropbox</a>
+                    >Dropbox</button>
                   </li>
                 </ul>
               </div>
