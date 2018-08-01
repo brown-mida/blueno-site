@@ -32,10 +32,12 @@ class App extends Component {
       shapeX: 0,
       shapeY: 0,
       shapeZ: 0,
+      viewTab: 'axial',
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.updateIndexScroll = this.updateIndexScroll.bind(this);
+    this.handleClickViewTab = this.handleClickViewTab.bind(this);
   }
 
   handleInputChange(event) {
@@ -46,6 +48,12 @@ class App extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+  handleClickViewTab(value) {
+    return () => {
+      this.setState({ viewTab: value });
+    }
   }
 
   updateIndexScroll(attr) {
@@ -173,6 +181,170 @@ class App extends Component {
     );
   }
 
+  renderSingleView() {
+    return (
+      <div className="annotation-container">
+        <div className="card body">
+          {this.state.viewTab === 'axial' &&
+            <PlaneSVG
+              viewType='axial'
+              patientId={this.props.match.params.id}
+              user={this.props.match.params.user}
+              posIndex={this.state.z}
+              scrollEvent={this.updateIndexScroll('z')}
+              width={this.state.shapeX}
+              height={this.state.shapeY}
+              colorX={'rgb(255, 0, 0)'}
+              colorY={'rgb(0, 255, 0)'}
+              roiX1={this.state.x1}
+              roiX2={this.state.x2}
+              roiY1={this.state.y1}
+              roiY2={this.state.y2}
+              annotationType={this.state.annotationType}
+            />
+          }
+          {this.state.viewTab === 'axial_mip' &&
+            <PlaneSVG
+              viewType='axial_mip'
+              patientId={this.props.match.params.id}
+              user={this.props.match.params.user}
+              posIndex={this.state.z}
+              scrollEvent={this.updateIndexScroll('z')}
+              width={this.state.shapeX}
+              height={this.state.shapeY}
+              colorX={'rgb(255, 0, 0)'}
+              colorY={'rgb(0, 255, 0)'}
+              roiX1={this.state.x1}
+              roiX2={this.state.x2}
+              roiY1={this.state.y1}
+              roiY2={this.state.y2}
+              annotationType={this.state.annotationType}
+            />
+          }
+          {this.state.viewTab === 'coronal' &&
+            <PlaneSVG
+              viewType='coronal'
+              patientId={this.props.match.params.id}
+              user={this.props.match.params.user}
+              posIndex={this.state.y}
+              scrollEvent={this.updateIndexScroll('y')}
+              width={this.state.shapeX}
+              height={this.state.shapeZ}
+              colorX={'rgb(255, 0, 0)'}
+              colorY={'rgb(0, 0, 255)'}
+              roiX1={this.state.x1}
+              roiX2={this.state.x2}
+              roiY1={this.state.z1}
+              roiY2={this.state.z2}
+              annotationType={this.state.annotationType}
+            />
+          }
+          {this.state.viewTab === 'sagittal' &&
+            <PlaneSVG
+              viewType='sagittal'
+              patientId={this.props.match.params.id}
+              user={this.props.match.params.user}
+              posIndex={this.state.x}
+              scrollEvent={this.updateIndexScroll('x')}
+              width={this.state.shapeY}
+              height={this.state.shapeZ}
+              colorX={'rgb(0, 255, 0)'}
+              colorY={'rgb(0, 0, 255)'}
+              roiX1={this.state.y1}
+              roiX2={this.state.y2}
+              roiY1={this.state.z1}
+              roiY2={this.state.z2}
+              annotationType={this.state.annotationType}
+            />
+          }
+        </div>
+      </div>
+    );
+  }
+
+  renderMultiView() {
+    return (
+      <div className="annotation-container-multi">
+        <div className="card body">
+          <h5 className="card-title">Axial</h5>
+          <PlaneSVG
+            viewType='axial'
+            patientId={this.props.match.params.id}
+            user={this.props.match.params.user}
+            posIndex={this.state.z}
+            scrollEvent={this.updateIndexScroll('z')}
+            width={this.state.shapeX}
+            height={this.state.shapeY}
+            colorX={'rgb(255, 0, 0)'}
+            colorY={'rgb(0, 255, 0)'}
+            roiX1={this.state.x1}
+            roiX2={this.state.x2}
+            roiY1={this.state.y1}
+            roiY2={this.state.y2}
+            annotationType={this.state.annotationType}
+          />
+        </div>
+        <div className="card body">
+          <h5 className="card-title">Axial MIP</h5>
+          <PlaneSVG
+            viewType='axial_mip'
+            patientId={this.props.match.params.id}
+            user={this.props.match.params.user}
+            posIndex={this.state.z}
+            scrollEvent={this.updateIndexScroll('z')}
+            width={this.state.shapeX}
+            height={this.state.shapeY}
+            colorX={'rgb(255, 0, 0)'}
+            colorY={'rgb(0, 255, 0)'}
+            roiX1={this.state.x1}
+            roiX2={this.state.x2}
+            roiY1={this.state.y1}
+            roiY2={this.state.y2}
+            annotationType={this.state.annotationType}
+          />
+        </div>
+        <div className="card body">
+          <h5 className="card-title">Coronal</h5>
+          <PlaneSVG
+            viewType='coronal'
+            patientId={this.props.match.params.id}
+            user={this.props.match.params.user}
+            posIndex={this.state.y}
+            scrollEvent={this.updateIndexScroll('y')}
+            width={this.state.shapeX}
+            height={this.state.shapeZ}
+            colorX={'rgb(255, 0, 0)'}
+            colorY={'rgb(0, 0, 255)'}
+            roiX1={this.state.x1}
+            roiX2={this.state.x2}
+            roiY1={this.state.z1}
+            roiY2={this.state.z2}
+            annotationType={this.state.annotationType}
+          />
+        </div>
+        <div className="card body">
+          <h5 className="card-title">Sagittal</h5>
+          <PlaneSVG
+            viewType='sagittal'
+            patientId={this.props.match.params.id}
+            user={this.props.match.params.user}
+            posIndex={this.state.x}
+            scrollEvent={this.updateIndexScroll('x')}
+            width={this.state.shapeY}
+            height={this.state.shapeZ}
+            colorX={'rgb(0, 255, 0)'}
+            colorY={'rgb(0, 0, 255)'}
+            roiX1={this.state.y1}
+            roiX2={this.state.y2}
+            roiY1={this.state.z1}
+            roiY2={this.state.z2}
+            annotationType={this.state.annotationType}
+          />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="upload-container">
@@ -225,83 +397,30 @@ class App extends Component {
             </button>
           </div>
         </div>
-        <div className="annotation-container">
-          <div className="card body">
-            <h5 className="card-title">Axial</h5>
-            <PlaneSVG
-              viewType='axial'
-              patientId={this.props.match.params.id}
-              user={this.props.match.params.user}
-              posIndex={this.state.z}
-              scrollEvent={this.updateIndexScroll('z')}
-              width={this.state.shapeX}
-              height={this.state.shapeY}
-              colorX={'rgb(255, 0, 0)'}
-              colorY={'rgb(0, 255, 0)'}
-              roiX1={this.state.x1}
-              roiX2={this.state.x2}
-              roiY1={this.state.y1}
-              roiY2={this.state.y2}
-              annotationType={this.state.annotationType}
-            />
+        <div className="vis-container">
+          <div className="vis-tab">
+            <ul className="nav nav-tabs dataset-tabs">
+              <li className="nav-item" onClick={this.handleClickViewTab('axial')}>
+                <a className={`nav-link ${this.state.viewTab === 'axial' && 'active'}`} href="#">Axial</a>
+              </li>
+              <li className="nav-item" onClick={this.handleClickViewTab('axial_mip')}>
+                <a className={`nav-link ${this.state.viewTab === 'axial_mip' && 'active'}`} href="#">Axial MIP</a>
+              </li>
+              <li className="nav-item" onClick={this.handleClickViewTab('coronal')}>
+                <a className={`nav-link ${this.state.viewTab === 'coronal' && 'active'}`} href="#">Coronal</a>
+              </li>
+              <li className="nav-item" onClick={this.handleClickViewTab('sagittal')}>
+                <a className={`nav-link ${this.state.viewTab === 'sagittal' && 'active'}`} href="#">Sagittal</a>
+              </li>
+              <li className="nav-item" onClick={this.handleClickViewTab('multi')}>
+                <a className={`nav-link ${this.state.viewTab === 'multi' && 'active'}`} href="#">Multi</a>
+              </li>
+            </ul>
           </div>
-          <div className="card body">
-            <h5 className="card-title">Axial MIP</h5>
-            <PlaneSVG
-              viewType='axial_mip'
-              patientId={this.props.match.params.id}
-              user={this.props.match.params.user}
-              posIndex={this.state.z}
-              scrollEvent={this.updateIndexScroll('z')}
-              width={this.state.shapeX}
-              height={this.state.shapeY}
-              colorX={'rgb(255, 0, 0)'}
-              colorY={'rgb(0, 255, 0)'}
-              roiX1={this.state.x1}
-              roiX2={this.state.x2}
-              roiY1={this.state.y1}
-              roiY2={this.state.y2}
-              annotationType={this.state.annotationType}
-            />
-          </div>
-          <div className="card body">
-            <h5 className="card-title">Coronal</h5>
-            <PlaneSVG
-              viewType='coronal'
-              patientId={this.props.match.params.id}
-              user={this.props.match.params.user}
-              posIndex={this.state.y}
-              scrollEvent={this.updateIndexScroll('y')}
-              width={this.state.shapeX}
-              height={this.state.shapeZ}
-              colorX={'rgb(255, 0, 0)'}
-              colorY={'rgb(0, 0, 255)'}
-              roiX1={this.state.x1}
-              roiX2={this.state.x2}
-              roiY1={this.state.z1}
-              roiY2={this.state.z2}
-              annotationType={this.state.annotationType}
-            />
-          </div>
-          <div className="card body">
-            <h5 className="card-title">Sagittal</h5>
-            <PlaneSVG
-              viewType='sagittal'
-              patientId={this.props.match.params.id}
-              user={this.props.match.params.user}
-              posIndex={this.state.x}
-              scrollEvent={this.updateIndexScroll('x')}
-              width={this.state.shapeY}
-              height={this.state.shapeZ}
-              colorX={'rgb(0, 255, 0)'}
-              colorY={'rgb(0, 0, 255)'}
-              roiX1={this.state.y1}
-              roiX2={this.state.y2}
-              roiY1={this.state.z1}
-              roiY2={this.state.z2}
-              annotationType={this.state.annotationType}
-            />
-          </div>
+          {this.state.viewTab === 'multi' ?
+            this.renderMultiView() :
+            this.renderSingleView()
+          }
         </div>
       </div>
     );

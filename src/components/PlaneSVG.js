@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import '../assets/Annotator.css';
+
 
 class PlaneSVG extends Component {
 
@@ -28,6 +30,7 @@ class PlaneSVG extends Component {
         <svg
           viewBox={`0 0 ${this.props.width} ${this.props.height}`}
           onWheel={this.props.scrollEvent}
+          className='svg-image'
         >
           <image
             xlinkHref={`/annotator/get-image-slice?user=${this.props.user}&id=${this.props.patientId}&type=${this.props.viewType}&slice=${this.props.posIndex}`}

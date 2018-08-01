@@ -31,12 +31,39 @@
 }
 
 
-.annotation-container {
-    margin-left: 25vw;
+.annotation-container-multi {
     width: 75vw;
     display: grid;
-    grid-template-columns: 37vw 37vw;
+    grid-template-columns: 37.5vw 37.5vw;
     grid-template-rows: 46vh 46vh;
+    height: 87vh;
+    text-align: center;
+}
+
+.annotation-container {
+    width: 75vw;
+    height: 87vh;
+    text-align: center;
+}
+
+.annotation-container-multi .card.body {
+    background-color: black !important;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+}
+
+.annotation-container .card.body {
+    background-color: black !important;
+}
+
+.vis-tab {
+    height: 5vh;
+}
+
+.vis-container {
+    margin-left: 25vw;
+    width: 75vw;
     height: 92vh;
     text-align: center;
 }
@@ -44,6 +71,10 @@
 .annotate-image-slice {
     width: 20vw;
     height: 20vw;
+}
+
+.svg-image {
+    max-height: 87vh;
 }
 
 
