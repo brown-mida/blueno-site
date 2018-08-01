@@ -83,11 +83,23 @@ def get_annotations():
     user = flask.request.args.get('user')
     group = flask.request.args.get('group')
 
-    db = get_db(db='annotation_groups')
+    db = get_db(db='annotations')
     results = db.find({'user': user, 'group': group})
     data = {}
     for doc in results:
-        data[doc['user']] = doc['label']
+        if doc['type'] == 'label':
+            data[doc['id']] = {
+                'class': doc['class']
+            }
+        else:
+            data[doc['id']] = {
+                'x1': doc['x1'],
+                'x2': doc['x2'],
+                'y1': doc['y1'],
+                'y2': doc['y2'],
+                'z1': doc['z1'],
+                'z2': doc['z2']
+            }
     return flask.json.jsonify({'data': data})
 
 
@@ -133,6 +145,64 @@ def get_image_dimensions():
             'z': arr.shape[0]
         }
     })
+
+
+@app_annotate_new.route('/annotator/annotate', methods=['POST'])
+def annotate():
+    data = flask.request.get_json()
+
+    # Error checking
+    if 'user' not in data:
+        return flask.json.jsonify({'error': 'User not specified'})
+    if 'group' not in data:
+        return flask.json.jsonify({'error': 'Annotation group not specified'})
+    if 'id' not in data:
+        return flask.json.jsonify({'error': 'ID not specified'})
+    if 'type' not in data:
+        return flask.json.jsonify({'error': 'Annotation type not specified'})
+    if 'data' not in data:
+        return flask.json.jsonify({'error': 'Data not specified'})
+    if data['type'] == 'label' and ('class' not in data['data']):
+        return flask.json.jsonify({'error': 'Class label not specified'})
+    if data['type'] == 'bbox':
+        for each in ['x1', 'x2', 'y1', 'y2', 'z1', 'z2']:
+            if each not in data['data']:
+                return flask.json.jsonify(
+                    {'error': 'Bounding box not specified'}
+                )
+
+    db = get_db(db='annotations')
+
+    try:
+        if data['type'] == 'label':
+            dataset = {
+                'user': data['user'],
+                'group': data['group'],
+                'id': data['id'],
+                'type': data['type'],
+                'class': data['data']['class']
+            }
+        elif data['type'] == 'bbox':
+            dataset = {
+                'user': data['user'],
+                'group': data['group'],
+                'id': data['id'],
+                'type': data['type'],
+                'x1': data['data']['x1'],
+                'x2': data['data']['x2'],
+                'y1': data['data']['y1'],
+                'y2': data['data']['y2'],
+                'z1': data['data']['z1'],
+                'z2': data['data']['z2']
+            }
+        else:
+            return flask.json.jsonify({'error': 'Invalid annotation type'})
+
+        db.replace_one({'user': data['user'], 'group': data['group'],
+                        'id': data['id']}, dataset, upsert=True)
+        return flask.json.jsonify({'status': 'success'})
+    except Exception as e:
+        return flask.json.jsonify({'error': e})
 
 
 def _retrieve_arr(user, patient_id):

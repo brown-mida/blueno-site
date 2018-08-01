@@ -51,10 +51,12 @@
     color: white;
     border: 1px solid #ccc;
     border-radius: 0px;
+    height: 87vh;
 }
 
 .annotation-container .card.body {
     background-color: black !important;
+    height: 87vh;
 }
 
 .vis-tab {
@@ -75,8 +77,8 @@
 
 .svg-image {
     max-height: 87vh;
+    z-index: 2;
 }
-
 
 .image-card {
     margin-bottom: 20px;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { BASE_URI, get } from '../utils/Backend';
+import { get, post } from '../utils/Backend';
 
 import AnnotateTab from '../components/AnnotateTab';
 import VisTab from '../components/VisTab';
@@ -38,6 +38,7 @@ class App extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.updateIndexScroll = this.updateIndexScroll.bind(this);
     this.handleClickViewTab = this.handleClickViewTab.bind(this);
+    this.makeAnnotation = this.makeAnnotation.bind(this);
   }
 
   handleInputChange(event) {
@@ -72,6 +73,49 @@ class App extends Component {
         return state;
       });
     }
+  }
+
+  makeAnnotation() {
+    if (this.state.annotationType === 'label' && this.state.class === "") {
+      alert("Error: Do not leave fields empty.");
+      return;
+    }
+
+    if (isNaN(this.state.x1) || isNaN(this.state.x2) || isNaN(this.state.y1) ||
+        isNaN(this.state.y2) || isNaN(this.state.z1) || isNaN(this.state.z1)) {
+      alert("Error: Field must be integer.");
+      return;
+    }
+
+    const params = {
+      user: this.props.match.params.user,
+      group: this.props.match.params.group,
+      id: this.props.match.params.id,
+      type: this.state.annotationType,
+    }
+
+    if (this.state.annotationType === 'label') {
+      params.data = {
+        'class': this.state.class
+      };
+    } else if (this.state.annotationType === 'bbox') {
+      params.data = {
+        'x1': this.state.x1,
+        'x2': this.state.x2,
+        'y1': this.state.y1,
+        'y2': this.state.y2,
+        'z1': this.state.z1,
+        'z2': this.state.z2,
+      };
+    }
+
+    post('annotator/annotate', params).then((res) => {
+      if (res.status === 'success') {
+        alert('Annotation has been created.');
+      } else {
+        alert(`Error: ${res.error}`);
+      }
+    });
   }
 
   componentDidMount() {
@@ -392,7 +436,7 @@ class App extends Component {
             {this.state.annotationType === 'bbox' &&
               this.renderBboxEntry()
             }
-            <button type="button" className="btn btn-success" >
+            <button type="button" className="btn btn-success" onClick={this.makeAnnotation} >
               Make annotation
             </button>
           </div>

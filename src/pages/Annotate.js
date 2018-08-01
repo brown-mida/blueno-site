@@ -30,6 +30,7 @@ class App extends Component {
     this.updateViewerStateMode = this.updateViewerStateMode.bind(this);
     this.updateViewerStateDataset = this.updateViewerStateDataset.bind(this);
     this.updateCurrentAnnotation = this.updateCurrentAnnotation.bind(this);
+    this.formatAnnotationToString = this.formatAnnotationToString.bind(this);
   }
 
   handleClickTab(tab) {
@@ -120,12 +121,21 @@ class App extends Component {
   }
 
   updateCurrentAnnotation(annotation) {
-    return get(`annotator/get-annotations?user=${this.props.user}&group=${annotation.name}`).then((res) => {
+    return get(`annotator/get-annotations?user=${this.props.match.params.user}&group=${annotation.name}`).then((res) => {
       this.setState({
         currentAnnotation: annotation,
         annotations: res.data,
       });
     });
+  }
+
+  formatAnnotationToString(id) {
+    const annotation = this.state.annotations[id]
+    if (annotation.class) {
+      return annotation.class;
+    } else {
+      return `(${annotation.x1}:${annotation.x2}, ${annotation.y1}:${annotation.y2}, ${annotation.z1}:${annotation.z2})`;
+    }
   }
 
   render() {
@@ -189,7 +199,7 @@ class App extends Component {
                         className={`image-thumbnail ${this.state.annotations[each.name] ? 'labeled' : 'not-labeled'}`}/>
                       <p>{each.name}</p>
                       {this.state.annotations[each.name] ?
-                        <p>Label: {this.state.annotations[each.name]}</p> :
+                        <p>Label: {this.formatAnnotationToString(each.name)}</p> :
                         <p>No label</p>
                       }
                     </div>

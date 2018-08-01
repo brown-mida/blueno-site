@@ -17,7 +17,6 @@ class App extends Component {
 
   componentDidMount() {
     get(`annotator/get-annotation-groups?user=${this.props.user}`).then((res) => {
-      console.log(res.data);
       if (res.data.length > 0) {
         this.props.updateCurrentAnnotation(res.data[0]).then(() => {
           this.setState({
