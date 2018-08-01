@@ -22,15 +22,15 @@ class App extends Component {
       visMode: 'axial',
       currentDataset: 'default',
       imageMode: '3D',
-      currentAnnotation: {name: null},
+      currentAnnotation: null,
       annotations: {},
     }
 
     this.handleClickTab = this.handleClickTab.bind(this);
     this.updateViewerStateMode = this.updateViewerStateMode.bind(this);
     this.updateViewerStateDataset = this.updateViewerStateDataset.bind(this);
-    this.updateCurrentAnnotation = this.updateCurrentAnnotation.bind(this);
     this.formatAnnotationToString = this.formatAnnotationToString.bind(this);
+    this.updateFromParams = this.updateFromParams.bind(this);
   }
 
   handleClickTab(tab) {
@@ -41,8 +41,8 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    get(`get-dataset?user=${this.props.match.params.user}&dataset=${this.state.currentDataset}`).then((res) => {
+  updateFromParams(params) {
+    get(`get-dataset?user=${params.user}&dataset=${this.state.currentDataset}`).then((res) => {
       const files = [];
       res.data.forEach((each) => {
         if (each.status === 'loaded') {
@@ -55,7 +55,7 @@ class App extends Component {
         fileImages.push({
           name: each.name,
           shape: each.shape,
-          url: `/get-dataset-image?user=${this.props.match.params.user}` +
+          url: `/get-dataset-image?user=${params.user}` +
                `&dataset=default&type=${this.state.visMode}&name=${each.name}`
         });
       });
@@ -64,7 +64,38 @@ class App extends Component {
         datasetFiles: files,
       });
     });
+
+    if (params.group) {
+      return get(`annotator/get-annotations?user=${params.user}&group=${params.group}`).then((res) => {
+        this.setState({
+          currentAnnotation: params.group,
+          annotations: res.data,
+        });
+      });
+    } else {
+      get(`annotator/get-annotation-groups?user=${this.props.match.params.user}`).then((res) => {
+        if (res.data.length > 0) {
+          return get(`annotator/get-annotations?user=${params.user}&group=${res.data[0].name}`).then((res2) => {
+            this.setState({
+              currentAnnotation: res.data[0].name,
+              annotations: res2.data,
+            });
+          });
+        }
+      });
+    }
   }
+
+  componentDidMount() {
+    this.updateFromParams(this.props.match.params);
+  }
+
+  componentWillReceiveProps(nextProps){
+    if (this.props.match.params !== nextProps.match.params) {
+      this.updateFromParams(nextProps.match.params);
+    }
+  }
+
 
   updateViewerStateMode(visMode) {
     const fileImages = []
@@ -120,15 +151,6 @@ class App extends Component {
     }
   }
 
-  updateCurrentAnnotation(annotation) {
-    return get(`annotator/get-annotations?user=${this.props.match.params.user}&group=${annotation.name}`).then((res) => {
-      this.setState({
-        currentAnnotation: annotation,
-        annotations: res.data,
-      });
-    });
-  }
-
   formatAnnotationToString(id) {
     const annotation = this.state.annotations[id]
     if (annotation.class) {
@@ -163,7 +185,7 @@ class App extends Component {
               <AnnotateTab
                 user={this.props.match.params.user}
                 currentAnnotation={this.state.currentAnnotation}
-                updateCurrentAnnotation={this.updateCurrentAnnotation}
+                annotations={this.state.annotations}
               />
             }
             { this.state.currentTab === 'vis' &&
@@ -190,9 +212,9 @@ class App extends Component {
         <div className="visual-container">
           {
             this.state.fileImages.map((each) => {
-              if (this.state.currentAnnotation.name) {
+              if (this.state.currentAnnotation) {
                 return (
-                  <Link key={each.url} to={`/u/${this.props.match.params.user}/annotate/${this.state.currentAnnotation.name}/${each.name}`}>
+                  <Link key={each.url} to={`/u/${this.props.match.params.user}/annotate/${this.state.currentAnnotation}/${each.name}`}>
                     <div className='image-card'>
                       <img
                         src={each.url}

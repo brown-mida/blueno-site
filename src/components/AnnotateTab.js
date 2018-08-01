@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { get } from '../utils/Backend';
 
@@ -8,36 +9,18 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      annotations: [],
+      annotationGroups: [],
       annotationLoaded: false,
     }
-
-    this.handleClickAnnotation = this.handleClickAnnotation.bind(this);
   }
 
   componentDidMount() {
     get(`annotator/get-annotation-groups?user=${this.props.user}`).then((res) => {
-      if (res.data.length > 0) {
-        this.props.updateCurrentAnnotation(res.data[0]).then(() => {
-          this.setState({
-            annotations: res.data,
-            annotationLoaded: true,
-          });
-        });
-      } else {
-        this.setState({
-          annotationLoaded: true,
-        });
-      }
+      this.setState({
+        annotationGroups: res.data,
+        annotationLoaded: true,
+      });
     });
-  }
-
-  handleClickAnnotation(annotation) {
-    return () => {
-      if (this.props.currentAnnotation !== annotation) {
-        this.props.updateCurrentAnnotation(annotation);
-      }
-    }
   }
 
   render() {
@@ -52,22 +35,22 @@ class App extends Component {
     } else {
       return (
         <div>
-          {this.state.annotations.length > 0 ?
+          {this.state.annotationGroups.length > 0 ?
             <div>
               Annotations
               <div className="dropdown">
                 <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {this.props.currentAnnotation.name}
+                  {this.props.currentAnnotation}
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   {
-                    this.state.annotations.map((each) => {
+                    this.state.annotationGroups.map((each) => {
                       return (
-                        <span
-                          key={each.name}
-                          className="dropdown-item"
-                          onClick={this.handleClickAnnotation(each)}
-                        >{each.name}</span>
+                        <Link to={`/u/${this.props.user}/annotate/${each.name}`} key={each.name}>
+                          <span
+                            className="dropdown-item"
+                          >{each.name}</span>
+                        </Link>
                       );
                     })
                   }

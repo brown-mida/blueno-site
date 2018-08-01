@@ -24,6 +24,7 @@ class App extends Component {
           <Route exact path='/u/:user/upload' component={UploadPage}/>
           <Route exact path='/u/:user/preprocess' component={PreprocessPage}/>
           <Route exact path='/u/:user/annotate' component={AnnotatePage}/>
+          <Route exact path='/u/:user/annotate/:group' component={AnnotatePage}/>
           <Route exact path='/u/:user/annotate/:group/:id' component={AnnotateOnePage}/>
           <Route exact path='/u/:user/train' component={TrainPage}/>
           <Route exact path='/annotator' component={ElvoAnnotatePage}/>

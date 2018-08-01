@@ -59,6 +59,16 @@
     height: 87vh;
 }
 
+.annotation-container-multi .card.body .svg-image {
+    max-height: 35vh;
+    z-index: 2;
+}
+
+.annotation-container .card.body .svg-image {
+    max-height: 87vh;
+    z-index: 2;
+}
+
 .vis-tab {
     height: 5vh;
 }
@@ -75,11 +85,6 @@
     height: 20vw;
 }
 
-.svg-image {
-    max-height: 87vh;
-    z-index: 2;
-}
-
 .image-card {
     margin-bottom: 20px;
     text-align: center;
@@ -92,4 +97,9 @@
 .image-thumbnail {
     width: 15vw;
     height: 15vw;
+}
+
+.card-head {
+    text-align: left;
+    margin-bottom: 30px;
 }

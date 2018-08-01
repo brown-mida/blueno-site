@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { get, post } from '../utils/Backend';
 
@@ -395,6 +396,13 @@ class App extends Component {
         <NavbarDataset user={this.props.match.params.user}/>
         <div className="card preprocess-options">
           <div className="card-body">
+            <div className="card-head">
+                <Link to={`/u/${this.props.match.params.user}/annotate/${this.props.match.params.group}`} >
+                  <button type="button" className="btn btn-dark btn-sm" >
+                    Back to annotation list
+                  </button>
+                </Link>
+            </div>
             <h5 className="card-title">Annotating {this.props.match.params.id}</h5>
             <div className="input-group input-group-sm mb-3">
               <div className="input-group-prepend">
