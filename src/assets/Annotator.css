@@ -8,4 +8,55 @@
 
 .image-card p {
     margin-bottom: 0;
+    font-size: 0.8em;
+}
+
+.preprocess-options {
+    position: fixed;
+    top: 8vh;
+    left: 0;
+    height: 92vh;
+    width: 25vw;
+    overflow-y: scroll;
+}
+
+.visual-container {
+    margin-left: 25vw;
+    width: 75vw;
+    display: grid;
+    grid-template-columns: 18.5vw 18.5vw 18.5vw 18.5vw;
+    padding-top: 20px;
+    height: 92vh;
+    overflow-y: scroll;
+}
+
+
+.annotation-container {
+    margin-left: 25vw;
+    width: 75vw;
+    display: grid;
+    grid-template-columns: 37vw 37vw;
+    grid-template-rows: 46vh 46vh;
+    height: 92vh;
+    text-align: center;
+}
+
+.annotate-image-slice {
+    width: 20vw;
+    height: 20vw;
+}
+
+
+.image-card {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dataset-tabs {
+    margin-bottom: 20px;
+}
+
+.image-thumbnail {
+    width: 15vw;
+    height: 15vw;
 }

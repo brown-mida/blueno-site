@@ -9,7 +9,6 @@ import CreateTab from '../components/AnnotateCreateTab';
 import LogTab from '../components/LogTab';
 import NavbarDataset from '../components/NavbarDataset';
 
-import '../assets/Preprocess.css';
 import '../assets/Annotator.css';
 
 class App extends Component {
