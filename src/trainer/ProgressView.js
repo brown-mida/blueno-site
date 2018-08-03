@@ -4,11 +4,6 @@ import axios from 'axios';
 const styles = {
   iframe: { minWidth: '70vw', minHeight: '60vh' },
 };
-
-const sendCountRequest = () => {
-  axios.get('/');
-};
-
 class ProgressView extends Component {
 
   constructor(props) {
@@ -64,6 +59,7 @@ class ProgressView extends Component {
           <iframe
               src="http://104.196.51.205:8080/admin/dagrun/?flt1_dag_id_equals=preprocess_web"
               style={styles.iframe}
+              title="Preprocess Web DAG"
           />
           <h3>Training</h3>
 
@@ -71,6 +67,7 @@ class ProgressView extends Component {
           <iframe
               src="http://104.196.51.205:8080/admin/dagrun/?flt1_dag_id_equals=train_model"
               style={styles.iframe}
+              title="Train Model DAG"
           />
         </div>
     );

@@ -22,6 +22,7 @@ const ResultsView = ({ selectedPlot, parentStyles }) => {
       <Paper>
         <img src={plotUrl(selectedPlot, 'loss')}
              style={styles.plotImg}
+             alt="loss"
         />
       </Paper>
     </Grid>
@@ -30,6 +31,7 @@ const ResultsView = ({ selectedPlot, parentStyles }) => {
       <Paper>
         <img src={plotUrl(selectedPlot, 'acc')}
              style={styles.plotImg}
+             alt="accuracy"
         />
       </Paper>
     </Grid>
@@ -38,6 +40,7 @@ const ResultsView = ({ selectedPlot, parentStyles }) => {
       <Paper>
         <img src={plotUrl(selectedPlot, 'cm')}
              style={styles.plotImg}
+             alt="confusion matrix"
         />
       </Paper>
     </Grid>
@@ -49,6 +52,7 @@ const ResultsView = ({ selectedPlot, parentStyles }) => {
             src={
               plotUrl(selectedPlot, 'true_positives')}
             style={styles.plotImg}
+            alt="true positives"
         />
       </Paper>
     </Grid>
@@ -59,6 +63,7 @@ const ResultsView = ({ selectedPlot, parentStyles }) => {
         <img src={
           plotUrl(selectedPlot, 'false_positives')}
              style={styles.plotImg}
+             alt="false positives"
         />
       </Paper>
     </Grid>
@@ -70,6 +75,7 @@ const ResultsView = ({ selectedPlot, parentStyles }) => {
         <img src={
           plotUrl(selectedPlot, 'true_negatives')}
              style={styles.plotImg}
+             alt="true negatives"
         />
       </Paper>
     </Grid>
@@ -81,6 +87,7 @@ const ResultsView = ({ selectedPlot, parentStyles }) => {
         <img src={
           plotUrl(selectedPlot, 'false_negatives')}
              style={styles.plotImg}
+             alt="false negatives"
         />
       </Paper>
     </Grid>

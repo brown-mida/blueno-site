@@ -8,7 +8,7 @@ runtime_config:
 manual_scaling:
   instances: 1
 
-# TODO: Keep this synced with .env, becasue of how skip_files works
+# TODO: Keep this synced with .env and travis.yml, becasue of how skip_files works
 # we will need both of these
 env_variables:
   GOOGLE_APPLICATION_CREDENTIALS: 'credentials/elvo-7136c1299dea.json'

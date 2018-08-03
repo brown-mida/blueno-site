@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 const DataView = ({ dataName, imageInfos, offset, parentStyles }) => {
   // TODO(luke): Labels with the images
   const baseURL = 'https://storage.googleapis.com/elvos-public/processed';
-  console.log('imageInfos', imageInfos);
   // Render 15 of the items
   const images = imageInfos
       .slice(offset, offset + 15)

@@ -44,6 +44,8 @@ class Annotator extends Component {
       z1 = Annotator.getQueryVariable('z1');
       z2 = Annotator.getQueryVariable('z2');
       console.log('initial state:', initialPatientId, x1, x2, y1, y2, z1, z2);
+    } else {
+      initialPatientId = '0KSBX96F8BU1FCFQ';
     }
 
     this.state = {
@@ -63,12 +65,12 @@ class Annotator extends Component {
         y: 250,
       },
       roiDimensions: {
-        x1: parseInt(x1),
-        x2: parseInt(x2),
-        y1: parseInt(y1),
-        y2: parseInt(y2),
-        z1: parseInt(z1),
-        z2: parseInt(z2),
+        x1: parseInt(x1, 10),
+        x2: parseInt(x2, 10),
+        y1: parseInt(y1, 10),
+        y2: parseInt(y2, 10),
+        z1: parseInt(z1, 10),
+        z2: parseInt(z2, 10),
       },
       renderingParams: 'x1=100&x2=110&y1=100&y2=110&z1=100&z2=110',
       mipStep: 4,
@@ -135,7 +137,7 @@ class Annotator extends Component {
 
   updateIndex(attr) {
     return (event) => {
-      const value = parseInt(event.target.value);
+      const value = parseInt(event.target.value, 10);
       if (!isNaN(value)) {
         this.setState((state) => {
           state.indices[attr] = value;
@@ -203,7 +205,7 @@ class Annotator extends Component {
 
   updateBoundingBox(attr) {
     return (event) => {
-      const value = parseInt(event.target.value);
+      const value = parseInt(event.target.value, 10);
       if (!isNaN(value)) {
         this.setState((state) => {
           state.roiDimensions[attr] = value;
@@ -435,6 +437,7 @@ class Annotator extends Component {
                 <img
                     src={`/image/rendering/${this.state.patientId}?${this.state.renderingParams}`}
                     style={{ maxWidth: 300, maxHeight: 300 }}
+                    alt="3D Rendering"
                 />
                 <Button
                     variant="contained"

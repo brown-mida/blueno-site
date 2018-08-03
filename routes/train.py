@@ -4,6 +4,7 @@ Responsible for the routes related to the /trainer endpoint.
 """
 import csv
 import io
+import logging
 import types
 from concurrent.futures import ThreadPoolExecutor
 
@@ -105,6 +106,17 @@ def get_labels(data_name: str):
             patient_infos = [row for row in csv_reader]
             return flask.json.jsonify(sorted(patient_infos,
                                              key=lambda x: x['Anon ID']))
+
+    default_blob = priv_bucket.get_blob('processed/processed-lower/labels.csv')
+    logging.info(f'using default labels: {default_blob.name}')
+    byte_stream = io.BytesIO()
+    default_blob.download_to_file(byte_stream)
+    byte_stream.seek(0)
+    unicode_stream = [line.decode('utf8') for line in byte_stream]
+    csv_reader = csv.DictReader(unicode_stream)
+    patient_infos = [row for row in csv_reader]
+    return flask.json.jsonify(sorted(patient_infos,
+                                     key=lambda x: x['Anon ID']))
 
 
 @app_train.route('/preprocessing/transforms', methods=['GET'])
