@@ -9,7 +9,7 @@ dotenv.load_dotenv(verbose=True)
 from routes.annotator import app_annotate  # noqa: E402
 from routes.preprocess import app_preprocess  # noqa: E402
 from routes.train import app_train  # noqa: E402
-from routes.new_annotator import app_annotate_new
+from routes.new_annotator import app_annotate_new  # noqa: E402
 
 app = flask.Flask(__name__,
                   template_folder='build',

@@ -103,7 +103,6 @@ def generate_images(arr, user, dataset, filename, bucket, tmp_dir):
 
 
 def generate_mip_images(arr, user, dataset, filename, bucket, tmp_dir):
-    print(np.shape(arr))
     os.makedirs(tmp_dir, exist_ok=True)
     save_npy_as_image_and_upload(arr, user, dataset, 'mip',
                                  filename, bucket, tmp_dir)

@@ -1,25 +1,21 @@
-import datetime
+import io
 import logging
 
 import flask
-import gspread
-import io
 import matplotlib
-import numpy as np
-import os
-from google.cloud import storage
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from oauth2client.service_account import ServiceAccountCredentials
-from skimage import measure
-from werkzeug.contrib.cache import SimpleCache
+from werkzeug.contrib.cache import GAEMemcachedCache, SimpleCache
 
 from utils import gcs, transforms
 from utils.mongodb import get_db
 
 matplotlib.use('Agg')
-from matplotlib import pyplot as plt, image  # noqa: E402
+from matplotlib import image  # noqa: E402
 
-cache = SimpleCache(threshold=3, default_timeout=0)
+try:
+    cache = GAEMemcachedCache()
+except RuntimeError:
+    logging.warning('using single-process simple cache')
+    cache = SimpleCache(threshold=3)
 
 app_annotate_new = flask.Blueprint('app_annotate_new', __name__)
 

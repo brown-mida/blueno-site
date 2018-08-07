@@ -2,7 +2,6 @@
 # https://www.kaggle.com/gzuidhof/full-preprocessing-tutorial/notebook
 
 import numpy as np
-import logging
 from scipy.ndimage.interpolation import zoom
 
 
