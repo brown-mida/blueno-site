@@ -70,7 +70,8 @@ def test_list_plots():
     r: flask.Response
     r = client.get('/plots')
     assert r.status_code == 200
-    assert 'test_gcs-2018-07-24T17:30:15.191204' in json.loads(r.data)
+    assert 'processed-lower_2-classes-2018-07-24T18:02:24.644710' in \
+           json.loads(r.data)
 
 
 @pytest.mark.skipif('SPREADSHEET_CREDENTIALS' not in os.environ,
