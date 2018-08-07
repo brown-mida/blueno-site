@@ -2,6 +2,9 @@
 Responsible for the routes related to the /trainer endpoint.
 
 """
+import csv
+import io
+import logging
 import types
 from concurrent.futures import ThreadPoolExecutor
 
@@ -76,9 +79,44 @@ def get_images(data_name: str):
 
     blob: storage.Blob
     for blob in pub_bucket.list_blobs(prefix=f'processed/{data_name}/'):
-        data_name = blob.name.split('/')[-1]
-        images.append(data_name)
+        filename = blob.name.split('/')[-1]
+        images.append(filename)
     return flask.json.jsonify(sorted(images))
+
+
+@app_train.route('/data/<data_name>/labels')
+def get_labels(data_name: str):
+    """
+    Returns labels corresponding to the images.
+
+    :return:
+    """
+
+    blob: storage.Blob
+    for blob in priv_bucket.list_blobs(prefix=f'processed/{data_name}/'):
+        filename = blob.name.split('/')[-1]
+        if filename.endswith('.csv'):
+            byte_stream = io.BytesIO()
+            blob.download_to_file(byte_stream)
+            byte_stream.seek(0)
+            unicode_stream = [line.decode('utf8') for line in byte_stream]
+            csv_reader = csv.DictReader(unicode_stream)
+            # TODO(luke): Not all upload CSV labels files will have these
+            # field names
+            patient_infos = [row for row in csv_reader]
+            return flask.json.jsonify(sorted(patient_infos,
+                                             key=lambda x: x['Anon ID']))
+
+    default_blob = priv_bucket.get_blob('processed/processed-lower/labels.csv')
+    logging.info(f'using default labels: {default_blob.name}')
+    byte_stream = io.BytesIO()
+    default_blob.download_to_file(byte_stream)
+    byte_stream.seek(0)
+    unicode_stream = [line.decode('utf8') for line in byte_stream]
+    csv_reader = csv.DictReader(unicode_stream)
+    patient_infos = [row for row in csv_reader]
+    return flask.json.jsonify(sorted(patient_infos,
+                                     key=lambda x: x['Anon ID']))
 
 
 @app_train.route('/preprocessing/transforms', methods=['GET'])

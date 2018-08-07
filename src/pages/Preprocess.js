@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { BASE_URI, get } from '../utils/Backend';
+import { get } from '../utils/Backend';
 
 import VisTab from '../components/VisTab';
 import CreateTab from '../components/CreateTab';
@@ -123,13 +123,13 @@ class App extends Component {
             <h5 className="card-title">Preprocessing dataset {this.props.match.params.user}</h5>
             <ul className="nav nav-tabs dataset-tabs">
               <li className="nav-item" onClick={this.handleClickTab('vis')}>
-                <a className={`nav-link ${this.state.currentTab === 'vis' && 'active'}`} href="#">Vis</a>
+                <button type="button" className={`btn btn-light ${this.state.currentTab === 'vis' && 'active'}`}>Vis</button>
               </li>
               <li className="nav-item" onClick={this.handleClickTab('create')}>
-                <a className={`nav-link ${this.state.currentTab === 'create' && 'active'}`} href="#">Create</a>
+                <button type="button" className={`btn btn-light ${this.state.currentTab === 'create' && 'active'}`}>Create</button>
               </li>
               <li className="nav-item" onClick={this.handleClickTab('log')}>
-                <a className={`nav-link ${this.state.currentTab === 'log' && 'active'}`} href="#">Log</a>
+                <button type="button" className={`btn btn-light ${this.state.currentTab === 'log' && 'active'}`}>Log</button>
               </li>
             </ul>
             { this.state.currentTab === 'vis' &&
@@ -158,7 +158,9 @@ class App extends Component {
             this.state.fileImages.map((each) => {
               return (
                 <div key={each.url} className='image-card'>
-                  <img src={each.url} style={{width: '15vw', height: '15vw'}}/>
+                  <img src={each.url} style={{width: '15vw', height: '15vw'}}
+                       alt={each.name}
+                  />
                   <p>{each.name}</p>
                   <p>({each.shape.toString()})</p>
                 </div>

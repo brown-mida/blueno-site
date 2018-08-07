@@ -1,14 +1,12 @@
 import json
-import os
 
 import flask
 import pytest
 
+from main import app
 
-@pytest.mark.skipif('SPREADSHEET_CREDENTIALS' not in os.environ,
-                    reason='Spreasheet credentials required')
+
 def test_index():
-    from main import app  # TODO: Deal with TravisCI failure
     app.testing = True
     client = app.test_client()
 
@@ -16,8 +14,7 @@ def test_index():
     assert r.status_code == 200
 
 
-@pytest.mark.skipif('SPREADSHEET_CREDENTIALS' not in os.environ,
-                    reason='Spreasheet credentials required')
+# TODO: Move tests to their respective blueprint
 def test_dimensions():
     from main import app
     app.testing = True
@@ -26,8 +23,7 @@ def test_dimensions():
     assert r.status_code == 200
 
 
-@pytest.mark.skipif('SPREADSHEET_CREDENTIALS' not in os.environ,
-                    reason='Spreasheet credentials required')
+@pytest.mark.skip(reason='Has a side-effect')
 def test_roi():
     from main import app
     app.testing = True
@@ -48,8 +44,7 @@ def test_roi():
     assert r.status_code == 200
 
 
-@pytest.mark.skipif('SPREADSHEET_CREDENTIALS' not in os.environ,
-                    reason='Spreadsheet credentials required')
+@pytest.mark.skip(reason='Has a side-effect')
 def test_create_model():
     from main import app
     app.testing = True
@@ -61,8 +56,6 @@ def test_create_model():
     assert r.status_code == 200
 
 
-@pytest.mark.skipif('SPREADSHEET_CREDENTIALS' not in os.environ,
-                    reason='Spreadsheet credentials required')
 def test_list_plots():
     from main import app
     app.testing = True
@@ -74,8 +67,6 @@ def test_list_plots():
            json.loads(r.data)
 
 
-@pytest.mark.skipif('SPREADSHEET_CREDENTIALS' not in os.environ,
-                    reason='Spreadsheet credentials required')
 def test_list_transforms():
     from main import app
     app.testing = True
