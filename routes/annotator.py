@@ -49,7 +49,6 @@ def roi():
     query_string = f'{flask.request.url_root}annotator?' \
                    f'x1={x1}&x2={x2}&y1={y1}&y2={y2}' \
                    f'&z1={z1}&z2={z2}&patientId={patient_id}'
-    print(query_string)
     values = [
         patient_id,
         created_by,

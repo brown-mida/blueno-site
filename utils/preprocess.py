@@ -83,6 +83,9 @@ def preprocess_scan(slices: List[pydicom.FileDataset]) -> np.array:
     """
     scan = t.get_pixels_hu(slices)
     scan = t.standardize_spacing(scan, slices)
+
+    # TODO: Put this z-axis, as z=0 is the chest as opposed to head
+    scan = np.flip(scan, axis=0)
     return scan
 
 

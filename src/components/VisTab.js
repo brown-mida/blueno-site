@@ -9,9 +9,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      visMode: 'axial',
-      currentDataset: 'default',
       datasets: [],
+      datasetLoaded: false,
     }
 
     this.handleClickVisMode = this.handleClickVisMode.bind(this);
@@ -22,40 +21,35 @@ class App extends Component {
     get(`get-datasets-from-user?user=${this.props.user}`).then((res) => {
       this.setState({
         datasets: res.data,
+        datasetLoaded: true,
       });
     });
   }
 
   handleClickVisMode(mode) {
     return () => {
-      if (this.state.visMode !== mode) {
+      if (this.props.visMode !== mode) {
         this.props.updateViewerStateMode(mode);
-        this.setState({
-          visMode: mode,
-        });
       }
     }
   }
 
   handleClickDataset(dataset) {
     return () => {
-      if (this.state.currentDataset !== dataset) {
+      if (this.props.currentDataset !== dataset) {
         // Update dataset
         this.props.updateViewerStateDataset(dataset);
-        this.setState({
-          currentDataset: dataset,
-        });
       }
     }
   }
 
-  render() {
+  renderVisTab() {
     return (
       <div>
         Visualization Mode
         <div className="dropdown">
           <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {this.props.imageMode === '3D' ? this.state.visMode : 'MIP'}
+            {this.props.imageMode === '3D' ? this.props.visMode : 'MIP'}
           </button>
           {this.props.imageMode === '3D' ?
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -71,7 +65,7 @@ class App extends Component {
         Current Dataset
         <div className="dropdown">
           <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {this.state.currentDataset}
+            {this.props.currentDataset}
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {
@@ -83,6 +77,36 @@ class App extends Component {
         </div>
       </div>
     );
+  }
+
+  renderNoDataset() {
+    return (
+      <div>
+        Visualization Mode
+        <br />
+        There are no datasets available.
+      </div>
+    );
+  }
+
+  renderLoading() {
+    return (
+      <div>
+        Visualization Mode
+        <br />
+        Loading...
+      </div>
+    );
+  }
+
+  render() {
+    if (!this.state.datasetLoaded) {
+      return this.renderLoading();
+    } else if (this.state.datasets.length === 0) {
+      return this.renderNoDataset();
+    } else {
+      return this.renderVisTab();
+    }
   }
 }
 

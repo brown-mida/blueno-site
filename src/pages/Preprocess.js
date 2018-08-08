@@ -23,8 +23,6 @@ class App extends Component {
     }
 
     this.handleClickTab = this.handleClickTab.bind(this);
-    this.renderCreateTab = this.renderCreateTab.bind(this);
-    this.renderLogTab = this.renderLogTab.bind(this);
     this.updateViewerStateMode = this.updateViewerStateMode.bind(this);
     this.updateViewerStateDataset = this.updateViewerStateDataset.bind(this);
   }
@@ -45,7 +43,6 @@ class App extends Component {
           files.push(each);
         }
       });
-      console.log(files);
 
       const fileImages = []
       files.forEach((each) => {
@@ -83,71 +80,38 @@ class App extends Component {
   updateViewerStateDataset(currentDataset) {
     if (this.state.currentDataset !== currentDataset) {
       get(`get-dataset?user=${this.props.match.params.user}&dataset=${currentDataset}`).then((res) => {
-      const files = [];
-      res.data.forEach((each) => {
-        if (each.status === 'loaded') {
-          files.push(each);
+        const files = [];
+        res.data.forEach((each) => {
+          if (each.status === 'loaded') {
+            files.push(each);
+          }
+        });
+
+        const mipped = files[0].mip;
+        const fileImages = [];
+        files.forEach((each) => {
+          fileImages.push({
+            name: each.name,
+            shape: each.shape,
+            url: `/get-dataset-image?user=${this.props.match.params.user}` +
+                 `&dataset=${currentDataset}&type=${mipped ? 'mip' : this.state.visMode}&name=${each.name}`
+          });
+        });
+
+        let imageMode;
+        if (mipped) {
+          imageMode = '2D';
+        } else {
+          imageMode = '3D';
         }
-      });
-
-      const mipped = files[0].mip;
-      const fileImages = [];
-      files.forEach((each) => {
-        fileImages.push({
-          name: each.name,
-          shape: each.shape,
-          url: `/get-dataset-image?user=${this.props.match.params.user}` +
-               `&dataset=${currentDataset}&type=${mipped ? 'mip' : this.state.visMode}&name=${each.name}`
+        this.setState({
+          fileImages,
+          datasetFiles: files,
+          currentDataset,
+          imageMode,
         });
-      });
-
-      let imageMode;
-      if (mipped) {
-        imageMode = '2D';
-      } else {
-        imageMode = '3D';
-      }
-      this.setState({
-        fileImages,
-        datasetFiles: files,
-        currentDataset,
-        imageMode,
-      });
-    });
-
-    } else {
-      const mipped = this.state.datasetFiles[0].mip;
-      const fileImages = []
-      this.state.datasetFiles.forEach((each) => {
-        fileImages.push({
-          name: each.name,
-          shape: each.shape,
-          url: `/get-dataset-image?user=${this.props.match.params.user}` +
-               `&dataset=${currentDataset}&type=${mipped ? 'mip' : this.state.visMode}&name=${each.name}`
-        });
-      });
-
-      this.setState({
-        fileImages,
-        currentDataset
       });
     }
-  }
-
-  renderCreateTab() {
-    return (
-      <div>
-        <button type="button" className="btn btn-success">Create preprocessing job</button>
-      </div>
-    );
-  }
-
-  renderLogTab() {
-    return (
-      <div>
-        This is the log tab.
-      </div>
-    );
   }
 
   render() {
@@ -156,7 +120,7 @@ class App extends Component {
         <NavbarDataset user={this.props.match.params.user}/>
         <div className="card preprocess-options">
           <div className="card-body">
-            <h5 className="card-title">Dataset {this.props.match.params.user}</h5>
+            <h5 className="card-title">Preprocessing dataset {this.props.match.params.user}</h5>
             <ul className="nav nav-tabs dataset-tabs">
               <li className="nav-item" onClick={this.handleClickTab('vis')}>
                 <button type="button" className={`btn btn-light ${this.state.currentTab === 'vis' && 'active'}`}>Vis</button>
@@ -174,6 +138,8 @@ class App extends Component {
                 updateViewerStateMode={this.updateViewerStateMode}
                 updateViewerStateDataset={this.updateViewerStateDataset}
                 imageMode={this.state.imageMode}
+                visMode={this.state.visMode}
+                currentDataset={this.state.currentDataset}
               />
             }
             { this.state.currentTab === 'create' &&

@@ -44,10 +44,13 @@ def download_image(user, dataset, data_type, filename, bucket):
     logging.info("A")
     blob = bucket.blob('{}/{}/{}/{}.jpg'.format(user, dataset,
                                                 data_type, filename))
-    out_stream = io.BytesIO()
-    blob.download_to_file(out_stream)
-    out_stream.seek(0)
-    return out_stream
+    if blob is None:
+        return None
+    else:
+        out_stream = io.BytesIO()
+        blob.download_to_file(out_stream)
+        out_stream.seek(0)
+        return out_stream
 
 
 def download_array(gcs_url, bucket):

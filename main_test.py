@@ -63,8 +63,8 @@ def test_list_plots():
     r: flask.Response
     r = client.get('/plots')
     assert r.status_code == 200
-    assert 'Matt_test_2-classes-2018-07-25T23:10:27.814299' in json.loads(
-        r.data)
+    assert 'processed-lower_2-classes-2018-07-24T18:02:24.644710' in \
+           json.loads(r.data)
 
 
 def test_list_transforms():

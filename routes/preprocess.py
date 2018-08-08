@@ -66,39 +66,39 @@ def __process_file(files, user, date, bucket):
     )
     db = client.elvo.datasets
     for file in files:
-        # try:
-        npy = preprocess.process_cab_from_file(file, file.filename,
-                                               'tmp/cab_files/')
-        preprocess.generate_images(npy, user, 'default', file.filename,
-                                   bucket, 'tmp/')
-        gcs.upload_npy_to_gcs(npy, file.filename, user, 'default', bucket)
-        dataset = {
-            "user": user,
-            "name": file.filename,
-            "date": date,
-            "mip": False,
-            "shape": npy.shape,
-            "dataset": 'default',
-            "gcs_url": '{}/default/{}.npy'.format(user, file.filename),
-            "status": "loaded",
-            "message": "Successfully loaded."
-        }
-        db.replace_one({'name': file.filename, 'dataset': 'default'},
-                       dataset)
-        # except Exception as e:
-        #     dataset = {
-        #         "user": user,
-        #         "name": file.filename,
-        #         "date": date,
-        #         "mip": False,
-        #         "shape": "None",
-        #         "dataset": 'default',
-        #         "gcs_url": '{}/default/{}.npy'.format(user, file.filename),
-        #         "status": "failed",
-        #         "message": "Failed: {}".format(e)
-        #     }
-        #     db.replace_one({'name': file.filename, 'dataset': 'default'},
-        #                    dataset)
+        try:
+            npy = preprocess.process_cab_from_file(file, file.filename,
+                                                   'tmp/cab_files/')
+            preprocess.generate_images(npy, user, 'default', file.filename,
+                                       bucket, 'tmp/')
+            gcs.upload_npy_to_gcs(npy, file.filename, user, 'default', bucket)
+            dataset = {
+                "user": user,
+                "name": file.filename,
+                "date": date,
+                "mip": False,
+                "shape": npy.shape,
+                "dataset": 'default',
+                "gcs_url": '{}/default/{}.npy'.format(user, file.filename),
+                "status": "loaded",
+                "message": "Successfully loaded."
+            }
+            db.replace_one({'name': file.filename, 'dataset': 'default'},
+                           dataset)
+        except Exception as e:
+            dataset = {
+                "user": user,
+                "name": file.filename,
+                "date": date,
+                "mip": False,
+                "shape": "None",
+                "dataset": 'default',
+                "gcs_url": '{}/default/{}.npy'.format(user, file.filename),
+                "status": "failed",
+                "message": "Failed: {}".format(e)
+            }
+            db.replace_one({'name': file.filename, 'dataset': 'default'},
+                           dataset)
 
 
 @app_preprocess.route('/upload-dropbox-dataset', methods=['POST'])
@@ -221,7 +221,6 @@ def get_dataset_image():
     dataset = flask.request.args.get('dataset')
     data_type = flask.request.args.get('type')
     data_name = flask.request.args.get('name')
-    logging.info(user)
 
     client = gcs.authenticate()
     bucket = client.get_bucket('blueno-ml-files')
@@ -247,8 +246,6 @@ def make_preprocessing_job():
     results = db.find({'user': data['user'], 'dataset': 'default'})
     for doc in results:
         image_list.append({'name': doc['name'], 'gcs_url': doc['gcs_url']})
-    logging.info(image_list)
-    logging.info("A")
 
     # Save new file relationship in MongoDB
     current_date = str(datetime.datetime.now())

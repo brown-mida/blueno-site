@@ -51,7 +51,25 @@ def standardize_spacing(image, slices):
 
 def mip_normal(array, index=0):
     array = np.max(array, axis=index)
-    return np.expand_dims(array, axis=2)
+    array = np.expand_dims(array, axis=2)
+    return np.tile(array, (1, 1, 3))
+
+
+def mip_slice(array, img_slice, index=0, thickness=24, expand_dims=True):
+    slice_beg = max(0, img_slice)
+    slice_end = min(array.shape[index] - 1, img_slice + thickness)
+    if index == 0:
+        arr = array[slice_beg:slice_end, :, :]
+    elif index == 1:
+        arr = array[:, slice_beg:slice_end, :]
+    elif index == 2:
+        arr = array[:, :, slice_beg:slice_end]
+    arr = np.max(arr, axis=index)
+
+    if expand_dims:
+        arr = np.expand_dims(arr, axis=2)
+        arr = np.tile(arr, (1, 1, 3))
+    return arr
 
 
 def mip_multichannel(array, num_slices=3, index=0):

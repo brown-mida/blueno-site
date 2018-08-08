@@ -1,0 +1,105 @@
+.labeled {
+    border: 2px solid #2ECC40;
+}
+
+.not-labeled {
+    border: 2px solid #FF4136;
+}
+
+.image-card p {
+    margin-bottom: 0;
+    font-size: 0.8em;
+}
+
+.preprocess-options {
+    position: fixed;
+    top: 8vh;
+    left: 0;
+    height: 92vh;
+    width: 25vw;
+    overflow-y: scroll;
+}
+
+.visual-container {
+    margin-left: 25vw;
+    width: 75vw;
+    display: grid;
+    grid-template-columns: 18.5vw 18.5vw 18.5vw 18.5vw;
+    padding-top: 20px;
+    height: 92vh;
+    overflow-y: scroll;
+}
+
+
+.annotation-container-multi {
+    width: 75vw;
+    display: grid;
+    grid-template-columns: 37.5vw 37.5vw;
+    grid-template-rows: 46vh 46vh;
+    height: 87vh;
+    text-align: center;
+}
+
+.annotation-container {
+    width: 75vw;
+    height: 87vh;
+    text-align: center;
+}
+
+.annotation-container-multi .card.body {
+    background-color: black !important;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    height: 87vh;
+}
+
+.annotation-container .card.body {
+    background-color: black !important;
+    height: 87vh;
+}
+
+.annotation-container-multi .card.body .svg-image {
+    max-height: 35vh;
+    z-index: 2;
+}
+
+.annotation-container .card.body .svg-image {
+    max-height: 87vh;
+    z-index: 2;
+}
+
+.vis-tab {
+    height: 5vh;
+}
+
+.vis-container {
+    margin-left: 25vw;
+    width: 75vw;
+    height: 92vh;
+    text-align: center;
+}
+
+.annotate-image-slice {
+    width: 20vw;
+    height: 20vw;
+}
+
+.image-card {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dataset-tabs {
+    margin-bottom: 20px;
+}
+
+.image-thumbnail {
+    width: 15vw;
+    height: 15vw;
+}
+
+.card-head {
+    text-align: left;
+    margin-bottom: 30px;
+}
