@@ -3,7 +3,7 @@ import json
 import flask
 import pytest
 
-from main import app
+from . import app
 
 
 def test_index():
@@ -16,7 +16,6 @@ def test_index():
 
 # TODO: Move tests to their respective blueprint
 def test_dimensions():
-    from main import app
     app.testing = True
     client = app.test_client()
     r = client.get('/image/dimensions/L66E2921S3O1MURX')
@@ -25,7 +24,6 @@ def test_dimensions():
 
 @pytest.mark.skip(reason='Has a side-effect')
 def test_roi():
-    from main import app
     app.testing = True
     client = app.test_client()
     data = {
@@ -46,7 +44,6 @@ def test_roi():
 
 @pytest.mark.skip(reason='Has a side-effect')
 def test_create_model():
-    from main import app
     app.testing = True
     client = app.test_client()
     data = {}
@@ -57,7 +54,6 @@ def test_create_model():
 
 
 def test_list_plots():
-    from main import app
     app.testing = True
     client = app.test_client()
     r: flask.Response
@@ -68,7 +64,6 @@ def test_list_plots():
 
 
 def test_list_transforms():
-    from main import app
     app.testing = True
     client = app.test_client()
     r: flask.Response
@@ -79,7 +74,6 @@ def test_list_transforms():
 
 @pytest.mark.skip(reason="Takes too long and wastes lots of $$")
 def test_preprocess_data():
-    from main import app
     app.testing = True
     client = app.test_client()
     r: flask.Response
