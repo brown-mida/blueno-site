@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { get, post } from '../utils/Backend';
+import { post } from '../utils/Backend';
 
 import '../assets/Preprocess.css';
 import '../assets/CreateTab.css';
@@ -12,7 +12,7 @@ class CreateTab extends Component {
     this.state = {
       name: 'My New Annotation',
       type: 'label'
-    }
+    };
     this.handleChangeByValue = this.handleChangeByValue.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.createAnnotationGroup = this.createAnnotationGroup.bind(this);

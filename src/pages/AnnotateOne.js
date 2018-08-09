@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 
 import { get, post } from '../utils/Backend';
 
-import AnnotateTab from '../components/AnnotateTab';
-import VisTab from '../components/VisTab';
-import CreateTab from '../components/AnnotateCreateTab';
-import LogTab from '../components/LogTab';
 import NavbarDataset from '../components/NavbarDataset';
 import PlaneSVG from '../components/PlaneSVG';
 
@@ -453,19 +449,19 @@ class App extends Component {
           <div className="vis-tab">
             <ul className="nav nav-tabs dataset-tabs">
               <li className="nav-item" onClick={this.handleClickViewTab('axial')}>
-                <a className={`nav-link ${this.state.viewTab === 'axial' && 'active'}`} href="#">Axial</a>
+                <button type="button" className={`btn btn-light ${this.state.viewTab === 'axial' && 'active'}`}>Axial</button>
               </li>
               <li className="nav-item" onClick={this.handleClickViewTab('axial_mip')}>
-                <a className={`nav-link ${this.state.viewTab === 'axial_mip' && 'active'}`} href="#">Axial MIP</a>
+                <button type="button" className={`btn btn-light${this.state.viewTab === 'axial_mip' && 'active'}`}>Axial MIP</button>
               </li>
               <li className="nav-item" onClick={this.handleClickViewTab('coronal')}>
-                <a className={`nav-link ${this.state.viewTab === 'coronal' && 'active'}`} href="#">Coronal</a>
+                <button type="button" className={`btn btn-light ${this.state.viewTab === 'coronal' && 'active'}`}>Coronal</button>
               </li>
               <li className="nav-item" onClick={this.handleClickViewTab('sagittal')}>
-                <a className={`nav-link ${this.state.viewTab === 'sagittal' && 'active'}`} href="#">Sagittal</a>
+                <button type="button" className={`btn btn-light ${this.state.viewTab === 'sagittal' && 'active'}`}>Sagittal</button>
               </li>
               <li className="nav-item" onClick={this.handleClickViewTab('multi')}>
-                <a className={`nav-link ${this.state.viewTab === 'multi' && 'active'}`} href="#">Multi</a>
+                <button type="button" className={`btn btn-light${this.state.viewTab === 'multi' && 'active'}`}>Multi</button>
               </li>
             </ul>
           </div>

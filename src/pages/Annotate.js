@@ -169,16 +169,16 @@ class App extends Component {
             <h5 className="card-title">Annotating Dataset {this.props.match.params.user}</h5>
             <ul className="nav nav-tabs dataset-tabs">
               <li className="nav-item" onClick={this.handleClickTab('annotate')}>
-                <a className={`nav-link ${this.state.currentTab === 'annotate' && 'active'}`} href="#">Annotate</a>
+                <button type="button" className={`btn btn-light ${this.state.currentTab === 'annotate' && 'active'}`}>Annotate</button>
               </li>
               <li className="nav-item" onClick={this.handleClickTab('vis')}>
-                <a className={`nav-link ${this.state.currentTab === 'vis' && 'active'}`} href="#">Vis</a>
+                <button type="button" className={`btn btn-light ${this.state.currentTab === 'vis' && 'active'}`}>Vis</button>
               </li>
               <li className="nav-item" onClick={this.handleClickTab('create')}>
-                <a className={`nav-link ${this.state.currentTab === 'create' && 'active'}`} href="#">Create</a>
+                <button type="button" className={`btn btn-light ${this.state.currentTab === 'create' && 'active'}`}>Create</button>
               </li>
               <li className="nav-item" onClick={this.handleClickTab('log')}>
-                <a className={`nav-link ${this.state.currentTab === 'log' && 'active'}`} href="#">Log</a>
+                <button type="button" className={`btn btn-light ${this.state.currentTab === 'log' && 'active'}`}>Log</button>
               </li>
             </ul>
             { this.state.currentTab === 'annotate' &&
@@ -218,7 +218,9 @@ class App extends Component {
                     <div className='image-card'>
                       <img
                         src={each.url}
-                        className={`image-thumbnail ${this.state.annotations[each.name] ? 'labeled' : 'not-labeled'}`}/>
+                        className={`image-thumbnail ${this.state.annotations[each.name] ? 'labeled' : 'not-labeled'}`}
+                        alt={each.name}
+                      />
                       <p>{each.name}</p>
                       {this.state.annotations[each.name] ?
                         <p>Label: {this.formatAnnotationToString(each.name)}</p> :
@@ -232,7 +234,9 @@ class App extends Component {
                   <div key={each.url} className='image-card'>
                     <img
                       src={each.url}
-                      className='image-thumbnail'/>
+                      className='image-thumbnail'
+                      alt={each.name}
+                    />
                     <p>{each.name}</p>
                   </div>
                 );
