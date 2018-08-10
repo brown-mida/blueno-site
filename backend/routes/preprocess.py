@@ -5,8 +5,8 @@ from multiprocessing import Process
 import flask
 import pymongo
 
-from utils import gcs, preprocess, dbx
-from utils.mongodb import get_db
+from backend.utils import dbx, gcs, preprocess
+from backend.utils.mongodb import get_db
 
 app_preprocess = flask.Blueprint('app_preprocess', __name__)
 

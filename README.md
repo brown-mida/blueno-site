@@ -4,3 +4,7 @@
 ## Blueno-UI
 
 Train deep learning models on medical images through the web at http://elvo-198322.appspot.com/
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).

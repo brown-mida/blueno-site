@@ -5,8 +5,8 @@ import flask
 import matplotlib
 from werkzeug.contrib.cache import GAEMemcachedCache, SimpleCache
 
-from utils import gcs, transforms
-from utils.mongodb import get_db
+from backend.utils import transforms, gcs
+from backend.utils.mongodb import get_db
 
 matplotlib.use('Agg')
 from matplotlib import image  # noqa: E402

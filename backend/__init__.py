@@ -1,4 +1,5 @@
 import logging
+import os
 
 import dotenv
 import flask
@@ -6,16 +7,15 @@ import flask_cors
 
 dotenv.load_dotenv(verbose=True)
 
-from routes.annotator import app_annotate  # noqa: E402
-from routes.preprocess import app_preprocess  # noqa: E402
-from routes.train import app_train  # noqa: E402
-from routes.new_annotator import app_annotate_new  # noqa: E402
+from .routes.annotator import app_annotate  # noqa: E402
+from .routes.preprocess import app_preprocess  # noqa: E402
+from .routes.train import app_train  # noqa: E402
+from .routes.new_annotator import app_annotate_new  # noqa: E402
 
 app = flask.Flask(__name__,
-                  template_folder='build',
-                  static_folder='build/static',
+                  template_folder='../build',
+                  static_folder='../build/static',
                   static_url_path='/static')
-# TODO(luke): Migrate the JS code to blueno-ui
 app.register_blueprint(app_preprocess)
 app.register_blueprint(app_train)
 app.register_blueprint(app_annotate)
@@ -30,6 +30,12 @@ def index(path):
     return flask.render_template('index.html')
 
 
+@app.route('/service-worker.js')
+def service_worker():
+    return flask.helpers.send_file(
+        os.path.join(app.template_folder, 'service-worker.js'))
+
+
 def configure_logger():
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
@@ -39,11 +45,6 @@ def configure_logger():
         fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
     root_logger.addHandler(handler)
-
-
-def validator():
-    # Validating data (visually)
-    raise NotImplementedError()
 
 
 @app.errorhandler(500)

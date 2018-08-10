@@ -52,7 +52,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "flask": "python main.py",
+    "flask": "FLASK_APP=backend FLASK_ENV=development flask run --port=8080",
     "pytest": "pytest",
     "deploy": "node scripts/build.js && gcloud beta app deploy --quiet --promote"
   },

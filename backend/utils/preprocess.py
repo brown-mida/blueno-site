@@ -12,8 +12,8 @@ import os
 import pydicom
 import shutil
 
-from utils.gcs import save_npy_as_image_and_upload
-import utils.transforms as t
+from backend.utils.gcs import save_npy_as_image_and_upload
+import backend.utils.transforms as t
 
 
 def process_cab_from_file(file, filename, tmp_dir):
