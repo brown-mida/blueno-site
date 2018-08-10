@@ -23,11 +23,11 @@ def upload_to_gcs(file, filename, bucket):
     out_blob.upload_from_file(buf)
 
 
-def upload_npy_to_gcs(arr, filename, user, dataset, bucket, tmp_dir='tmp/'):
+def upload_npy_to_gcs(arr, filename, user, dataset, bucket, tmp_dir='/tmp/'):
     os.makedirs(tmp_dir, exist_ok=True)
     np.save('{}/{}.npy'.format(tmp_dir, filename), arr)
     out_blob = bucket.blob('{}/{}/{}.npy'.format(user, dataset, filename))
-    out_blob.upload_from_filename('tmp/{}.npy'.format(filename))
+    out_blob.upload_from_filename('{}/{}.npy'.format(tmp_dir, filename))
     os.remove('{}/{}.npy'.format(tmp_dir, filename))
 
 
