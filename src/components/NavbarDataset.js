@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../assets/NavbarDataset.css';
-import { Menu } from "antd";
+import { Menu } from 'antd';
 
 /**
  * The Navbar shown to logged-in users. Currently the only user is 'abc'.
@@ -10,12 +10,9 @@ import { Menu } from "antd";
 class Comp extends Component {
   render() {
     return (
-      <Menu
-        mode="horizontal"
-        theme="light"
-      >
+      <Menu mode="horizontal" theme="light">
         <Menu.Item>
-          <Link to='/'>Blueno</Link>
+          <Link to="/">Blueno</Link>
         </Menu.Item>
         <Menu.Item>
           <Link to={`/u/${this.props.user}`}>Overview</Link>

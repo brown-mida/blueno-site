@@ -16,7 +16,6 @@ import DataView from './DataView';
 import GuideView from './GuideView';
 import ProgressView from './ProgressView';
 
-
 const styles = {
   sidebarList: {
     float: 'left',
@@ -35,7 +34,6 @@ const styles = {
 };
 
 class Trainer extends Component {
-
   constructor(props) {
     super(props);
 
@@ -84,81 +82,86 @@ class Trainer extends Component {
 
   componentDidMount() {
     // Set allPlots and selectedPLot
-    axios.get('/plots')
-        .then(response => {
-          this.setState({
-            allPlots: response.data,
-            selectedPlot: response.data[0],
-          });
-        })
-        .catch(error => {
-          console.error(error);
+    axios
+      .get('/plots')
+      .then(response => {
+        this.setState({
+          allPlots: response.data,
+          selectedPlot: response.data[0],
         });
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
     // Set allDataNames
-    axios.get('/data')
-        .then(response => {
-          this.setState({
-            allDataNames: response.data,
-          });
-          const dataName = response.data[0];
-          // Set the selectedData so urls also load
-          axios.get('/data/' + dataName + '/labels')
-              .then(response => {
-                this.setState({
-                  dataName,
-                  imageInfos: response.data,
-                });
-              })
-              .catch((error) => {
-                console.error(error);
-              });
-        })
-        .catch(error => {
-          console.error(error);
+    axios
+      .get('/data')
+      .then(response => {
+        this.setState({
+          allDataNames: response.data,
         });
-
-    axios.get('/preprocessing/transforms')
-        .then(response => {
-          this.setState({
-            allTransforms: response.data,
-            selectedTransforms: response.data.slice(0, 3),
+        const dataName = response.data[0];
+        // Set the selectedData so urls also load
+        axios
+          .get('/data/' + dataName + '/labels')
+          .then(response => {
+            this.setState({
+              dataName,
+              imageInfos: response.data,
+            });
+          })
+          .catch(error => {
+            console.error(error);
           });
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
+    axios
+      .get('/preprocessing/transforms')
+      .then(response => {
+        this.setState({
+          allTransforms: response.data,
+          selectedTransforms: response.data.slice(0, 3),
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   sendPreprocessRequest() {
     // TODO(luke): At some point filter the params
     const data = this.state;
     const dataName = this.state.processedName;
-    axios.post('/preprocessing/' + dataName, data)
-        .then(response => {
-          console.log(response);
-          this.setState({
-            viewType: 'progress',
-          });
-        })
-        .catch(error => {
-          console.error(error);
+    axios
+      .post('/preprocessing/' + dataName, data)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          viewType: 'progress',
         });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   sendJobRequest() {
     const data = this.state;
-    axios.post('/model', data)
-        .then(response => {
-          console.log(response);
-          this.setState({
-            viewType: 'progress',
-          });
-        })
-        .catch(error => {
-          console.error(error);
+    axios
+      .post('/model', data)
+      .then(response => {
+        console.log(response);
+        this.setState({
+          viewType: 'progress',
         });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   // Handles general changes in the input fields
@@ -175,24 +178,25 @@ class Trainer extends Component {
       this.setState({
         [name]: event.key,
       });
-    }
+    };
   }
 
   // When the  data is changed, ImageURLs is also updated
   handleDataChange(event) {
     const dataName = event.target.value;
     // Update imageInfos
-    axios.get('/data/' + dataName + '/labels')
-        .then(response => {
-          this.setState({
-            dataName,
-            imageInfos: response.data,
-            viewType: 'data',
-          });
-        })
-        .catch((error) => {
-          console.error(error);
+    axios
+      .get('/data/' + dataName + '/labels')
+      .then(response => {
+        this.setState({
+          dataName,
+          imageInfos: response.data,
+          viewType: 'data',
         });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   handlePlotChange(event) {
@@ -219,14 +223,22 @@ class Trainer extends Component {
       return <option value={name}>{name}</option>;
     });
     const dataOptions = this.state.allDataNames.map(name => {
-      return <option key={name} value={name}>{name}</option>;
+      return (
+        <option key={name} value={name}>
+          {name}
+        </option>
+      );
     });
     const sortedAllPlots = this.state.allPlots
-        .slice()
-        .sort((a, b) => sortByDate(a, b, false));
+      .slice()
+      .sort((a, b) => sortByDate(a, b, false));
     const plotOptions = [];
-    sortedAllPlots.forEach((e) => {
-      plotOptions.push(<option key={e} value={e}>{e}</option>);
+    sortedAllPlots.forEach(e => {
+      plotOptions.push(
+        <option key={e} value={e}>
+          {e}
+        </option>
+      );
     });
 
     // TODO(luke): Consider at another time
@@ -236,50 +248,50 @@ class Trainer extends Component {
       if (this.state.selectedTransforms.length > 0) {
         selected = this.state.selectedTransforms[i];
       }
-      transformSelects.push(<FormControl style={styles.inputField}>
-        <InputLabel>Transform {i + 1}</InputLabel>
-        <Select
+      transformSelects.push(
+        <FormControl style={styles.inputField}>
+          <InputLabel>Transform {i + 1}</InputLabel>
+          <Select
             native
             disabled
             value={selected}
             onChange={this.handleTransformChange(i)}
-        >
-          {transformOptions}
-        </Select>
-      </FormControl>);
+          >
+            {transformOptions}
+          </Select>
+        </FormControl>
+      );
     }
 
     let bodyView;
     switch (this.state.viewType) {
       case 'data':
         bodyView = (
-            <DataView
-                dataName={this.state.dataName}
-                imageInfos={this.state.imageInfos}
-                offset={this.state.offset}
-                parentStyles={styles}
-            />
+          <DataView
+            dataName={this.state.dataName}
+            imageInfos={this.state.imageInfos}
+            offset={this.state.offset}
+            parentStyles={styles}
+          />
         );
         break;
       case 'results':
         bodyView = (
-            <ResultsView
-                selectedPlot={this.state.selectedPlot}
-                parentStyles={styles}
-            />
+          <ResultsView
+            selectedPlot={this.state.selectedPlot}
+            parentStyles={styles}
+          />
         );
         break;
       case 'guide':
-        bodyView = (
-            <GuideView parentStyles={styles}/>
-        );
+        bodyView = <GuideView parentStyles={styles} />;
         break;
       case 'progress':
         bodyView = (
-            <ProgressView
-                processedName={this.state.processedName}
-                parentStyles={styles}
-            />
+          <ProgressView
+            processedName={this.state.processedName}
+            parentStyles={styles}
+          />
         );
         break;
       default:
@@ -288,215 +300,217 @@ class Trainer extends Component {
     }
 
     return (
-        <div>
-          <Menu
-              mode="horizontal"
-              selectedKeys={[this.state.viewType]}
-              onClick={this.handleKeyChange('viewType')}
-          >
-            <Menu.Item>
-              <a href="/">Blueno</a>
-            </Menu.Item>
-            <Menu.Item key="data">
-              <Icon>Data</Icon>
-            </Menu.Item>
-            <Menu.Item key="results">
-              <Icon>Results</Icon>
-            </Menu.Item>
-            <Menu.Item key="progress">
-              <Icon>Progress</Icon>
-            </Menu.Item>
-            <Menu.Item key="guide">
-              <Icon>Guide</Icon>
-            </Menu.Item>
-          </Menu>
-          <div style={{ display: 'flex' }}>
-            <Paper style={{ alignSelf: 'flex-start' }}>
-              {/* Start of the sidebar */}
-              {/* TODO(luke): Put style up above*/}
-              <List component="nav"
-                    style={styles.sidebarList}>
-                <h3 style={{ paddingLeft: 10 }}>Preprocessing Options</h3>
-                <TextField
-                    id="processedName"
-                    label={'Preprocessed Data'}
-                    value={this.state.processedName}
-                    onChange={this.handleChange('processedName')}
-                    margin="normal"
-                    style={styles.inputField}
-                />
+      <div>
+        <Menu
+          mode="horizontal"
+          selectedKeys={[this.state.viewType]}
+          onClick={this.handleKeyChange('viewType')}
+        >
+          <Menu.Item>
+            <a href="/">Blueno</a>
+          </Menu.Item>
+          <Menu.Item key="data">
+            <Icon>Data</Icon>
+          </Menu.Item>
+          <Menu.Item key="results">
+            <Icon>Results</Icon>
+          </Menu.Item>
+          <Menu.Item key="progress">
+            <Icon>Progress</Icon>
+          </Menu.Item>
+          <Menu.Item key="guide">
+            <Icon>Guide</Icon>
+          </Menu.Item>
+        </Menu>
+        <div style={{ display: 'flex' }}>
+          <Paper style={{ alignSelf: 'flex-start' }}>
+            {/* Start of the sidebar */}
+            {/* TODO(luke): Put style up above*/}
+            <List component="nav" style={styles.sidebarList}>
+              <h3 style={{ paddingLeft: 10 }}>Preprocessing Options</h3>
+              <TextField
+                id="processedName"
+                label={'Preprocessed Data'}
+                value={this.state.processedName}
+                onChange={this.handleChange('processedName')}
+                margin="normal"
+                style={styles.inputField}
+              />
 
-                <TextField
-                    id="cropLength"
-                    label={'Crop Length'}
-                    value={this.state.cropLength}
-                    onChange={this.handleChange('cropLength')}
-                    margin="normal"
-                    style={styles.inputField}
-                />
+              <TextField
+                id="cropLength"
+                label={'Crop Length'}
+                value={this.state.cropLength}
+                onChange={this.handleChange('cropLength')}
+                margin="normal"
+                style={styles.inputField}
+              />
 
-                <TextField
-                    id="mipThickness"
-                    label={'MIP Thickness'}
-                    value={this.state.mipThickness}
-                    onChange={this.handleChange('mipThickness')}
-                    margin="normal"
-                    style={styles.inputField}
-                />
+              <TextField
+                id="mipThickness"
+                label={'MIP Thickness'}
+                value={this.state.mipThickness}
+                onChange={this.handleChange('mipThickness')}
+                margin="normal"
+                style={styles.inputField}
+              />
 
-                <TextField
-                    id="heightOffset"
-                    label={'Height Offset'}
-                    value={this.state.heightOffset}
-                    onChange={this.handleChange('heightOffset')}
-                    margin="normal"
-                    style={styles.inputField}
-                />
+              <TextField
+                id="heightOffset"
+                label={'Height Offset'}
+                value={this.state.heightOffset}
+                onChange={this.handleChange('heightOffset')}
+                margin="normal"
+                style={styles.inputField}
+              />
 
-                <TextField
-                    id="minPixelValue"
-                    label={'Min Pixel Value'}
-                    value={this.state.minPixelValue}
-                    onChange={this.handleChange('minPixelValue')}
-                    margin="normal"
-                    style={styles.inputField}
-                />
+              <TextField
+                id="minPixelValue"
+                label={'Min Pixel Value'}
+                value={this.state.minPixelValue}
+                onChange={this.handleChange('minPixelValue')}
+                margin="normal"
+                style={styles.inputField}
+              />
 
-                <TextField
-                    id="maxPixelValue"
-                    label={'Max Pixel Value'}
-                    value={this.state.maxPixelValue}
-                    onChange={this.handleChange('maxPixelValue')}
-                    margin="normal"
-                    style={styles.inputField}
-                />
+              <TextField
+                id="maxPixelValue"
+                label={'Max Pixel Value'}
+                value={this.state.maxPixelValue}
+                onChange={this.handleChange('maxPixelValue')}
+                margin="normal"
+                style={styles.inputField}
+              />
 
-                <FormControl style={styles.inputField}>
-                  <InputLabel>Data Type</InputLabel>
-                  <Select
-                      native
-                      disabled
-                      value={this.state.dataType}
-                      onChange={this.handleChange('dataType')}
-                  >
-                    <option value={'CTA'}>CTA</option>
-                    <option value={'CTA - Multiphase'}>CTA - Multiphase</option>
-                    <option value={'MRI - T1'}>MRI - T1</option>
-                    <option value={'MRI - T2'}>MRI - T2</option>
-                    <option value={'MRI - Flair'}>MRI - Flair</option>
-                  </Select>
-                </FormControl>
-                <br/>
-
-                {transformSelects}
-
-                <Button
-                    variant="contained" color="primary"
-                    onClick={this.sendPreprocessRequest}
+              <FormControl style={styles.inputField}>
+                <InputLabel>Data Type</InputLabel>
+                <Select
+                  native
+                  disabled
+                  value={this.state.dataType}
+                  onChange={this.handleChange('dataType')}
                 >
-                  Preprocess Data
-                </Button>
+                  <option value={'CTA'}>CTA</option>
+                  <option value={'CTA - Multiphase'}>CTA - Multiphase</option>
+                  <option value={'MRI - T1'}>MRI - T1</option>
+                  <option value={'MRI - T2'}>MRI - T2</option>
+                  <option value={'MRI - Flair'}>MRI - Flair</option>
+                </Select>
+              </FormControl>
+              <br />
 
-                <div style={{ height: 20 }}/>
-                <Divider/>
+              {transformSelects}
 
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.sendPreprocessRequest}
+              >
+                Preprocess Data
+              </Button>
 
-                <h3 style={{ paddingLeft: 10 }}>Training Options</h3>
+              <div style={{ height: 20 }} />
+              <Divider />
 
-                <TextField
-                    id="jobName"
-                    label={'Job Name'}
-                    value={this.state.jobName}
-                    onChange={this.handleChange('jobName')}
-                    margin="normal"
-                    style={styles.inputField}
-                />
+              <h3 style={{ paddingLeft: 10 }}>Training Options</h3>
 
-                <TextField
-                    id="authorName"
-                    label={'Your Name'}
-                    value={this.state.authorName}
-                    onChange={this.handleChange('authorName')}
-                    margin="normal"
-                    style={styles.inputField}
-                />
-                <br/>
+              <TextField
+                id="jobName"
+                label={'Job Name'}
+                value={this.state.jobName}
+                onChange={this.handleChange('jobName')}
+                margin="normal"
+                style={styles.inputField}
+              />
 
-                <FormControl style={styles.inputField}>
-                  <InputLabel>Data</InputLabel>
-                  <Select
-                      native
-                      value={this.state.dataName}
-                      onChange={this.handleDataChange}
-                  >
-                    {dataOptions}
-                  </Select>
-                </FormControl>
+              <TextField
+                id="authorName"
+                label={'Your Name'}
+                value={this.state.authorName}
+                onChange={this.handleChange('authorName')}
+                margin="normal"
+                style={styles.inputField}
+              />
+              <br />
 
-                <FormControl style={styles.inputField}>
-                  <InputLabel>Model</InputLabel>
-                  <Select
-                      native
-                      value={this.state.modelName}
-                      onChange={this.handleChange('modelName')}
-                  >
-                    <option value={'resnet'}>ResNet</option>
-                  </Select>
-                </FormControl>
-
-                {/*<TextField*/}
-                {/*id="batchSize"*/}
-                {/*label={'Batch Size'}*/}
-                {/*value={this.state.batchSize}*/}
-                {/*onChange={this.handleChange('batchSize')}*/}
-                {/*margin="normal"*/}
-                {/*type="number"*/}
-                {/*/>*/}
-
-                <br/>
-                <br/>
-
-                <Button
-                    variant="contained" color="primary"
-                    onClick={this.sendJobRequest}
+              <FormControl style={styles.inputField}>
+                <InputLabel>Data</InputLabel>
+                <Select
+                  native
+                  value={this.state.dataName}
+                  onChange={this.handleDataChange}
                 >
-                  Train Model
-                </Button>
+                  {dataOptions}
+                </Select>
+              </FormControl>
 
-                <div style={{ height: 20 }}/>
-                <Divider/>
+              <FormControl style={styles.inputField}>
+                <InputLabel>Model</InputLabel>
+                <Select
+                  native
+                  value={this.state.modelName}
+                  onChange={this.handleChange('modelName')}
+                >
+                  <option value={'resnet'}>ResNet</option>
+                </Select>
+              </FormControl>
 
-                <h3 style={{ paddingLeft: 10 }}>Results Options</h3>
+              {/*<TextField*/}
+              {/*id="batchSize"*/}
+              {/*label={'Batch Size'}*/}
+              {/*value={this.state.batchSize}*/}
+              {/*onChange={this.handleChange('batchSize')}*/}
+              {/*margin="normal"*/}
+              {/*type="number"*/}
+              {/*/>*/}
 
-                <FormControl style={styles.inputField}>
-                  <InputLabel>Plots</InputLabel>
-                  <Select
-                      native
-                      value={this.state.selectedPlot}
-                      onChange={this.handlePlotChange}
-                  >
-                    {plotOptions}
-                  </Select>
-                </FormControl>
+              <br />
+              <br />
 
-                <Button
-                    variant={'contained'}
-                    color={'secondary'}
-                    href={'http://104.196.51.205:5601/'}
-                >Kibana</Button>
-                <Button
-                    variant={'contained'}
-                    color={'secondary'}
-                    href={'https://elvomachinelearning.slack.com/'}
-                    style={{ marginLeft: 10 }}
-                >Slack</Button>
-              </List>
-            </Paper>
-            <div style={styles.mainView}>
-              {bodyView}
-            </div>
-          </div>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.sendJobRequest}
+              >
+                Train Model
+              </Button>
+
+              <div style={{ height: 20 }} />
+              <Divider />
+
+              <h3 style={{ paddingLeft: 10 }}>Results Options</h3>
+
+              <FormControl style={styles.inputField}>
+                <InputLabel>Plots</InputLabel>
+                <Select
+                  native
+                  value={this.state.selectedPlot}
+                  onChange={this.handlePlotChange}
+                >
+                  {plotOptions}
+                </Select>
+              </FormControl>
+
+              <Button
+                variant={'contained'}
+                color={'secondary'}
+                href={'http://104.196.51.205:5601/'}
+              >
+                Kibana
+              </Button>
+              <Button
+                variant={'contained'}
+                color={'secondary'}
+                href={'https://elvomachinelearning.slack.com/'}
+                style={{ marginLeft: 10 }}
+              >
+                Slack
+              </Button>
+            </List>
+          </Paper>
+          <div style={styles.mainView}>{bodyView}</div>
         </div>
+      </div>
     );
   }
 }
@@ -509,7 +523,7 @@ function sortByDate(a, b, ascending = true) {
   const aDate = a.slice(aDateIndex);
   const bDate = b.slice(bDateIndex);
 
-  const sign = (ascending === true) ? 1 : -1;
+  const sign = ascending === true ? 1 : -1;
 
   if (aDate < bDate) {
     return -sign;
