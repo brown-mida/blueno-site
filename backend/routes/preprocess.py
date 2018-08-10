@@ -68,9 +68,9 @@ def __process_file(files, user, date, bucket):
     for file in files:
         try:
             npy = preprocess.process_cab_from_file(file, file.filename,
-                                                   'tmp/cab_files/')
+                                                   '/tmp/cab_files/')
             preprocess.generate_images(npy, user, 'default', file.filename,
-                                       bucket, 'tmp/')
+                                       bucket, '/tmp/')
             gcs.upload_npy_to_gcs(npy, file.filename, user, 'default', bucket)
             dataset = {
                 "user": user,
@@ -159,11 +159,11 @@ def __process_dbx_file(files, user, date, path, token):
 
     for file in files:
         try:
-            dbx.download_from_dropbox(dbx_client, 'tmp/cab_files/',
+            dbx.download_from_dropbox(dbx_client, '/tmp/cab_files/',
                                       path, file)
-            npy = preprocess.process_cab(file, 'tmp/cab_files/')
+            npy = preprocess.process_cab(file, '/tmp/cab_files/')
             preprocess.generate_images(npy, user, 'default', file,
-                                       bucket, 'tmp/')
+                                       bucket, '/tmp/')
             gcs.upload_npy_to_gcs(npy, file, user, 'default', bucket)
             dataset = {
                 "user": user,
@@ -283,10 +283,10 @@ def __processing_job_helper(image_list, data, current_date):
             if data['mip']:
                 preprocess.generate_mip_images(
                     arr, data['user'], data['name'],
-                    image['name'], bucket, 'tmp/')
+                    image['name'], bucket, '/tmp/')
             else:
                 preprocess.generate_images(arr, data['user'], data['name'],
-                                           image['name'], bucket, 'tmp/')
+                                           image['name'], bucket, '/tmp/')
             gcs.upload_npy_to_gcs(arr, image['name'], data['user'],
                                   data['name'], bucket)
             dataset = {
