@@ -9,89 +9,96 @@ const styles = {
 };
 
 const plotUrl = (jobWithDate, plotType) => {
-  return 'https://storage.googleapis.com/elvos-public/plots/' +
-      jobWithDate + '/' + plotType + '.png';
+  return (
+    'https://storage.googleapis.com/elvos-public/plots/' +
+    jobWithDate +
+    '/' +
+    plotType +
+    '.png'
+  );
 };
 
 const ResultsView = ({ selectedPlot, parentStyles }) => {
-  return (<Grid container spacing={8} style={parentStyles.grid}>
-    <Grid item xs={12}>
-      <h2>Results from {selectedPlot}</h2>
-    </Grid>
-    <Grid item xs={12}>
-      <Paper>
-        <img src={plotUrl(selectedPlot, 'loss')}
-             style={styles.plotImg}
-             alt="loss"
-        />
-      </Paper>
-    </Grid>
+  return (
+    <Grid container spacing={8} style={parentStyles.grid}>
+      <Grid item xs={12}>
+        <h2>Results from {selectedPlot}</h2>
+      </Grid>
+      <Grid item xs={12}>
+        <Paper>
+          <img
+            src={plotUrl(selectedPlot, 'loss')}
+            style={styles.plotImg}
+            alt="loss"
+          />
+        </Paper>
+      </Grid>
 
-    <Grid item xs={12}>
-      <Paper>
-        <img src={plotUrl(selectedPlot, 'acc')}
-             style={styles.plotImg}
-             alt="accuracy"
-        />
-      </Paper>
-    </Grid>
+      <Grid item xs={12}>
+        <Paper>
+          <img
+            src={plotUrl(selectedPlot, 'acc')}
+            style={styles.plotImg}
+            alt="accuracy"
+          />
+        </Paper>
+      </Grid>
 
-    <Grid item xs={12}>
-      <Paper>
-        <img src={plotUrl(selectedPlot, 'cm')}
-             style={styles.plotImg}
-             alt="confusion matrix"
-        />
-      </Paper>
-    </Grid>
+      <Grid item xs={12}>
+        <Paper>
+          <img
+            src={plotUrl(selectedPlot, 'cm')}
+            style={styles.plotImg}
+            alt="confusion matrix"
+          />
+        </Paper>
+      </Grid>
 
-    <Grid item xs={12}>
-      <Paper>
-        <h4>True Positives</h4>
-        <img
-            src={
-              plotUrl(selectedPlot, 'true_positives')}
+      <Grid item xs={12}>
+        <Paper>
+          <h4>True Positives</h4>
+          <img
+            src={plotUrl(selectedPlot, 'true_positives')}
             style={styles.plotImg}
             alt="true positives"
-        />
-      </Paper>
+          />
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Paper>
+          <h4>False Positives</h4>
+          <img
+            src={plotUrl(selectedPlot, 'false_positives')}
+            style={styles.plotImg}
+            alt="false positives"
+          />
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Paper>
+          <h4>True Negatives</h4>
+          <img
+            src={plotUrl(selectedPlot, 'true_negatives')}
+            style={styles.plotImg}
+            alt="true negatives"
+          />
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Paper>
+          <h4>False Negatives</h4>
+          <img
+            src={plotUrl(selectedPlot, 'false_negatives')}
+            style={styles.plotImg}
+            alt="false negatives"
+          />
+        </Paper>
+      </Grid>
     </Grid>
-
-    <Grid item xs={12}>
-      <Paper>
-        <h4>False Positives</h4>
-        <img src={
-          plotUrl(selectedPlot, 'false_positives')}
-             style={styles.plotImg}
-             alt="false positives"
-        />
-      </Paper>
-    </Grid>
-
-
-    <Grid item xs={12}>
-      <Paper>
-        <h4>True Negatives</h4>
-        <img src={
-          plotUrl(selectedPlot, 'true_negatives')}
-             style={styles.plotImg}
-             alt="true negatives"
-        />
-      </Paper>
-    </Grid>
-
-
-    <Grid item xs={12}>
-      <Paper>
-        <h4>False Negatives</h4>
-        <img src={
-          plotUrl(selectedPlot, 'false_negatives')}
-             style={styles.plotImg}
-             alt="false negatives"
-        />
-      </Paper>
-    </Grid>
-  </Grid>);
+  );
 };
 
 export default ResultsView;

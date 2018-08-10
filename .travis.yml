@@ -13,8 +13,10 @@ install:
 - pip install -r requirements.txt
 - pip install flake8 pytest pytest-cov codecov
 - npm install
+- npm install prettier --save-dev
 - npm run build
 script:
+- npm run lint
 - flake8 .
 - pytest --cov=./
 after_success:

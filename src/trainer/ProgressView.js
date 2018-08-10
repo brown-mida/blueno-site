@@ -5,7 +5,6 @@ const styles = {
   iframe: { minWidth: '70vw', minHeight: '60vh' },
 };
 class ProgressView extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -28,48 +27,51 @@ class ProgressView extends Component {
   // Sends a request and updates the count state. If the count
   // has not changed, stop the progress bar.
   sendCountRequest() {
-    axios.get(`/preprocessing/${this.props.processedName}/count`)
-        .then(((response) => {
-          const count = response.data.count;
+    axios
+      .get(`/preprocessing/${this.props.processedName}/count`)
+      .then(response => {
+        const count = response.data.count;
 
-          if (count === this.state.count) {
-            // TODO(luke): Consider clearing this interval.
-            // clearInterval(this.state.intervalId);
-            this.setState({
-              intervalId: null,
-              inProgress: false,
-            });
-          }
-
+        if (count === this.state.count) {
+          // TODO(luke): Consider clearing this interval.
+          // clearInterval(this.state.intervalId);
           this.setState({
-            count,
+            intervalId: null,
+            inProgress: false,
           });
-        }))
-        .catch((error) => console.log(error));
+        }
+
+        this.setState({
+          count,
+        });
+      })
+      .catch(error => console.log(error));
   }
 
   render() {
     return (
-        <div style={this.props.parentStyles.grid}>
-          <h3>Preprocessing Jobs</h3>
-          <h4>Number of arrays in <b>{this.props.processedName}</b></h4>
-          {this.state.count}
+      <div style={this.props.parentStyles.grid}>
+        <h3>Preprocessing Jobs</h3>
+        <h4>
+          Number of arrays in <b>{this.props.processedName}</b>
+        </h4>
+        {this.state.count}
 
-          <h4>Recent Jobs</h4>
-          <iframe
-              src="http://104.196.51.205:8080/admin/dagrun/?flt1_dag_id_equals=preprocess_web"
-              style={styles.iframe}
-              title="Preprocess Web DAG"
-          />
-          <h3>Training</h3>
+        <h4>Recent Jobs</h4>
+        <iframe
+          src="http://104.196.51.205:8080/admin/dagrun/?flt1_dag_id_equals=preprocess_web"
+          style={styles.iframe}
+          title="Preprocess Web DAG"
+        />
+        <h3>Training</h3>
 
-          <h4>Recent Jobs</h4>
-          <iframe
-              src="http://104.196.51.205:8080/admin/dagrun/?flt1_dag_id_equals=train_model"
-              style={styles.iframe}
-              title="Train Model DAG"
-          />
-        </div>
+        <h4>Recent Jobs</h4>
+        <iframe
+          src="http://104.196.51.205:8080/admin/dagrun/?flt1_dag_id_equals=train_model"
+          style={styles.iframe}
+          title="Train Model DAG"
+        />
+      </div>
     );
   }
 }

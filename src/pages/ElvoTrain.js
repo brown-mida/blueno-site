@@ -3,9 +3,7 @@ import Trainer from '../trainer/Trainer';
 
 class App extends Component {
   render() {
-    return (
-      <Trainer/>
-    );
+    return <Trainer />;
   }
 }
 

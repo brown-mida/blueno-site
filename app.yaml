@@ -1,4 +1,4 @@
-runtime: python
+runtime: custom
 env: flex
 entrypoint: gunicorn -b :$PORT -w 4 main:app
 
@@ -11,8 +11,8 @@ manual_scaling:
 # TODO: Keep this synced with .env and travis.yml, becasue of how skip_files works
 # we will need both of these
 env_variables:
-  GOOGLE_APPLICATION_CREDENTIALS: 'credentials/elvo-7136c1299dea.json'
-  SPREADSHEET_CREDENTIALS: 'credentials/elvo-de539f4b4cd3.json'
+  GOOGLE_APPLICATION_CREDENTIALS: credentials/elvo-7136c1299dea.json
+  SPREADSHEET_CREDENTIALS: credentials/elvo-de539f4b4cd3.json
 
 resources:
   cpu: 1

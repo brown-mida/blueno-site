@@ -1,9 +1,9 @@
 ## Getting Started
-1. Install npm v8.9.1 and `yarn`.
+1. Install npm v8.9.1.
 2. Create a virtual environment and run
 `pip install -r requirements.txt` to get the Python dependencies.
 We are using Python 3.6 features.
-3. Run `yarn flask` and then `yarn start` to start
+3. Run `npm run flask` and then `npm start` to start
 both the local Python server and the web UI. Use localhost:3000 to
 view changes.
 
@@ -11,6 +11,7 @@ view changes.
 
 - We use environment variables in `.env` to keep track of credentials.
 You will need to get the credentials from a current member to start developing.
+- We use the scripts field in `package.json` for common administrative commands
 - Shared code is kept in the `blueno` package (in a separate repository)
 In general, we try to minimize shared code, promoting code to shared
 only if it is well-documented and well-tested.
@@ -51,7 +52,7 @@ We follow the standard practice of accepting changes through PRs.
 Here are things you should do before requesting a code review:
 - make sure to update the Trello board
 - check to see whether additional documentation or tests are needed
-- run the test suite locally (`yarn pytest`)
+- run the test suite locally (`npm run pytest`)
 - make sure that the TravisCI check passes
 
 
@@ -76,7 +77,7 @@ Update your local environment `pip install git+https://github.com/elvoai/elvo-an
 In the future, we'll want to go and version blueno in requirements.txt
 
 ### How do I deploy `blueno`?
-Run `yarn deploy` or `npm run deploy`.
+Run `npm run deploy`.
 
 ### Where do I get the credentials?
 At the moment (7/30/2018), from Luke or Andrew.

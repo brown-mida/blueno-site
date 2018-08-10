@@ -84,7 +84,6 @@ class Annotator extends Component {
     this.updateBoundingBox = this.updateBoundingBox.bind(this);
     this.handleAnnotation = this.handleAnnotation.bind(this);
     this.updateRenderingParams = this.updateRenderingParams.bind(this);
-
   }
 
   static getQueryVariable(variable) {
@@ -96,32 +95,37 @@ class Annotator extends Component {
         return pair[1];
       }
     }
-    return (false);
+    return false;
   }
 
   // TODO(luke): This should be a separate stateless component
   static userGuide() {
     return (
-        <Paper style={styles.dividerPaper}>
-          <h2>User Guide</h2>
-          <p>Enter patient ids from the <a
-              href="https://docs.google.com/spreadsheets/d/1RVl0Zs3XtKEYSIK6vXsc5ZXonIwh1pJtpkDcPFKE3aw/edit#gid=0">
+      <Paper style={styles.dividerPaper}>
+        <h2>User Guide</h2>
+        <p>
+          Enter patient ids from the{' '}
+          <a href="https://docs.google.com/spreadsheets/d/1RVl0Zs3XtKEYSIK6vXsc5ZXonIwh1pJtpkDcPFKE3aw/edit#gid=0">
             Elvo Key
-          </a> into the text box below
-          </p>
-          <p>Use the x1/y1/... fields to set the bounding box.</p>
-          <p>To scroll, click on an input field to the right and use the
-            up/down
-            arrow
-            keys.</p>
-          <p>Uploaded annotations are listed in the <a
-              href="https://docs.google.com/spreadsheets/d/1_j7mq_VypBxYRWA5Y7ef4mxXqU0EmBKDl0lkp62SsXA/edit#gid=0">
+          </a>{' '}
+          into the text box below
+        </p>
+        <p>Use the x1/y1/... fields to set the bounding box.</p>
+        <p>
+          To scroll, click on an input field to the right and use the up/down
+          arrow keys.
+        </p>
+        <p>
+          Uploaded annotations are listed in the{' '}
+          <a href="https://docs.google.com/spreadsheets/d/1_j7mq_VypBxYRWA5Y7ef4mxXqU0EmBKDl0lkp62SsXA/edit#gid=0">
             Annotation spreasheet
-          </a></p>
-          <p><em>Only use this app on Wi-Fi</em></p>
-        </Paper>
+          </a>
+        </p>
+        <p>
+          <em>Only use this app on Wi-Fi</em>
+        </p>
+      </Paper>
     );
-
   }
 
   handleSearchKeyPress(event) {
@@ -130,16 +134,15 @@ class Annotator extends Component {
       this.setState({ patientId: this.state.searchValue }, () => {
         console.log('searching for patient:', this.state.patientId);
         this.getImageDimensions();
-
       });
     }
   }
 
   updateIndex(attr) {
-    return (event) => {
+    return event => {
       const value = parseInt(event.target.value, 10);
       if (!isNaN(value)) {
-        this.setState((state) => {
+        this.setState(state => {
           state.indices[attr] = value;
           return state;
         });
@@ -149,38 +152,37 @@ class Annotator extends Component {
 
   getImageDimensions() {
     const self = this;
-    axios.get(`/image/dimensions/${this.state.patientId}`)
-        .then((response) => {
-          console.log('response', response);
-          self.setState(prevState => {
-            prevState.dimensions = {
-              z: response.data.z,
-              x: response.data.x,
-              y: response.data.y,
-            };
-          });
-        })
-        .catch((error) => {
-          console.error(error);
+    axios
+      .get(`/image/dimensions/${this.state.patientId}`)
+      .then(response => {
+        console.log('response', response);
+        self.setState(prevState => {
+          prevState.dimensions = {
+            z: response.data.z,
+            x: response.data.x,
+            y: response.data.y,
+          };
         });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   updateRenderingParams() {
-    const renderingParams = (
-        `x1=${this.state.roiDimensions.x1}&` +
-        `x2=${this.state.roiDimensions.x2}&` +
-        `y1=${this.state.roiDimensions.y1}&` +
-        `y2=${this.state.roiDimensions.y2}&` +
-        `z1=${this.state.roiDimensions.z1}&` +
-        `z2=${this.state.roiDimensions.z2}`
-    );
+    const renderingParams =
+      `x1=${this.state.roiDimensions.x1}&` +
+      `x2=${this.state.roiDimensions.x2}&` +
+      `y1=${this.state.roiDimensions.y1}&` +
+      `y2=${this.state.roiDimensions.y2}&` +
+      `z1=${this.state.roiDimensions.z1}&` +
+      `z2=${this.state.roiDimensions.z2}`;
     this.setState({
       renderingParams: renderingParams,
     });
   }
 
   handleAnnotation() {
-
     if (this.state.createdBy === '') {
       console.error('Username cannot be empty');
       return;
@@ -196,260 +198,245 @@ class Annotator extends Component {
       z1: this.state.roiDimensions.z1,
       z2: this.state.roiDimensions.z2,
     };
-    axios.post('/roi', data)
-        .catch(() => {
-
-          console.error('failed to insert annotation:', data);
-        });
+    axios.post('/roi', data).catch(() => {
+      console.error('failed to insert annotation:', data);
+    });
   }
 
   updateBoundingBox(attr) {
-    return (event) => {
+    return event => {
       const value = parseInt(event.target.value, 10);
       if (!isNaN(value)) {
-        this.setState((state) => {
+        this.setState(state => {
           state.roiDimensions[attr] = value;
           return state;
         });
       }
     };
-
   }
 
   // TODO(luke): Convert to a stateless component
   annotationInputView() {
     return (
-        <Paper style={styles.dividerPaper}>
-
-          <TextField
-              id="search"
-              label="Patient Id"
-              type="search"
-              onChange={(event) => this.setState({
-                searchValue: event.target.value,
-              })}
-              onKeyPress={this.handleSearchKeyPress}
-              margin="normal"
-              value={this.state.searchValue}
-          />
-          <br/>
-          <TextField
-              id="x1"
-              label="red1"
-              margin="normal"
-              type="number"
-
-              value={this.state.roiDimensions.x1}
-              onChange={this.updateBoundingBox('x1')}
-          />
-          <TextField
-              id="x2"
-              label="red2"
-              margin="normal"
-              type="number"
-
-              value={this.state.roiDimensions.x2}
-              onChange={this.updateBoundingBox('x2')}
-          />
-          <br/>
-          <TextField
-              id="y1"
-              label="green1"
-              margin="normal"
-              type="number"
-
-              value={this.state.roiDimensions.y1}
-              onChange={this.updateBoundingBox('y1')}
-          />
-          <TextField
-              id="y2"
-              label="green2"
-              margin="normal"
-              type="number"
-
-              value={this.state.roiDimensions.y2}
-              onChange={this.updateBoundingBox('y2')}
-          />
-          <br/>
-          <TextField
-              id="z1"
-              label="blue1"
-              margin="normal"
-              type="number"
-
-              value={this.state.roiDimensions.z1}
-              onChange={this.updateBoundingBox('z1')}
-          />
-          <TextField
-              id="z2"
-              label="blue2"
-              margin="normal"
-              type="number"
-
-              value={this.state.roiDimensions.z2}
-              onChange={this.updateBoundingBox('z2')}
-          />
-          <br/>
-          <TextField
-              id="created_by"
-              label="Username"
-              onChange={(event) => this.setState({
-                createdBy: event.target.value,
-              })}
-              margin="normal"
-              value={this.state.createdBy}
-          />
-          <Button
-              variant="contained"
-              onClick={this.handleAnnotation}
-          >
-            Create Annotation
-          </Button>
-        </Paper>
+      <Paper style={styles.dividerPaper}>
+        <TextField
+          id="search"
+          label="Patient Id"
+          type="search"
+          onChange={event =>
+            this.setState({
+              searchValue: event.target.value,
+            })
+          }
+          onKeyPress={this.handleSearchKeyPress}
+          margin="normal"
+          value={this.state.searchValue}
+        />
+        <br />
+        <TextField
+          id="x1"
+          label="red1"
+          margin="normal"
+          type="number"
+          value={this.state.roiDimensions.x1}
+          onChange={this.updateBoundingBox('x1')}
+        />
+        <TextField
+          id="x2"
+          label="red2"
+          margin="normal"
+          type="number"
+          value={this.state.roiDimensions.x2}
+          onChange={this.updateBoundingBox('x2')}
+        />
+        <br />
+        <TextField
+          id="y1"
+          label="green1"
+          margin="normal"
+          type="number"
+          value={this.state.roiDimensions.y1}
+          onChange={this.updateBoundingBox('y1')}
+        />
+        <TextField
+          id="y2"
+          label="green2"
+          margin="normal"
+          type="number"
+          value={this.state.roiDimensions.y2}
+          onChange={this.updateBoundingBox('y2')}
+        />
+        <br />
+        <TextField
+          id="z1"
+          label="blue1"
+          margin="normal"
+          type="number"
+          value={this.state.roiDimensions.z1}
+          onChange={this.updateBoundingBox('z1')}
+        />
+        <TextField
+          id="z2"
+          label="blue2"
+          margin="normal"
+          type="number"
+          value={this.state.roiDimensions.z2}
+          onChange={this.updateBoundingBox('z2')}
+        />
+        <br />
+        <TextField
+          id="created_by"
+          label="Username"
+          onChange={event =>
+            this.setState({
+              createdBy: event.target.value,
+            })
+          }
+          margin="normal"
+          value={this.state.createdBy}
+        />
+        <Button variant="contained" onClick={this.handleAnnotation}>
+          Create Annotation
+        </Button>
+      </Paper>
     );
   }
 
   render() {
     console.log('in render, state is:', this.state);
     return (
-        <div>
-          <Drawer
-              variant="permanent"
-              anchor="left"
-          >
-            {Annotator.userGuide()}
-            {this.annotationInputView()}
-          </Drawer>
-          <div style={{ paddingLeft: 240 }}>
-            <Paper style={styles.paper}>
-              <h2>Axial MIP</h2>
-              <PlaneSVG viewType={'axial_mip'}
-                        patientId={this.state.patientId}
-                        width={this.state.dimensions.x}
-                        height={this.state.dimensions.y}
-                        colorX={'rgb(255, 0, 0)'}
-                        colorY={'rgb(0, 255, 0)'}
-                        roiX1={this.state.roiDimensions.x1}
-                        roiX2={this.state.roiDimensions.x2}
-                        roiY1={this.state.roiDimensions.y1}
-                        roiY2={this.state.roiDimensions.y2}
-                        posIndex={this.state.indices.zMip}
-                        lineIndex={this.state.indices.y}
+      <div>
+        <Drawer variant="permanent" anchor="left">
+          {Annotator.userGuide()}
+          {this.annotationInputView()}
+        </Drawer>
+        <div style={{ paddingLeft: 240 }}>
+          <Paper style={styles.paper}>
+            <h2>Axial MIP</h2>
+            <PlaneSVG
+              viewType={'axial_mip'}
+              patientId={this.state.patientId}
+              width={this.state.dimensions.x}
+              height={this.state.dimensions.y}
+              colorX={'rgb(255, 0, 0)'}
+              colorY={'rgb(0, 255, 0)'}
+              roiX1={this.state.roiDimensions.x1}
+              roiX2={this.state.roiDimensions.x2}
+              roiY1={this.state.roiDimensions.y1}
+              roiY2={this.state.roiDimensions.y2}
+              posIndex={this.state.indices.zMip}
+              lineIndex={this.state.indices.y}
+            />
+            <div>
+              <TextField
+                id="z"
+                label="blue axis (mip)"
+                margin="normal"
+                type="number"
+                inputProps={{ step: this.state.mipStep }}
+                value={this.state.indices.zMip}
+                onChange={this.updateIndex('zMip')}
               />
-              <div>
-                <TextField
-                    id="z"
-                    label="blue axis (mip)"
-                    margin="normal"
-                    type="number"
-                    inputProps={{ step: this.state.mipStep }}
-                    value={this.state.indices.zMip}
-                    onChange={this.updateIndex('zMip')}
-                />
-              </div>
-            </Paper>
-            <Paper style={styles.paper}>
-
-              <h2>Axial</h2>
-              <PlaneSVG viewType={'axial'}
-                        patientId={this.state.patientId}
-                        width={this.state.dimensions.x}
-                        height={this.state.dimensions.y}
-                        colorX={'rgb(255, 0, 0)'}
-                        colorY={'rgb(0, 255, 0)'}
-                        roiX1={this.state.roiDimensions.x1}
-                        roiX2={this.state.roiDimensions.x2}
-                        roiY1={this.state.roiDimensions.y1}
-                        roiY2={this.state.roiDimensions.y2}
-                        posIndex={this.state.indices.z}
-                        lineIndex={this.state.indices.y}
+            </div>
+          </Paper>
+          <Paper style={styles.paper}>
+            <h2>Axial</h2>
+            <PlaneSVG
+              viewType={'axial'}
+              patientId={this.state.patientId}
+              width={this.state.dimensions.x}
+              height={this.state.dimensions.y}
+              colorX={'rgb(255, 0, 0)'}
+              colorY={'rgb(0, 255, 0)'}
+              roiX1={this.state.roiDimensions.x1}
+              roiX2={this.state.roiDimensions.x2}
+              roiY1={this.state.roiDimensions.y1}
+              roiY2={this.state.roiDimensions.y2}
+              posIndex={this.state.indices.z}
+              lineIndex={this.state.indices.y}
+            />
+            <div>
+              <TextField
+                id="z"
+                label="blue axis"
+                margin="normal"
+                type="number"
+                value={this.state.indices.z}
+                onChange={this.updateIndex('z')}
               />
-              <div>
-                <TextField
-                    id="z"
-                    label="blue axis"
-                    margin="normal"
-
-                    type="number"
-                    value={this.state.indices.z}
-                    onChange={this.updateIndex('z')}
-                />
-              </div>
-            </Paper>
-            <Paper style={styles.paper}>
-
-              <h2>Coronal</h2>
-              <PlaneSVG viewType={'coronal'}
-                        patientId={this.state.patientId}
-                        width={this.state.dimensions.x}
-                        height={this.state.dimensions.z}
-                        colorX={'rgb(255, 0, 0)'}
-                        colorY={'rgb(0, 0, 255)'}
-                        roiX1={this.state.roiDimensions.x1}
-                        roiX2={this.state.roiDimensions.x2}
-                        roiY1={this.state.roiDimensions.z1}
-                        roiY2={this.state.roiDimensions.z2}
-                        posIndex={this.state.indices.y}
-                        lineIndex={this.state.indices.z}
-
+            </div>
+          </Paper>
+          <Paper style={styles.paper}>
+            <h2>Coronal</h2>
+            <PlaneSVG
+              viewType={'coronal'}
+              patientId={this.state.patientId}
+              width={this.state.dimensions.x}
+              height={this.state.dimensions.z}
+              colorX={'rgb(255, 0, 0)'}
+              colorY={'rgb(0, 0, 255)'}
+              roiX1={this.state.roiDimensions.x1}
+              roiX2={this.state.roiDimensions.x2}
+              roiY1={this.state.roiDimensions.z1}
+              roiY2={this.state.roiDimensions.z2}
+              posIndex={this.state.indices.y}
+              lineIndex={this.state.indices.z}
+            />
+            <div>
+              <TextField
+                id="y"
+                label="green axis"
+                margin="normal"
+                type="number"
+                value={this.state.indices.y}
+                onChange={this.updateIndex('y')}
               />
-              <div>
-                <TextField
-                    id="y"
-                    label="green axis"
-                    margin="normal"
-                    type="number"
-
-                    value={this.state.indices.y}
-                    onChange={this.updateIndex('y')}
-                />
-              </div>
-            </Paper>
-            <Paper style={styles.paper}>
-              <h2>Sagittal</h2>
-              <PlaneSVG viewType={'sagittal'}
-                        patientId={this.state.patientId}
-                        width={this.state.dimensions.y}
-                        height={this.state.dimensions.z}
-                        colorX={'rgb(0, 255, 0)'}
-                        colorY={'rgb(0, 0, 255)'}
-                        roiX1={this.state.roiDimensions.y1}
-                        roiX2={this.state.roiDimensions.y2}
-                        roiY1={this.state.roiDimensions.z1}
-                        roiY2={this.state.roiDimensions.z2}
-                        posIndex={this.state.indices.x}
-                        lineIndex={this.state.indices.z}
+            </div>
+          </Paper>
+          <Paper style={styles.paper}>
+            <h2>Sagittal</h2>
+            <PlaneSVG
+              viewType={'sagittal'}
+              patientId={this.state.patientId}
+              width={this.state.dimensions.y}
+              height={this.state.dimensions.z}
+              colorX={'rgb(0, 255, 0)'}
+              colorY={'rgb(0, 0, 255)'}
+              roiX1={this.state.roiDimensions.y1}
+              roiX2={this.state.roiDimensions.y2}
+              roiY1={this.state.roiDimensions.z1}
+              roiY2={this.state.roiDimensions.z2}
+              posIndex={this.state.indices.x}
+              lineIndex={this.state.indices.z}
+            />
+            <div>
+              <TextField
+                id="x"
+                label="red axis"
+                margin="normal"
+                type="number"
+                value={this.state.indices.x}
+                onChange={this.updateIndex('x')}
               />
-              <div>
-                <TextField
-                    id="x"
-                    label="red axis"
-                    margin="normal"
-                    type="number"
-                    value={this.state.indices.x}
-                    onChange={this.updateIndex('x')}
-                />
-              </div>
-            </Paper>
-            <Paper style={styles.paper}>
-              <h2>3D</h2>
-              <span>
-                <img
-                    src={`/image/rendering/${this.state.patientId}?${this.state.renderingParams}`}
-                    style={{ maxWidth: 300, maxHeight: 300 }}
-                    alt="3D Rendering"
-                />
-                <Button
-                    variant="contained"
-                    onClick={this.updateRenderingParams}
-                >
-                  Update Rendering
-                </Button>
-                </span>
-            </Paper>
-
-          </div>
+            </div>
+          </Paper>
+          <Paper style={styles.paper}>
+            <h2>3D</h2>
+            <span>
+              <img
+                src={`/image/rendering/${this.state.patientId}?${
+                  this.state.renderingParams
+                }`}
+                style={{ maxWidth: 300, maxHeight: 300 }}
+                alt="3D Rendering"
+              />
+              <Button variant="contained" onClick={this.updateRenderingParams}>
+                Update Rendering
+              </Button>
+            </span>
+          </Paper>
         </div>
+      </div>
     );
   }
 }

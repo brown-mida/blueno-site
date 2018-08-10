@@ -11,14 +11,14 @@ class App extends Component {
     this.state = {
       datasets: [],
       datasetLoaded: false,
-    }
+    };
 
     this.handleClickVisMode = this.handleClickVisMode.bind(this);
     this.handleClickDataset = this.handleClickDataset.bind(this);
   }
 
   componentDidMount() {
-    get(`get-datasets-from-user?user=${this.props.user}`).then((res) => {
+    get(`get-datasets-from-user?user=${this.props.user}`).then(res => {
       this.setState({
         datasets: res.data,
         datasetLoaded: true,
@@ -31,7 +31,7 @@ class App extends Component {
       if (this.props.visMode !== mode) {
         this.props.updateViewerStateMode(mode);
       }
-    }
+    };
   }
 
   handleClickDataset(dataset) {
@@ -40,7 +40,7 @@ class App extends Component {
         // Update dataset
         this.props.updateViewerStateDataset(dataset);
       }
-    }
+    };
   }
 
   renderVisTab() {
@@ -48,31 +48,72 @@ class App extends Component {
       <div>
         Visualization Mode
         <div className="dropdown">
-          <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button
+            className="btn btn-secondary btn-sm dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             {this.props.imageMode === '3D' ? this.props.visMode : 'MIP'}
           </button>
-          {this.props.imageMode === '3D' ?
+          {this.props.imageMode === '3D' ? (
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <span className="dropdown-item" onClick={this.handleClickVisMode('axial')}>Axial</span>
-              <span className="dropdown-item" onClick={this.handleClickVisMode('coronal')}>Coronal</span>
-              <span className="dropdown-item" onClick={this.handleClickVisMode('sagittal')}>Sagittal</span>
-            </div> :
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <span className="dropdown-item" onClick={this.handleClickVisMode('mip')}>MIP</span>
+              <span
+                className="dropdown-item"
+                onClick={this.handleClickVisMode('axial')}
+              >
+                Axial
+              </span>
+              <span
+                className="dropdown-item"
+                onClick={this.handleClickVisMode('coronal')}
+              >
+                Coronal
+              </span>
+              <span
+                className="dropdown-item"
+                onClick={this.handleClickVisMode('sagittal')}
+              >
+                Sagittal
+              </span>
             </div>
-          }
+          ) : (
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <span
+                className="dropdown-item"
+                onClick={this.handleClickVisMode('mip')}
+              >
+                MIP
+              </span>
+            </div>
+          )}
         </div>
         Current Dataset
         <div className="dropdown">
-          <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button
+            className="btn btn-secondary btn-sm dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             {this.props.currentDataset}
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            {
-              this.state.datasets.map((each) => {
-                return <span key={each} className="dropdown-item" onClick={this.handleClickDataset(each)}>{each}</span>
-              })
-            }
+            {this.state.datasets.map(each => {
+              return (
+                <span
+                  key={each}
+                  className="dropdown-item"
+                  onClick={this.handleClickDataset(each)}
+                >
+                  {each}
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>
