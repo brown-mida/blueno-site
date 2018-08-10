@@ -4,9 +4,9 @@ import Annotator from '../annotator/Annotator';
 class App extends Component {
   render() {
     return (
-        <div className="App">
-          <Annotator/>
-        </div>
+      <div className="App">
+        <Annotator />
+      </div>
     );
   }
 }

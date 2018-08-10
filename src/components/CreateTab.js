@@ -21,8 +21,8 @@ class CreateTab extends Component {
       centerCropSize: '200',
       boundHu: false,
       boundHuMin: '-40',
-      boundHuMax: '400'
-    }
+      boundHuMax: '400',
+    };
     this.handleChangeByValue = this.handleChangeByValue.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.startPreprocessingJob = this.startPreprocessingJob.bind(this);
@@ -33,7 +33,7 @@ class CreateTab extends Component {
       if (dependency) {
         this.setState({ [name]: val });
       }
-    }
+    };
   }
 
   handleInputChange(event) {
@@ -42,35 +42,44 @@ class CreateTab extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
   startPreprocessingJob() {
     // Check for valid input
-    if (this.state.cropZmin === "" || this.state.cropZmax === "" || this.state.centerCropSize === "" ||
-        this.state.boundHuMin === "" || this.state.boundHuMax === "") {
-      alert("Error: Do not leave fields empty.");
+    if (
+      this.state.cropZmin === '' ||
+      this.state.cropZmax === '' ||
+      this.state.centerCropSize === '' ||
+      this.state.boundHuMin === '' ||
+      this.state.boundHuMax === ''
+    ) {
+      alert('Error: Do not leave fields empty.');
       return;
     }
 
-    if (isNaN(this.state.cropZmin) || isNaN(this.state.cropZmax) || isNaN(this.state.centerCropSize) ||
-        isNaN(this.state.boundHuMin) || isNaN(this.state.boundHuMax)) {
-      alert("Error: Field must be integer.");
+    if (
+      isNaN(this.state.cropZmin) ||
+      isNaN(this.state.cropZmax) ||
+      isNaN(this.state.centerCropSize) ||
+      isNaN(this.state.boundHuMin) ||
+      isNaN(this.state.boundHuMax)
+    ) {
+      alert('Error: Field must be integer.');
       return;
     }
 
-    const params = {user: this.props.user}
-    Object.keys(this.state).forEach((key) => {
+    const params = { user: this.props.user };
+    Object.keys(this.state).forEach(key => {
       params[key] = this.state[key];
-    })
+    });
     console.log(params);
-    post('new-preprocessing-job', params).then((res) => {
+    post('new-preprocessing-job', params).then(res => {
       console.log(res);
       alert('Your job has been submitted. See its status at the logs tab.');
-    })
+    });
   }
-
 
   render() {
     return (
@@ -90,8 +99,12 @@ class CreateTab extends Component {
             className="form-check-input"
             type="checkbox"
             checked={this.state.mip}
-            onChange={this.handleInputChange} />
-          <label className="form-check-label" onClick={this.handleChangeByValue('mip', !this.state.mip, true)}>
+            onChange={this.handleInputChange}
+          />
+          <label
+            className="form-check-label"
+            onClick={this.handleChangeByValue('mip', !this.state.mip, true)}
+          >
             Maximum Intensity Projection
           </label>
         </div>
@@ -102,10 +115,15 @@ class CreateTab extends Component {
             type="checkbox"
             disabled={!this.state.mip}
             checked={this.state.multichannelMip}
-            onChange={this.handleInputChange} />
+            onChange={this.handleInputChange}
+          />
           <label
             className="form-check-label"
-            onClick={this.handleChangeByValue('multichannelMip', !this.state.multichannelMip, this.state.mip)}
+            onClick={this.handleChangeByValue(
+              'multichannelMip',
+              !this.state.multichannelMip,
+              this.state.mip
+            )}
           >
             Multichannel
           </label>
@@ -116,7 +134,8 @@ class CreateTab extends Component {
             className="form-check-input"
             type="checkbox"
             checked={this.state.flipZ}
-            onChange={this.handleInputChange} />
+            onChange={this.handleInputChange}
+          />
           <label
             className="form-check-label"
             onClick={this.handleChangeByValue('flipZ', !this.state.flipZ, true)}
@@ -130,7 +149,8 @@ class CreateTab extends Component {
             className="form-check-input"
             type="checkbox"
             checked={this.state.cropZ}
-            onChange={this.handleInputChange} />
+            onChange={this.handleInputChange}
+          />
           <label
             className="form-check-label"
             onClick={this.handleChangeByValue('cropZ', !this.state.cropZ, true)}
@@ -140,7 +160,9 @@ class CreateTab extends Component {
         </div>
         <div className="input-group input-group-sm mb-3">
           <div className="input-group-prepend">
-            <span className="input-group-text" id="inputGroup-sizing-sm">Min Z</span>
+            <span className="input-group-text" id="inputGroup-sizing-sm">
+              Min Z
+            </span>
           </div>
           <input
             type="text"
@@ -148,11 +170,14 @@ class CreateTab extends Component {
             name="cropZmin"
             disabled={!this.state.cropZ}
             value={this.state.cropZmin}
-            onChange={this.handleInputChange}/>
+            onChange={this.handleInputChange}
+          />
         </div>
         <div className="input-group input-group-sm mb-3">
           <div className="input-group-prepend">
-            <span className="input-group-text" id="inputGroup-sizing-sm">Max Z</span>
+            <span className="input-group-text" id="inputGroup-sizing-sm">
+              Max Z
+            </span>
           </div>
           <input
             type="text"
@@ -160,7 +185,8 @@ class CreateTab extends Component {
             name="cropZmax"
             disabled={!this.state.cropZ}
             value={this.state.cropZmax}
-            onChange={this.handleInputChange}/>
+            onChange={this.handleInputChange}
+          />
         </div>
         <div className="input-item">
           <input
@@ -168,17 +194,24 @@ class CreateTab extends Component {
             className="form-check-input"
             type="checkbox"
             checked={this.state.centerCropXY}
-            onChange={this.handleInputChange} />
+            onChange={this.handleInputChange}
+          />
           <label
             className="form-check-label"
-            onClick={this.handleChangeByValue('centerCropXY', !this.state.centerCropXY, true)}
+            onClick={this.handleChangeByValue(
+              'centerCropXY',
+              !this.state.centerCropXY,
+              true
+            )}
           >
             Center crop XY axis
           </label>
         </div>
         <div className="input-group input-group-sm mb-3">
           <div className="input-group-prepend">
-            <span className="input-group-text" id="inputGroup-sizing-sm">Center crop size</span>
+            <span className="input-group-text" id="inputGroup-sizing-sm">
+              Center crop size
+            </span>
           </div>
           <input
             type="text"
@@ -186,7 +219,8 @@ class CreateTab extends Component {
             name="centerCropSize"
             disabled={!this.state.centerCropXY}
             value={this.state.centerCropSize}
-            onChange={this.handleInputChange}/>
+            onChange={this.handleInputChange}
+          />
         </div>
         <div className="input-item">
           <input
@@ -194,17 +228,24 @@ class CreateTab extends Component {
             className="form-check-input"
             type="checkbox"
             checked={this.state.boundHu}
-            onChange={this.handleInputChange} />
+            onChange={this.handleInputChange}
+          />
           <label
             className="form-check-label"
-            onClick={this.handleChangeByValue('boundHu', !this.state.boundHu, true)}
+            onClick={this.handleChangeByValue(
+              'boundHu',
+              !this.state.boundHu,
+              true
+            )}
           >
             Bound Hounsfield Units
           </label>
         </div>
         <div className="input-group input-group-sm mb-3">
           <div className="input-group-prepend">
-            <span className="input-group-text" id="inputGroup-sizing-sm">Min HU</span>
+            <span className="input-group-text" id="inputGroup-sizing-sm">
+              Min HU
+            </span>
           </div>
           <input
             type="text"
@@ -212,11 +253,14 @@ class CreateTab extends Component {
             name="boundHuMin"
             disabled={!this.state.boundHu}
             value={this.state.boundHuMin}
-            onChange={this.handleInputChange}/>
+            onChange={this.handleInputChange}
+          />
         </div>
         <div className="input-group input-group-sm mb-3">
           <div className="input-group-prepend">
-            <span className="input-group-text" id="inputGroup-sizing-sm">Max HU</span>
+            <span className="input-group-text" id="inputGroup-sizing-sm">
+              Max HU
+            </span>
           </div>
           <input
             type="text"
@@ -224,9 +268,14 @@ class CreateTab extends Component {
             name="boundHuMax"
             disabled={!this.state.boundHu}
             value={this.state.boundHuMax}
-            onChange={this.handleInputChange}/>
+            onChange={this.handleInputChange}
+          />
         </div>
-        <button type="button" className="btn btn-success" onClick={this.startPreprocessingJob}>
+        <button
+          type="button"
+          className="btn btn-success"
+          onClick={this.startPreprocessingJob}
+        >
           Create preprocessing job
         </button>
       </div>

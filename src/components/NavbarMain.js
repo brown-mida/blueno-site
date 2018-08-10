@@ -5,9 +5,19 @@ class Comp extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <Link className="navbar-brand" to='/'>Blueno</Link>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
+        <Link className="navbar-brand" to="/">
+          Blueno
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon" />
         </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -17,15 +27,15 @@ class Comp extends Component {
                 Annotate ELVOs (beta) <span className="sr-only">(current)</span>
               </Link>
             </li>
-             <li className="nav-item active">
+            <li className="nav-item active">
               <Link className="nav-link" to={`/trainer`}>
                 Train ELVOs (beta) <span className="sr-only">(current)</span>
               </Link>
-             </li>
+            </li>
           </ul>
-            <Link className="nav-link" to={`/u/abc`}>
-              Sign in (alpha) <span className="sr-only">(current)</span>
-            </Link>
+          <Link className="nav-link" to={`/u/abc`}>
+            Sign in (alpha) <span className="sr-only">(current)</span>
+          </Link>
         </div>
       </nav>
     );

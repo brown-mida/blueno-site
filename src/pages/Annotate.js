@@ -24,7 +24,7 @@ class App extends Component {
       imageMode: '3D',
       currentAnnotation: null,
       annotations: {},
-    }
+    };
 
     this.handleClickTab = this.handleClickTab.bind(this);
     this.updateViewerStateMode = this.updateViewerStateMode.bind(this);
@@ -38,25 +38,28 @@ class App extends Component {
       this.setState({
         currentTab: tab,
       });
-    }
+    };
   }
 
   updateFromParams(params) {
-    get(`get-dataset?user=${params.user}&dataset=${this.state.currentDataset}`).then((res) => {
+    get(
+      `get-dataset?user=${params.user}&dataset=${this.state.currentDataset}`
+    ).then(res => {
       const files = [];
-      res.data.forEach((each) => {
+      res.data.forEach(each => {
         if (each.status === 'loaded') {
           files.push(each);
         }
       });
 
-      const fileImages = []
-      files.forEach((each) => {
+      const fileImages = [];
+      files.forEach(each => {
         fileImages.push({
           name: each.name,
           shape: each.shape,
-          url: `/get-dataset-image?user=${params.user}` +
-               `&dataset=default&type=${this.state.visMode}&name=${each.name}`
+          url:
+            `/get-dataset-image?user=${params.user}` +
+            `&dataset=default&type=${this.state.visMode}&name=${each.name}`,
         });
       });
       this.setState({
@@ -66,16 +69,24 @@ class App extends Component {
     });
 
     if (params.group) {
-      return get(`annotator/get-annotations?user=${params.user}&group=${params.group}`).then((res) => {
+      return get(
+        `annotator/get-annotations?user=${params.user}&group=${params.group}`
+      ).then(res => {
         this.setState({
           currentAnnotation: params.group,
           annotations: res.data,
         });
       });
     } else {
-      get(`annotator/get-annotation-groups?user=${this.props.match.params.user}`).then((res) => {
+      get(
+        `annotator/get-annotation-groups?user=${this.props.match.params.user}`
+      ).then(res => {
         if (res.data.length > 0) {
-          return get(`annotator/get-annotations?user=${params.user}&group=${res.data[0].name}`).then((res2) => {
+          return get(
+            `annotator/get-annotations?user=${params.user}&group=${
+              res.data[0].name
+            }`
+          ).then(res2 => {
             this.setState({
               currentAnnotation: res.data[0].name,
               annotations: res2.data,
@@ -90,35 +101,41 @@ class App extends Component {
     this.updateFromParams(this.props.match.params);
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     if (this.props.match.params !== nextProps.match.params) {
       this.updateFromParams(nextProps.match.params);
     }
   }
 
-
   updateViewerStateMode(visMode) {
-    const fileImages = []
-    this.state.datasetFiles.forEach((each) => {
+    const fileImages = [];
+    this.state.datasetFiles.forEach(each => {
       fileImages.push({
         name: each.name,
         shape: each.shape,
-        url: `/get-dataset-image?user=${this.props.match.params.user}` +
-             `&dataset=${this.state.currentDataset}&type=${visMode}&name=${each.name}`
+        url:
+          `/get-dataset-image?user=${this.props.match.params.user}` +
+          `&dataset=${this.state.currentDataset}&type=${visMode}&name=${
+            each.name
+          }`,
       });
     });
 
     this.setState({
       fileImages,
-      visMode
+      visMode,
     });
   }
 
   updateViewerStateDataset(currentDataset) {
     if (this.state.currentDataset !== currentDataset) {
-      get(`get-dataset?user=${this.props.match.params.user}&dataset=${currentDataset}`).then((res) => {
+      get(
+        `get-dataset?user=${
+          this.props.match.params.user
+        }&dataset=${currentDataset}`
+      ).then(res => {
         const files = [];
-        res.data.forEach((each) => {
+        res.data.forEach(each => {
           if (each.status === 'loaded') {
             files.push(each);
           }
@@ -126,12 +143,15 @@ class App extends Component {
 
         const mipped = files[0].mip;
         const fileImages = [];
-        files.forEach((each) => {
+        files.forEach(each => {
           fileImages.push({
             name: each.name,
             shape: each.shape,
-            url: `/get-dataset-image?user=${this.props.match.params.user}` +
-                 `&dataset=${currentDataset}&type=${mipped ? 'mip' : this.state.visMode}&name=${each.name}`
+            url:
+              `/get-dataset-image?user=${this.props.match.params.user}` +
+              `&dataset=${currentDataset}&type=${
+                mipped ? 'mip' : this.state.visMode
+              }&name=${each.name}`,
           });
         });
 
@@ -152,43 +172,74 @@ class App extends Component {
   }
 
   formatAnnotationToString(id) {
-    const annotation = this.state.annotations[id]
+    const annotation = this.state.annotations[id];
     if (annotation.class) {
       return annotation.class;
     } else {
-      return `(${annotation.x1}:${annotation.x2}, ${annotation.y1}:${annotation.y2}, ${annotation.z1}:${annotation.z2})`;
+      return `(${annotation.x1}:${annotation.x2}, ${annotation.y1}:${
+        annotation.y2
+      }, ${annotation.z1}:${annotation.z2})`;
     }
   }
 
   render() {
     return (
       <div className="upload-container">
-        <NavbarDataset user={this.props.match.params.user}/>
+        <NavbarDataset user={this.props.match.params.user} />
         <div className="card preprocess-options">
           <div className="card-body">
-            <h5 className="card-title">Annotating Dataset {this.props.match.params.user}</h5>
+            <h5 className="card-title">
+              Annotating Dataset {this.props.match.params.user}
+            </h5>
             <ul className="nav nav-tabs dataset-tabs">
-              <li className="nav-item" onClick={this.handleClickTab('annotate')}>
-                <button type="button" className={`btn btn-light ${this.state.currentTab === 'annotate' && 'active'}`}>Annotate</button>
+              <li
+                className="nav-item"
+                onClick={this.handleClickTab('annotate')}
+              >
+                <button
+                  type="button"
+                  className={`btn btn-light ${this.state.currentTab ===
+                    'annotate' && 'active'}`}
+                >
+                  Annotate
+                </button>
               </li>
               <li className="nav-item" onClick={this.handleClickTab('vis')}>
-                <button type="button" className={`btn btn-light ${this.state.currentTab === 'vis' && 'active'}`}>Vis</button>
+                <button
+                  type="button"
+                  className={`btn btn-light ${this.state.currentTab === 'vis' &&
+                    'active'}`}
+                >
+                  Vis
+                </button>
               </li>
               <li className="nav-item" onClick={this.handleClickTab('create')}>
-                <button type="button" className={`btn btn-light ${this.state.currentTab === 'create' && 'active'}`}>Create</button>
+                <button
+                  type="button"
+                  className={`btn btn-light ${this.state.currentTab ===
+                    'create' && 'active'}`}
+                >
+                  Create
+                </button>
               </li>
               <li className="nav-item" onClick={this.handleClickTab('log')}>
-                <button type="button" className={`btn btn-light ${this.state.currentTab === 'log' && 'active'}`}>Log</button>
+                <button
+                  type="button"
+                  className={`btn btn-light ${this.state.currentTab === 'log' &&
+                    'active'}`}
+                >
+                  Log
+                </button>
               </li>
             </ul>
-            { this.state.currentTab === 'annotate' &&
+            {this.state.currentTab === 'annotate' && (
               <AnnotateTab
                 user={this.props.match.params.user}
                 currentAnnotation={this.state.currentAnnotation}
                 annotations={this.state.annotations}
               />
-            }
-            { this.state.currentTab === 'vis' &&
+            )}
+            {this.state.currentTab === 'vis' && (
               <VisTab
                 user={this.props.match.params.user}
                 updateViewerStateMode={this.updateViewerStateMode}
@@ -197,52 +248,57 @@ class App extends Component {
                 visMode={this.state.visMode}
                 currentDataset={this.state.currentDataset}
               />
-            }
-            { this.state.currentTab === 'create' &&
-              <CreateTab
-                user={this.props.match.params.user}
-              />
-            }
-            { this.state.currentTab === 'log' &&
-              <LogTab
-                user={this.props.match.params.user}
-              /> }
+            )}
+            {this.state.currentTab === 'create' && (
+              <CreateTab user={this.props.match.params.user} />
+            )}
+            {this.state.currentTab === 'log' && (
+              <LogTab user={this.props.match.params.user} />
+            )}
           </div>
         </div>
         <div className="visual-container">
-          {
-            this.state.fileImages.map((each) => {
-              if (this.state.currentAnnotation) {
-                return (
-                  <Link key={each.url} to={`/u/${this.props.match.params.user}/annotate/${this.state.currentAnnotation}/${each.name}`}>
-                    <div className='image-card'>
-                      <img
-                        src={each.url}
-                        className={`image-thumbnail ${this.state.annotations[each.name] ? 'labeled' : 'not-labeled'}`}
-                        alt={each.name}
-                      />
-                      <p>{each.name}</p>
-                      {this.state.annotations[each.name] ?
-                        <p>Label: {this.formatAnnotationToString(each.name)}</p> :
-                        <p>No label</p>
-                      }
-                    </div>
-                  </Link>
-                );
-              } else {
-                return (
-                  <div key={each.url} className='image-card'>
+          {this.state.fileImages.map(each => {
+            if (this.state.currentAnnotation) {
+              return (
+                <Link
+                  key={each.url}
+                  to={`/u/${this.props.match.params.user}/annotate/${
+                    this.state.currentAnnotation
+                  }/${each.name}`}
+                >
+                  <div className="image-card">
                     <img
                       src={each.url}
-                      className='image-thumbnail'
+                      className={`image-thumbnail ${
+                        this.state.annotations[each.name]
+                          ? 'labeled'
+                          : 'not-labeled'
+                      }`}
                       alt={each.name}
                     />
                     <p>{each.name}</p>
+                    {this.state.annotations[each.name] ? (
+                      <p>Label: {this.formatAnnotationToString(each.name)}</p>
+                    ) : (
+                      <p>No label</p>
+                    )}
                   </div>
-                );
-              }
-            })
-          }
+                </Link>
+              );
+            } else {
+              return (
+                <div key={each.url} className="image-card">
+                  <img
+                    src={each.url}
+                    className="image-thumbnail"
+                    alt={each.name}
+                  />
+                  <p>{each.name}</p>
+                </div>
+              );
+            }
+          })}
         </div>
       </div>
     );

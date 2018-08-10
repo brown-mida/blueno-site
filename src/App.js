@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom';
 
 import './App.css';
 
@@ -19,16 +19,24 @@ class App extends Component {
     return (
       <div className="App">
         <Switch>
-          <Route exact path='/' component={MainPage}/>
-          <Route exact path='/u/:user' component={UserPage}/>
-          <Route exact path='/u/:user/upload' component={UploadPage}/>
-          <Route exact path='/u/:user/preprocess' component={PreprocessPage}/>
-          <Route exact path='/u/:user/annotate' component={AnnotatePage}/>
-          <Route exact path='/u/:user/annotate/:group' component={AnnotatePage}/>
-          <Route exact path='/u/:user/annotate/:group/:id' component={AnnotateOnePage}/>
-          <Route exact path='/u/:user/train' component={TrainPage}/>
-          <Route exact path='/annotator' component={ElvoAnnotatePage}/>
-          <Route exact path='/trainer' component={ElvoTrainPage}/>
+          <Route exact path="/" component={MainPage} />
+          <Route exact path="/u/:user" component={UserPage} />
+          <Route exact path="/u/:user/upload" component={UploadPage} />
+          <Route exact path="/u/:user/preprocess" component={PreprocessPage} />
+          <Route exact path="/u/:user/annotate" component={AnnotatePage} />
+          <Route
+            exact
+            path="/u/:user/annotate/:group"
+            component={AnnotatePage}
+          />
+          <Route
+            exact
+            path="/u/:user/annotate/:group/:id"
+            component={AnnotateOnePage}
+          />
+          <Route exact path="/u/:user/train" component={TrainPage} />
+          <Route exact path="/annotator" component={ElvoAnnotatePage} />
+          <Route exact path="/trainer" component={ElvoTrainPage} />
           <Route path="*" component={PageNotFound} />
         </Switch>
       </div>

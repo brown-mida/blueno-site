@@ -11,7 +11,7 @@ class CreateTab extends Component {
 
     this.state = {
       name: 'My New Annotation',
-      type: 'label'
+      type: 'label',
     };
     this.handleChangeByValue = this.handleChangeByValue.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -21,7 +21,7 @@ class CreateTab extends Component {
   handleChangeByValue(name, val) {
     return () => {
       this.setState({ [name]: val });
-    }
+    };
   }
 
   handleInputChange(event) {
@@ -30,21 +30,24 @@ class CreateTab extends Component {
     const name = target.name;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 
   createAnnotationGroup() {
     // Check for valid input
 
-    const params = {user: this.props.user, name: this.state.name, type: this.state.type}
+    const params = {
+      user: this.props.user,
+      name: this.state.name,
+      type: this.state.type,
+    };
     console.log(params);
-    post('annotator/create-annotation-group', params).then((res) => {
+    post('annotator/create-annotation-group', params).then(res => {
       console.log(res);
       alert('Annotation has been created.');
-    })
+    });
   }
-
 
   render() {
     return (
@@ -65,8 +68,12 @@ class CreateTab extends Component {
             type="radio"
             value="label"
             checked={this.state.type === 'label'}
-            onChange={this.handleInputChange} />
-          <label className="form-check-label" onClick={this.handleChangeByValue('type', 'label')}>
+            onChange={this.handleInputChange}
+          />
+          <label
+            className="form-check-label"
+            onClick={this.handleChangeByValue('type', 'label')}
+          >
             Label
           </label>
         </div>
@@ -77,12 +84,20 @@ class CreateTab extends Component {
             type="radio"
             value="bbox"
             checked={this.state.type === 'bbox'}
-            onChange={this.handleInputChange} />
-          <label className="form-check-label" onClick={this.handleChangeByValue('type', 'bbox')}>
+            onChange={this.handleInputChange}
+          />
+          <label
+            className="form-check-label"
+            onClick={this.handleChangeByValue('type', 'bbox')}
+          >
             Bounding Box
           </label>
         </div>
-        <button type="button" className="btn btn-success" onClick={this.createAnnotationGroup}>
+        <button
+          type="button"
+          className="btn btn-success"
+          onClick={this.createAnnotationGroup}
+        >
           Create preprocessing job
         </button>
       </div>
