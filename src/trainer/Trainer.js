@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import { Menu, Icon } from 'antd';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
@@ -8,12 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Divider from '@material-ui/core/Divider';
-import IconButton from "@material-ui/core/IconButton/";
-import Toolbar from "@material-ui/core/Toolbar/";
 
 import ResultsView from './ResultsView';
 import DataView from './DataView';
@@ -78,6 +74,7 @@ class Trainer extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleKeyChange = this.handleKeyChange.bind(this);
     this.handleDataChange = this.handleDataChange.bind(this);
     this.handleTransformChange = this.handleTransformChange.bind(this);
     this.handlePlotChange = this.handlePlotChange.bind(this);
@@ -173,6 +170,14 @@ class Trainer extends Component {
     };
   }
 
+  handleKeyChange(name) {
+    return event => {
+      this.setState({
+        [name]: event.key,
+      });
+    }
+  }
+
   // When the  data is changed, ImageURLs is also updated
   handleDataChange(event) {
     const dataName = event.target.value;
@@ -229,7 +234,7 @@ class Trainer extends Component {
     for (let i = 0; i < this.state.numTransforms; i++) {
       let selected = '';
       if (this.state.selectedTransforms.length > 0) {
-         selected = this.state.selectedTransforms[i];
+        selected = this.state.selectedTransforms[i];
       }
       transformSelects.push(<FormControl style={styles.inputField}>
         <InputLabel>Transform {i + 1}</InputLabel>
@@ -284,28 +289,27 @@ class Trainer extends Component {
 
     return (
         <div>
-          <AppBar
-              position="static"
+          <Menu
+              mode="horizontal"
+              selectedKeys={[this.state.viewType]}
+              onClick={this.handleKeyChange('viewType')}
           >
-            <Tabs
-                value={this.state.viewType}
-                onChange={(event, viewType) => {
-                  // 'if' needed to avoid displaying error on
-                  // href change
-                  if (viewType) {
-                    this.setState({ viewType });
-                  }
-                }}
-            >
-              <Toolbar><IconButton color="inherit" href="/">Blueno</IconButton>
-              </Toolbar>
-              <Tab label="Data" value="data"/>
-              <Tab label="Results" value="results"/>
-              <Tab label="Progress"
-                   value="progress"/>
-              <Tab label="Guide" value="guide"/>
-            </Tabs>
-          </AppBar>
+            <Menu.Item>
+              <a href="/">Blueno</a>
+            </Menu.Item>
+            <Menu.Item key="data">
+              <Icon>Data</Icon>
+            </Menu.Item>
+            <Menu.Item key="results">
+              <Icon>Results</Icon>
+            </Menu.Item>
+            <Menu.Item key="progress">
+              <Icon>Progress</Icon>
+            </Menu.Item>
+            <Menu.Item key="guide">
+              <Icon>Guide</Icon>
+            </Menu.Item>
+          </Menu>
           <div style={{ display: 'flex' }}>
             <Paper style={{ alignSelf: 'flex-start' }}>
               {/* Start of the sidebar */}

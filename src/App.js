@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import './App.css';
 
+
 import MainPage from './pages/Main';
 import UserPage from './pages/User';
 import UploadPage from './pages/Upload';
@@ -29,7 +30,7 @@ class App extends Component {
           <Route exact path='/u/:user/train' component={TrainPage}/>
           <Route exact path='/annotator' component={ElvoAnnotatePage}/>
           <Route exact path='/trainer' component={ElvoTrainPage}/>
-          <Route path="*" component={PageNotFound} />
+          <Route path="*" component={PageNotFound}/>
         </Switch>
       </div>
     );
