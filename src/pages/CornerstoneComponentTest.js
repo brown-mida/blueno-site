@@ -56,7 +56,7 @@ class App extends React.Component {
         <div className="row">
           <div className="col-4">
             <CornerstoneElement
-              url="/annotator/get-image-slice?user=abc&id=0DQO9A6UXUQHR8RA.cab&type=axial"
+              url={`${window.location.protocol}//${window.location.host}/annotator/get-image-slice?user=abc&id=0DQO9A6UXUQHR8RA.cab&type=axial`}
               x1={this.state.roiX1}
               x2={this.state.roiX2}
               y1={this.state.roiY1}
@@ -70,7 +70,7 @@ class App extends React.Component {
           </div>
           <div className="col-4">
             <CornerstoneElement
-              url="/annotator/get-image-slice?user=abc&id=0DQO9A6UXUQHR8RA.cab&type=coronal"
+              url={`${window.location.protocol}//${window.location.host}/annotator/get-image-slice?user=abc&id=0DQO9A6UXUQHR8RA.cab&type=coronal`}
               x1={this.state.roiX1}
               x2={this.state.roiX2}
               y1={this.state.roiZ1}
@@ -84,7 +84,7 @@ class App extends React.Component {
           </div>
           <div className="col-4">
             <CornerstoneElement
-              url="/annotator/get-image-slice?user=abc&id=0DQO9A6UXUQHR8RA.cab&type=sagittal"
+              url={`${window.location.protocol}//${window.location.host}/annotator/get-image-slice?user=abc&id=0DQO9A6UXUQHR8RA.cab&type=sagittal`}
               x1={this.state.roiY1}
               x2={this.state.roiY2}
               y1={this.state.roiZ1}

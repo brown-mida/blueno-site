@@ -157,6 +157,7 @@ class CornerstoneElement extends React.Component {
     cornerstone.enable(element);
 
     // Load the first image in the stack
+    console.log(this.state.imageId);
     cornerstone.loadImage(this.state.imageId).then(image => {
       // Display the first image
       cornerstone.displayImage(element, image);
