@@ -12,8 +12,7 @@ import AnnotateOnePage from './pages/AnnotateOne';
 import TrainPage from './pages/Train';
 import ElvoAnnotatePage from './pages/ElvoAnnotate';
 import ElvoTrainPage from './pages/ElvoTrain';
-import CornerstonePage from './pages/CornerstoneTest';
-import CornerstonePage2 from './pages/CornerstoneComponentTest';
+import CornerstonePage from './pages/CornerstoneComponentTest';
 import PageNotFound from './pages/PageNotFound';
 
 class App extends Component {
@@ -40,7 +39,6 @@ class App extends Component {
           <Route exact path="/annotator" component={ElvoAnnotatePage} />
           <Route exact path="/trainer" component={ElvoTrainPage} />
           <Route exact path="/cornerstone" component={CornerstonePage} />
-          <Route exact path="/cornerstone2" component={CornerstonePage2} />
           <Route path="*" component={PageNotFound} />
         </Switch>
       </div>

@@ -111,6 +111,20 @@ class App extends React.Component {
         <input name="roiZ1" type="number" value={this.state.roiZ1} onChange={this.handleInputChange}/>
         <label>Z2</label>
         <input name="roiZ2" type="number" value={this.state.roiZ2} onChange={this.handleInputChange}/>
+        <p>
+          Instructions: Left click and drag for WW/WC. Right click for zoom.
+          Middle click for pan. Scroll to go through the layers.
+        </p>
+        <p>
+          Each image has a bounding box. Click and drag the circular corners to resize them.
+          Click and drag the edges to move the box.
+        </p>
+        <p>
+          Alternatively you can directly edit the input values to change the bounding boxes.
+        </p>
+        <p>
+          This is extremely buggy. Let me know if there are any issues.
+        </p>
       </div>
     );
   }

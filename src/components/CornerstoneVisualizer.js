@@ -93,7 +93,7 @@ class CornerstoneElement extends React.Component {
 
   render() {
     return (
-      <div onContextMenu={() => {return false}}>
+      <div onContextMenu={(e) => {e.preventDefault()}}>
         <div
           className="viewportElement"
           style={divStyle}
@@ -172,10 +172,10 @@ class CornerstoneElement extends React.Component {
       cornerstoneTools.mouseInput.enable(element);
       cornerstoneTools.mouseWheelInput.enable(element);
       cornerstoneTools.wwwc.activate(element, 1);
-      cornerstoneTools.rectangleRoi.deactivate(element, 1); // ww/wc is the default tool for left mouse button
-      cornerstoneTools.pan.activate(element, 2); // pan is the default tool for middle mouse button
-      cornerstoneTools.zoom.activate(element, 4); // zoom is the default tool for right mouse button
-      cornerstoneTools.stackScrollWheel.activate(element); // zoom is the default tool for middle mouse wheel
+      cornerstoneTools.rectangleRoi.deactivate(element, 1);
+      cornerstoneTools.pan.activate(element, 2);
+      cornerstoneTools.zoom.activate(element, 4);
+      cornerstoneTools.stackScrollWheel.activate(element);
 
       element.addEventListener(
         "cornerstoneimagerendered",
@@ -208,28 +208,24 @@ class CornerstoneElement extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const toolStateManager = cornerstoneTools.getElementToolStateManager(this.element);
-    const existingToolState = toolStateManager.saveToolState();
-    if (existingToolState.rectangleRoi &&
-        existingToolState.rectangleRoi.data.length > 0 &&
-        !existingToolState.rectangleRoi.data[0].active) {
-      existingToolState.rectangleRoi = {
-        data: [createData(nextProps.x1, nextProps.x2, nextProps.y1, nextProps.y2)]
-      };
-      toolStateManager.restoreToolState(existingToolState);
-      cornerstone.draw(this.element);
+    if (
+      nextProps.x1 !== this.props.x1 ||
+      nextProps.x2 !== this.props.x2 ||
+      nextProps.y1 !== this.props.y1 ||
+      nextProps.y2 !== this.props.y2
+    ) {
+      const toolStateManager = cornerstoneTools.getElementToolStateManager(this.element);
+      const existingToolState = toolStateManager.saveToolState();
+      if (existingToolState.rectangleRoi &&
+          existingToolState.rectangleRoi.data.length > 0 &&
+          !existingToolState.rectangleRoi.data[0].active) {
+        existingToolState.rectangleRoi = {
+          data: [createData(nextProps.x1, nextProps.x2, nextProps.y1, nextProps.y2)]
+        };
+        toolStateManager.restoreToolState(existingToolState);
+        cornerstone.draw(this.element);
+      }
     }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // const stackData = cornerstoneTools.getToolState(this.element, "stack");
-    // const stack = stackData.data[0];
-    // stack.currentImageIdIndex = this.state.stack.currentImageIdIndex;
-    // stack.imageIds = this.state.stack.imageIds;
-    // cornerstoneTools.addToolState(this.element, "stack", stack);
-
-    //const imageId = stack.imageIds[stack.currentImageIdIndex];
-    //cornerstoneTools.scrollToIndex(this.element, stack.currentImageIdIndex);
   }
 }
 
