@@ -5,6 +5,8 @@ import dotenv
 import flask
 import flask_cors
 
+from .models import db
+
 dotenv.load_dotenv(verbose=True)
 
 from .routes.annotator import app_annotate  # noqa: E402
@@ -16,10 +18,20 @@ app = flask.Flask(__name__,
                   template_folder='../build',
                   static_folder='../build/static',
                   static_url_path='/static')
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# TODO(luke): Connection URI configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+db.init_app(app)
+
+# TODO(luke): Database creation methods
+db.create_all(app=app)
+
 app.register_blueprint(app_preprocess)
 app.register_blueprint(app_train)
 app.register_blueprint(app_annotate)
 app.register_blueprint(app_annotate_new)
+
 flask_cors.CORS(app, resources={r"/*": {"origins": "*"}})
 
 
