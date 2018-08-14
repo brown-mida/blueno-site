@@ -1,38 +1,46 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { Menu, Icon } from 'antd';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import List from '@material-ui/core/List';
-import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
+import { Button, Form, Input, Layout, Select } from 'antd';
 
 import ResultsView from './ResultsView';
 import DataView from './DataView';
 import GuideView from './GuideView';
-import ProgressView from './ProgressView';
+import NavbarDataset from '../components/NavbarDataset';
 
-const styles = {
-  sidebarList: {
-    float: 'left',
-    height: '90vh',
-    width: '300px',
-    overflowY: 'scroll',
-    padding: 10,
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 },
   },
-  mainView: { height: '90vh', overflow: 'scroll' },
-  inputField: {
-    margin: 10,
-  },
-  grid: {
-    paddingLeft: 30,
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
   },
 };
 
+// TODO(luke): This won't work in 2020. This kind of code appears
+// in a few other places as well.
+function sortByDate(a, b, ascending = true) {
+  const aDateIndex = a.indexOf('201');
+  const bDateIndex = b.indexOf('201');
+  const aDate = a.slice(aDateIndex);
+  const bDate = b.slice(bDateIndex);
+
+  const sign = ascending === true ? 1 : -1;
+
+  if (aDate < bDate) {
+    return -sign;
+  }
+
+  if (aDate > bDate) {
+    return sign;
+  }
+
+  return 0;
+}
+
+// TODO: Integrate the user prop (and dataset prop when it's created).
 class Trainer extends Component {
   constructor(props) {
     super(props);
@@ -49,17 +57,6 @@ class Trainer extends Component {
       batchSize: '8',
       maxEpochs: '70',
 
-      dataType: 'CTA',
-      allTransforms: [],
-      selectedTransforms: [],
-      numTransforms: 3,
-      cropLength: 200,
-      mipThickness: 25,
-      heightOffset: 30,
-      minPixelValue: 0,
-      maxPixelValue: 200,
-      processedName: 'my-processed-v1',
-
       allDataNames: [],
       imageInfos: [],
       offset: 0,
@@ -72,12 +69,10 @@ class Trainer extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleKeyChange = this.handleKeyChange.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
     this.handleDataChange = this.handleDataChange.bind(this);
-    this.handleTransformChange = this.handleTransformChange.bind(this);
     this.handlePlotChange = this.handlePlotChange.bind(this);
     this.sendJobRequest = this.sendJobRequest.bind(this);
-    this.sendPreprocessRequest = this.sendPreprocessRequest.bind(this);
   }
 
   componentDidMount() {
@@ -118,35 +113,6 @@ class Trainer extends Component {
       .catch(error => {
         console.error(error);
       });
-
-    axios
-      .get('/preprocessing/transforms')
-      .then(response => {
-        this.setState({
-          allTransforms: response.data,
-          selectedTransforms: response.data.slice(0, 3),
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
-
-  sendPreprocessRequest() {
-    // TODO(luke): At some point filter the params
-    const data = this.state;
-    const dataName = this.state.processedName;
-    axios
-      .post('/preprocessing/' + dataName, data)
-      .then(response => {
-        console.log(response);
-        this.setState({
-          viewType: 'progress',
-        });
-      })
-      .catch(error => {
-        console.error(error);
-      });
   }
 
   sendJobRequest() {
@@ -173,17 +139,16 @@ class Trainer extends Component {
     };
   }
 
-  handleKeyChange(name) {
-    return event => {
+  handleSelectChange(name) {
+    return value => {
       this.setState({
-        [name]: event.key,
+        [name]: value,
       });
     };
   }
 
   // When the  data is changed, ImageURLs is also updated
-  handleDataChange(event) {
-    const dataName = event.target.value;
+  handleDataChange(dataName) {
     // Update imageInfos
     axios
       .get('/data/' + dataName + '/labels')
@@ -199,100 +164,132 @@ class Trainer extends Component {
       });
   }
 
-  handlePlotChange(event) {
-    const selectedPlot = event.target.value;
+  handlePlotChange(selectedPlot) {
     this.setState({
       selectedPlot,
       viewType: 'results',
     });
   }
 
-  handleTransformChange(index) {
-    return event => {
-      const selectedTransforms = this.state.selectedTransforms;
-      selectedTransforms[index] = event.target.value;
-      this.setState({
-        selectedTransforms,
-      });
-    };
+
+  renderTrainingForm() {
+    const dataOptions = this.state.allDataNames.map(name => {
+      return (
+        <Select.Option key={name} value={name}>
+          {name}
+        </Select.Option>
+      );
+    });
+
+    return (
+      <Form>
+        <Form.Item {...formItemLayout} label="Job Name">
+          <Input
+            id="jobName"
+            value={this.state.jobName}
+            onChange={this.handleChange('jobName')}
+          />
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label="Your Name">
+          <Input
+            id="authorName"
+            value={this.state.authorName}
+            onChange={this.handleChange('authorName')}
+          />
+        </Form.Item>
+        <Form.Item {...formItemLayout} label="Data">
+          <Select
+            value={this.state.dataName}
+            onChange={this.handleDataChange}
+          >
+            {dataOptions}
+          </Select>
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label="Model">
+          <Select
+            value={this.state.modelName}
+            onChange={this.handleSelectChange('modelName')}
+          >
+            <Select.Option value={'resnet'}>ResNet</Select.Option>
+          </Select>
+        </Form.Item>
+
+        {/* TODO: Colllapse advanced options + state variables*/}
+        {/*<Form.Item {...formItemLayout} label="Split Type">*/}
+          {/*<Select*/}
+            {/*value={this.state.modelName}*/}
+            {/*onChange={this.handleChange('modelName')}*/}
+          {/*>*/}
+            {/*<Select.Option value={'train-val'}>*/}
+              {/*Training and Validation*/}
+            {/*</Select.Option>*/}
+            {/*<Select.Option value={'train-test-val'}>*/}
+              {/*Training, Test, and Validation*/}
+            {/*</Select.Option>*/}
+          {/*</Select>*/}
+        {/*</Form.Item>*/}
+
+        <Button color="primary" onClick={this.sendJobRequest}>
+          Train Model
+        </Button>
+      </Form>
+    );
+  }
+
+  renderResultsForm() {
+    const sortedAllPlots = this.state.allPlots
+      .slice()
+      .sort((a, b) => sortByDate(a, b, false));
+
+    const plotOptions = sortedAllPlots.map(e =>
+      <Select.Option key={e} value={e}>
+        {e}
+      </Select.Option>
+    );
+
+    return (
+      <Form>
+        <Form.Item label="Plots">
+          <Select
+            value={this.state.selectedPlot}
+            onChange={this.handlePlotChange}
+          >
+            {plotOptions}
+          </Select>
+        </Form.Item>
+
+        <Button href="http://104.196.51.205:5601/">Kibana</Button>
+        <Button href="https://elvomachinelearning.slack.com/">
+          Slack
+        </Button>
+      </Form>
+    );
   }
 
   render() {
     // TODO(luke): Descriptions of the different fields.
-    const transformOptions = this.state.allTransforms.map(name => {
-      return <option value={name}>{name}</option>;
-    });
-    const dataOptions = this.state.allDataNames.map(name => {
-      return (
-        <option key={name} value={name}>
-          {name}
-        </option>
-      );
-    });
-    const sortedAllPlots = this.state.allPlots
-      .slice()
-      .sort((a, b) => sortByDate(a, b, false));
-    const plotOptions = [];
-    sortedAllPlots.forEach(e => {
-      plotOptions.push(
-        <option key={e} value={e}>
-          {e}
-        </option>
-      );
-    });
-
-    // TODO(luke): Consider at another time
-    const transformSelects = [];
-    for (let i = 0; i < this.state.numTransforms; i++) {
-      let selected = '';
-      if (this.state.selectedTransforms.length > 0) {
-        selected = this.state.selectedTransforms[i];
-      }
-      transformSelects.push(
-        <FormControl style={styles.inputField}>
-          <InputLabel>Transform {i + 1}</InputLabel>
-          <Select
-            native
-            disabled
-            value={selected}
-            onChange={this.handleTransformChange(i)}
-          >
-            {transformOptions}
-          </Select>
-        </FormControl>
-      );
-    }
-
+    let siderForm;
     let bodyView;
     switch (this.state.viewType) {
       case 'data':
+        siderForm = this.renderTrainingForm();
         bodyView = (
           <DataView
             dataName={this.state.dataName}
             imageInfos={this.state.imageInfos}
             offset={this.state.offset}
-            parentStyles={styles}
           />
         );
         break;
       case 'results':
-        bodyView = (
-          <ResultsView
-            selectedPlot={this.state.selectedPlot}
-            parentStyles={styles}
-          />
-        );
+        siderForm = this.renderResultsForm();
+        bodyView = <ResultsView selectedPlot={this.state.selectedPlot} />;
         break;
       case 'guide':
-        bodyView = <GuideView parentStyles={styles} />;
-        break;
-      case 'progress':
-        bodyView = (
-          <ProgressView
-            processedName={this.state.processedName}
-            parentStyles={styles}
-          />
-        );
+        siderForm = this.renderTrainingForm();
+        bodyView = <GuideView />;
         break;
       default:
         console.error(this.state.viewType + ' is not valid');
@@ -300,240 +297,44 @@ class Trainer extends Component {
     }
 
     return (
-      <div>
-        <Menu
-          mode="horizontal"
-          selectedKeys={[this.state.viewType]}
-          onClick={this.handleKeyChange('viewType')}
-        >
-          <Menu.Item>
-            <a href="/">Blueno</a>
-          </Menu.Item>
-          <Menu.Item key="data">
-            <Icon>Data</Icon>
-          </Menu.Item>
-          <Menu.Item key="results">
-            <Icon>Results</Icon>
-          </Menu.Item>
-          <Menu.Item key="progress">
-            <Icon>Progress</Icon>
-          </Menu.Item>
-          <Menu.Item key="guide">
-            <Icon>Guide</Icon>
-          </Menu.Item>
-        </Menu>
-        <div style={{ display: 'flex' }}>
-          <Paper style={{ alignSelf: 'flex-start' }}>
-            {/* Start of the sidebar */}
-            {/* TODO(luke): Put style up above*/}
-            <List component="nav" style={styles.sidebarList}>
-              <h3 style={{ paddingLeft: 10 }}>Preprocessing Options</h3>
-              <TextField
-                id="processedName"
-                label={'Preprocessed Data'}
-                value={this.state.processedName}
-                onChange={this.handleChange('processedName')}
-                margin="normal"
-                style={styles.inputField}
-              />
-
-              <TextField
-                id="cropLength"
-                label={'Crop Length'}
-                value={this.state.cropLength}
-                onChange={this.handleChange('cropLength')}
-                margin="normal"
-                style={styles.inputField}
-              />
-
-              <TextField
-                id="mipThickness"
-                label={'MIP Thickness'}
-                value={this.state.mipThickness}
-                onChange={this.handleChange('mipThickness')}
-                margin="normal"
-                style={styles.inputField}
-              />
-
-              <TextField
-                id="heightOffset"
-                label={'Height Offset'}
-                value={this.state.heightOffset}
-                onChange={this.handleChange('heightOffset')}
-                margin="normal"
-                style={styles.inputField}
-              />
-
-              <TextField
-                id="minPixelValue"
-                label={'Min Pixel Value'}
-                value={this.state.minPixelValue}
-                onChange={this.handleChange('minPixelValue')}
-                margin="normal"
-                style={styles.inputField}
-              />
-
-              <TextField
-                id="maxPixelValue"
-                label={'Max Pixel Value'}
-                value={this.state.maxPixelValue}
-                onChange={this.handleChange('maxPixelValue')}
-                margin="normal"
-                style={styles.inputField}
-              />
-
-              <FormControl style={styles.inputField}>
-                <InputLabel>Data Type</InputLabel>
-                <Select
-                  native
-                  disabled
-                  value={this.state.dataType}
-                  onChange={this.handleChange('dataType')}
-                >
-                  <option value={'CTA'}>CTA</option>
-                  <option value={'CTA - Multiphase'}>CTA - Multiphase</option>
-                  <option value={'MRI - T1'}>MRI - T1</option>
-                  <option value={'MRI - T2'}>MRI - T2</option>
-                  <option value={'MRI - Flair'}>MRI - Flair</option>
-                </Select>
-              </FormControl>
-              <br />
-
-              {transformSelects}
-
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.sendPreprocessRequest}
-              >
-                Preprocess Data
+      <div style={{ height: '100vh' }}>
+        {/* TODO: Make the user explicit */}
+        <NavbarDataset user={'abc'} />
+        <Layout>
+          <Layout.Sider
+            style={{ padding: 10 }}
+            trigger={null}
+            collapsible
+            theme="light"
+            width="25vw"
+          >
+            <h3>Training on Dataset {/* TODO: prop for dataset */}</h3>
+            <Button.Group>
+              <Button onClick={this.handleChange('viewType')} value="data">
+                Data
               </Button>
-
-              <div style={{ height: 20 }} />
-              <Divider />
-
-              <h3 style={{ paddingLeft: 10 }}>Training Options</h3>
-
-              <TextField
-                id="jobName"
-                label={'Job Name'}
-                value={this.state.jobName}
-                onChange={this.handleChange('jobName')}
-                margin="normal"
-                style={styles.inputField}
-              />
-
-              <TextField
-                id="authorName"
-                label={'Your Name'}
-                value={this.state.authorName}
-                onChange={this.handleChange('authorName')}
-                margin="normal"
-                style={styles.inputField}
-              />
-              <br />
-
-              <FormControl style={styles.inputField}>
-                <InputLabel>Data</InputLabel>
-                <Select
-                  native
-                  value={this.state.dataName}
-                  onChange={this.handleDataChange}
-                >
-                  {dataOptions}
-                </Select>
-              </FormControl>
-
-              <FormControl style={styles.inputField}>
-                <InputLabel>Model</InputLabel>
-                <Select
-                  native
-                  value={this.state.modelName}
-                  onChange={this.handleChange('modelName')}
-                >
-                  <option value={'resnet'}>ResNet</option>
-                </Select>
-              </FormControl>
-
-              {/*<TextField*/}
-              {/*id="batchSize"*/}
-              {/*label={'Batch Size'}*/}
-              {/*value={this.state.batchSize}*/}
-              {/*onChange={this.handleChange('batchSize')}*/}
-              {/*margin="normal"*/}
-              {/*type="number"*/}
-              {/*/>*/}
-
-              <br />
-              <br />
-
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.sendJobRequest}
-              >
-                Train Model
+              <Button onClick={this.handleChange('viewType')} value="results">
+                Results
               </Button>
-
-              <div style={{ height: 20 }} />
-              <Divider />
-
-              <h3 style={{ paddingLeft: 10 }}>Results Options</h3>
-
-              <FormControl style={styles.inputField}>
-                <InputLabel>Plots</InputLabel>
-                <Select
-                  native
-                  value={this.state.selectedPlot}
-                  onChange={this.handlePlotChange}
-                >
-                  {plotOptions}
-                </Select>
-              </FormControl>
-
-              <Button
-                variant={'contained'}
-                color={'secondary'}
-                href={'http://104.196.51.205:5601/'}
-              >
-                Kibana
+              <Button onClick={this.handleChange('viewType')} value="guide">
+                Guide
               </Button>
-              <Button
-                variant={'contained'}
-                color={'secondary'}
-                href={'https://elvomachinelearning.slack.com/'}
-                style={{ marginLeft: 10 }}
-              >
-                Slack
-              </Button>
-            </List>
-          </Paper>
-          <div style={styles.mainView}>{bodyView}</div>
-        </div>
+            </Button.Group>
+            {siderForm}
+          </Layout.Sider>
+          <Layout.Content
+            style={{
+              height: '92vh',
+              overflowY: 'scroll',
+              padding: 10,
+            }}
+          >
+            {bodyView}
+          </Layout.Content>
+        </Layout>
       </div>
     );
   }
-}
-
-// TODO(luke): This won't work in 2020. This kind of code appears
-// in a few other places as well.
-function sortByDate(a, b, ascending = true) {
-  const aDateIndex = a.indexOf('201');
-  const bDateIndex = b.indexOf('201');
-  const aDate = a.slice(aDateIndex);
-  const bDate = b.slice(bDateIndex);
-
-  const sign = ascending === true ? 1 : -1;
-
-  if (aDate < bDate) {
-    return -sign;
-  }
-
-  if (aDate > bDate) {
-    return sign;
-  }
-
-  return 0;
 }
 
 export default Trainer;

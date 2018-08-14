@@ -2,7 +2,7 @@ import React from 'react';
 
 const GuideView = ({ parentStyles }) => {
   return (
-    <div style={parentStyles.grid}>
+    <div>
       <h2>User Guide</h2>
       <p>
         This app allows you to train deep learning models on the ELVO data and
