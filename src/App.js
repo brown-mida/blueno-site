@@ -22,6 +22,7 @@ class App extends Component {
           <Route exact path="/" component={MainPage} />
           <Route exact path="/u/:user" component={UserPage} />
           <Route exact path="/u/:user/upload" component={UploadPage} />
+          {/* TODO: Dataset id for these pages */}
           <Route exact path="/u/:user/preprocess" component={PreprocessPage} />
           <Route exact path="/u/:user/annotate" component={AnnotatePage} />
           <Route
