@@ -2,7 +2,7 @@ import React from 'react';
 import { List, Card } from 'antd';
 
 const DataView = ({ dataName, imageInfos, offset }) => {
-  // TODO(luke): Labels with the images
+  // [#26] TODO(luke): Support for the blueno-ml-files bucket
   const baseURL = 'https://storage.googleapis.com/elvos-public/processed';
   // Render 15 of the items
   const images = imageInfos.slice(offset, offset + 15).map(info => {

@@ -7,6 +7,7 @@ const styles = {
   },
 };
 
+// [#26] TODO(luke): Support for the blueno-ml-files bucket
 const plotUrl = (jobWithDate, plotType) => {
   return (
     'https://storage.googleapis.com/elvos-public/plots/' +

@@ -304,9 +304,6 @@ class Trainer extends Component {
             {plotOptions}
           </Select>
         </Form.Item>
-
-        <Button href="http://104.196.51.205:5601/">Kibana</Button>
-        <Button href="https://elvomachinelearning.slack.com/">Slack</Button>
       </Form>
     );
   }
