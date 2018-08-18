@@ -16,10 +16,7 @@ class Comp extends Component {
           <Link to="/">Blueno</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to={'/annotator'}>Annotate ELVOs (beta)</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link to={`/trainer`}>Train ELVOs (beta)</Link>
+          <Link to={`/trainer`}>Demo: Train ELVOs</Link>
         </Menu.Item>
         <Menu.Item style={styles.rightMenuItem}>
           <Link to={`/u/abc`}>Sign in (alpha)</Link>

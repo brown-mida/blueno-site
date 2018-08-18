@@ -12,12 +12,6 @@ class App extends Component {
             Welcome! The new elvo site is under renovation but all of the
             original features are still available.
           </h5>
-          <p>Annotating ELVOs (if you have access to the ID spreadsheet)</p>
-          <p>Training customized models on the ELVO dataset</p>
-          <p>
-            Preprocessing pipeline (Uploading Data, applying preprocessing)
-            (through the sign-in menu)
-          </p>
         </p>
       </div>
     );

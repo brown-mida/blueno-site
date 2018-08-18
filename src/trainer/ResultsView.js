@@ -1,6 +1,5 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import { Card, List } from 'antd';
 
 const styles = {
   plotImg: {
@@ -8,6 +7,7 @@ const styles = {
   },
 };
 
+// [#26] TODO(luke): Support for the blueno-ml-files bucket
 const plotUrl = (jobWithDate, plotType) => {
   return (
     'https://storage.googleapis.com/elvos-public/plots/' +
@@ -18,86 +18,80 @@ const plotUrl = (jobWithDate, plotType) => {
   );
 };
 
-const ResultsView = ({ selectedPlot, parentStyles }) => {
+const ResultsView = ({ selectedPlot }) => {
   return (
-    <Grid container spacing={8} style={parentStyles.grid}>
-      <Grid item xs={12}>
-        <h2>Results from {selectedPlot}</h2>
-      </Grid>
-      <Grid item xs={12}>
-        <Paper>
+    <List>
+      <h2>Results from {selectedPlot}</h2>
+      <List.Item>
+        <Card title="Loss History">
           <img
             src={plotUrl(selectedPlot, 'loss')}
             style={styles.plotImg}
             alt="loss"
           />
-        </Paper>
-      </Grid>
+        </Card>
+      </List.Item>
 
-      <Grid item xs={12}>
-        <Paper>
+      <List.Item>
+        <Card title="Accuracy History">
           <img
             src={plotUrl(selectedPlot, 'acc')}
             style={styles.plotImg}
             alt="accuracy"
           />
-        </Paper>
-      </Grid>
+        </Card>
+      </List.Item>
 
-      <Grid item xs={12}>
-        <Paper>
+      <List.Item>
+        <Card title="Confusion Matrix">
           <img
             src={plotUrl(selectedPlot, 'cm')}
             style={styles.plotImg}
             alt="confusion matrix"
           />
-        </Paper>
-      </Grid>
+        </Card>
+      </List.Item>
 
-      <Grid item xs={12}>
-        <Paper>
-          <h4>True Positives</h4>
+      <List.Item>
+        <Card title="True Positives">
           <img
             src={plotUrl(selectedPlot, 'true_positives')}
             style={styles.plotImg}
             alt="true positives"
           />
-        </Paper>
-      </Grid>
+        </Card>
+      </List.Item>
 
-      <Grid item xs={12}>
-        <Paper>
-          <h4>False Positives</h4>
+      <List.Item>
+        <Card title="False Positives">
           <img
             src={plotUrl(selectedPlot, 'false_positives')}
             style={styles.plotImg}
             alt="false positives"
           />
-        </Paper>
-      </Grid>
+        </Card>
+      </List.Item>
 
-      <Grid item xs={12}>
-        <Paper>
-          <h4>True Negatives</h4>
+      <List.Item>
+        <Card title="True Negatives">
           <img
             src={plotUrl(selectedPlot, 'true_negatives')}
             style={styles.plotImg}
             alt="true negatives"
           />
-        </Paper>
-      </Grid>
+        </Card>
+      </List.Item>
 
-      <Grid item xs={12}>
-        <Paper>
-          <h4>False Negatives</h4>
+      <List.Item>
+        <Card title="False Negatives">
           <img
             src={plotUrl(selectedPlot, 'false_negatives')}
             style={styles.plotImg}
             alt="false negatives"
           />
-        </Paper>
-      </Grid>
-    </Grid>
+        </Card>
+      </List.Item>
+    </List>
   );
 };
 

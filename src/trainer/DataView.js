@@ -1,45 +1,35 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import { List, Card } from 'antd';
 
-const DataView = ({ dataName, imageInfos, offset, parentStyles }) => {
-  // TODO(luke): Labels with the images
+const DataView = ({ dataName, imageInfos, offset }) => {
+  // [#26] TODO(luke): Support for the blueno-ml-files bucket
   const baseURL = 'https://storage.googleapis.com/elvos-public/processed';
   // Render 15 of the items
   const images = imageInfos.slice(offset, offset + 15).map(info => {
-    const occlusionLoc = info['Location of occlusions on CTA (Matt verified)'];
-    let occlusionLabel;
-    if (occlusionLoc === '') {
-      occlusionLabel = (
-        <p>
-          <b style={{ color: 'red' }}> Negative</b>
-        </p>
-      );
-    } else {
-      occlusionLabel = (
-        <p>
-          <b style={{ color: 'green' }}>{occlusionLoc}</b>
-        </p>
-      );
-    }
+    const occlusionLabel = info['occlusion_exists'];
     return (
-      <Grid item xs={4}>
-        {/* TODO(luke): Update when no longer using Anon ID */}
-        <img
-          src={`${baseURL}/${dataName}/arrays/${info['Anon ID']}.png`}
-          alt={info}
-        />
-        {occlusionLabel}
-      </Grid>
+      <List.Item>
+        <Card
+          cover={
+            <img
+              src={`${baseURL}/${dataName}/arrays/${info['Anon ID']}.png`}
+              alt={info}
+            />
+          }
+        >
+          <Card.Meta title={`Class: ${occlusionLabel}`} />
+        </Card>
+      </List.Item>
     );
   });
 
   return (
-    <Grid container spacing={8} style={parentStyles.grid}>
-      <Grid item xs={12}>
-        <h2>Dataset: {dataName}</h2>
-      </Grid>
-      {images}
-    </Grid>
+    <div>
+      <h2>Dataset: {dataName}</h2>
+      <List grid={{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 4, xl: 4, xxl: 4 }}>
+        {images}
+      </List>
+    </div>
   );
 };
 

@@ -50,7 +50,7 @@ class ProgressView extends Component {
 
   render() {
     return (
-      <div style={this.props.parentStyles.grid}>
+      <div>
         <h3>Preprocessing Jobs</h3>
         <h4>
           Number of arrays in <b>{this.props.processedName}</b>
