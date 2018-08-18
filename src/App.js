@@ -10,7 +10,6 @@ import PreprocessPage from './pages/Preprocess';
 import AnnotatePage from './pages/Annotate';
 import AnnotateOnePage from './pages/AnnotateOne';
 import TrainPage from './pages/Train';
-import ElvoAnnotatePage from './pages/ElvoAnnotate';
 import ElvoTrainPage from './pages/ElvoTrain';
 import PageNotFound from './pages/PageNotFound';
 
@@ -36,7 +35,6 @@ class App extends Component {
             component={AnnotateOnePage}
           />
           <Route exact path="/u/:user/train" component={TrainPage} />
-          <Route exact path="/annotator" component={ElvoAnnotatePage} />
           <Route exact path="/trainer" component={ElvoTrainPage} />
           <Route path="*" component={PageNotFound} />
         </Switch>
