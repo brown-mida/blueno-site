@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { Button, Form, Input, Layout, Select } from 'antd';
+import { Button, Collapse, Form, Input, Layout, Select } from 'antd';
 
 import ResultsView from './ResultsView';
 import DataView from './DataView';
@@ -66,7 +66,7 @@ class Trainer extends Component {
       // TODO(luke): Validate as integer but not float
       batchSize: '8',
       maxEpochs: '70',
-      threeFoldSplit: false,
+      threeFoldSplit: 'false',
 
       allDataNames: [],
       imageInfos: [],
@@ -249,38 +249,47 @@ class Trainer extends Component {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label="Split Type">
-          <Select
-            value={this.state.threeFoldSplit}
-            onChange={this.handleSelectChange('threeFoldSplit')}
-          >
-            <Select.Option value={false}>Train-Val</Select.Option>
-            <Select.Option value={true}>Train-Test-Val</Select.Option>
+          <Select onChange={this.handleSelectChange('threeFoldSplit')}>
+            <Select.Option key={'false'}>Train-Val</Select.Option>
+            <Select.Option key={'true'}>Train-Test-Val</Select.Option>
           </Select>
         </Form.Item>
 
         <Form.Item {...formItemLayout} label="Model">
-          <Select
-            value={this.state.modelName}
-            onChange={this.handleSelectChange('modelName')}
-          >
+          <Select onChange={this.handleSelectChange('modelName')}>
             <Select.Option value={'resnet'}>ResNet</Select.Option>
           </Select>
         </Form.Item>
 
-        {/* TODO: Colllapse advanced options + state variables*/}
-        {/*<Form.Item {...formItemLayout} label="Split Type">*/}
-        {/*<Select*/}
-        {/*value={this.state.modelName}*/}
-        {/*onChange={this.handleChange('modelName')}*/}
-        {/*>*/}
-        {/*<Select.Option value={'train-val'}>*/}
-        {/*Training and Validation*/}
-        {/*</Select.Option>*/}
-        {/*<Select.Option value={'train-test-val'}>*/}
-        {/*Training, Test, and Validation*/}
-        {/*</Select.Option>*/}
-        {/*</Select>*/}
-        {/*</Form.Item>*/}
+        <Collapse>
+          <Collapse.Panel header={'Advanced Options'}>
+            <Form.Item {...formItemLayout} label="Split Ratio">
+              <Input
+                id="splitRatio"
+                value={this.state.valSplit}
+                onChange={this.handleChange('valSplit')}
+              />
+            </Form.Item>
+
+            <Form.Item {...formItemLayout} label="Batch Size">
+              <Input
+                id="batchSize"
+                value={this.state.batchSize}
+                onChange={this.handleChange('batchSize')}
+              />
+            </Form.Item>
+
+            <Form.Item {...formItemLayout} label="Max Epochs">
+              <Input
+                id="maxEpochs"
+                value={this.state.maxEpochs}
+                onChange={this.handleChange('maxEpochs')}
+              />
+            </Form.Item>
+          </Collapse.Panel>
+        </Collapse>
+
+        <p />
 
         <Button color="primary" onClick={this.sendJobRequest}>
           Train Model
@@ -321,6 +330,7 @@ class Trainer extends Component {
   }
 
   render() {
+    console.log(this.state);
     // TODO(luke): Descriptions of the different fields.
     let siderForm;
     let bodyView;
