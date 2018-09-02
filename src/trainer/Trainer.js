@@ -7,6 +7,7 @@ import ResultsView from './ResultsView';
 import DataView from './DataView';
 import GuideView from './GuideView';
 import NavbarDataset from '../components/NavbarDataset';
+import ProgressView from './ProgressView';
 
 const formItemLayout = {
   labelCol: {
@@ -338,6 +339,10 @@ class Trainer extends Component {
         siderForm = this.renderResultsForm();
         bodyView = <ResultsView selectedPlot={this.state.selectedPlot} />;
         break;
+      case 'progress':
+        siderForm = this.renderTrainingForm();
+        bodyView = <ProgressView />;
+        break;
       case 'guide':
         siderForm = this.renderTrainingForm();
         bodyView = <GuideView />;
@@ -366,6 +371,9 @@ class Trainer extends Component {
               </Button>
               <Button onClick={this.handleChange('viewType')} value="results">
                 Results
+              </Button>
+              <Button onClick={this.handleChange('viewType')} value="progress">
+                Progress
               </Button>
               <Button onClick={this.handleChange('viewType')} value="guide">
                 Guide

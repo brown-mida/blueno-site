@@ -3,16 +3,16 @@ Responsible for the routes related to the /trainer endpoint.
 
 """
 import csv
+import datetime
 import io
 import logging
 import types
 from concurrent.futures import ThreadPoolExecutor
 
+import blueno
 import flask
 import requests
 from google.cloud import storage
-
-import blueno
 
 app_train = flask.Blueprint('app_train', __name__)
 
@@ -24,15 +24,30 @@ pub_bucket = client.bucket('elvos-public')
 
 executor = ThreadPoolExecutor(2)
 
+# TODO(luke): This won't scale after the demo
+training_jobs = []
+
 
 @app_train.route('/model', methods=['POST'])
 def create_model():
-    data = flask.json.dumps(flask.request.get_json())
+    data = flask.request.get_json()
     logging.info('data: {}'.format(data))
     response = requests.post('http://104.196.51.205:8080/api/experimental/'
                              'dags/train_model/dag_runs',
-                             json={'conf': data})
+                             json={'conf': flask.json.dumps(data)})
+    if response.status_code == 200:
+        job_info = {
+            'jobName': data['jobName'],
+            'createdAt': datetime.datetime.utcnow().isoformat(),
+        }
+        training_jobs.append(job_info)
+        logging.info('added job: {}'.format(job_info))
     return response.content, response.status_code, response.headers.items()
+
+
+@app_train.route('/jobs', methods=['GET'])
+def list_jobs():
+    return flask.jsonify(training_jobs)
 
 
 @app_train.route('/plots')
