@@ -19,5 +19,6 @@ resources:
   memory_gb: 6
 
 skip_files:
+- .git/
 - venv/
 - node_modules/
