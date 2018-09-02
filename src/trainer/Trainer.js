@@ -65,6 +65,7 @@ class Trainer extends Component {
       // TODO(luke): Validate as integer but not float
       batchSize: '8',
       maxEpochs: '70',
+      threeFoldSplit: false,
 
       allDataNames: [],
       imageInfos: [],
@@ -243,6 +244,16 @@ class Trainer extends Component {
         <Form.Item {...formItemLayout} label="Data">
           <Select value={this.state.dataName} onChange={this.handleDataChange}>
             {dataOptions}
+          </Select>
+        </Form.Item>
+
+        <Form.Item {...formItemLayout} label="Split Type">
+          <Select
+            value={this.state.threeFoldSplit}
+            onChange={this.handleSelectChange('threeFoldSplit')}
+          >
+            <Select.Option value={false}>Train-Val</Select.Option>
+            <Select.Option value={true}>Train-Test-Val</Select.Option>
           </Select>
         </Form.Item>
 

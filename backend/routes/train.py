@@ -28,6 +28,7 @@ executor = ThreadPoolExecutor(2)
 @app_train.route('/model', methods=['POST'])
 def create_model():
     data = flask.json.dumps(flask.request.get_json())
+    logging.info('data: {}'.format(data))
     response = requests.post('http://104.196.51.205:8080/api/experimental/'
                              'dags/train_model/dag_runs',
                              json={'conf': data})
