@@ -1,76 +1,54 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import * as moment from 'moment';
 
-const styles = {
-  iframe: { minWidth: '70vw', minHeight: '60vh' },
+// Returns a UTC date without the timezone as a displayable string
+const formatLocal = dateStr => {
+  return moment
+    .utc(dateStr)
+    .local()
+    .format('ddd, h:mmA');
 };
+
 class ProgressView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: -1,
-      intervalId: null,
-      inProgress: true,
+      jobs: [],
     };
   }
 
   componentDidMount() {
-    this.sendCountRequest();
-    const intervalId = setInterval(() => {
-      this.sendCountRequest();
-    }, 30 * 1000);
-    this.setState({
-      intervalId,
-    });
-  }
-
-  // Sends a request and updates the count state. If the count
-  // has not changed, stop the progress bar.
-  sendCountRequest() {
     axios
-      .get(`/preprocessing/${this.props.processedName}/count`)
+      .get('/jobs')
       .then(response => {
-        const count = response.data.count;
-
-        if (count === this.state.count) {
-          // TODO(luke): Consider clearing this interval.
-          // clearInterval(this.state.intervalId);
-          this.setState({
-            intervalId: null,
-            inProgress: false,
-          });
-        }
-
         this.setState({
-          count,
+          jobs: response.data.map(e => ({
+            jobName: e.jobName,
+            createdAt: e.createdAt,
+          })),
         });
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   render() {
+    console.log(this.state.jobs);
+    const jobElements = this.state.jobs.map(e => {
+      return (
+        <p>
+          <b>{e.jobName}</b> created on {formatLocal(e.createdAt)}
+        </p>
+      );
+    });
     return (
       <div>
-        <h3>Preprocessing Jobs</h3>
-        <h4>
-          Number of arrays in <b>{this.props.processedName}</b>
-        </h4>
-        {this.state.count}
-
+        Jobs take around 30 minutes to complete. When done, results will appear
+        automatically. In the future, email notifications can be configured.
         <h4>Recent Jobs</h4>
-        <iframe
-          src="http://104.196.51.205:8080/admin/dagrun/?flt1_dag_id_equals=preprocess_web"
-          style={styles.iframe}
-          title="Preprocess Web DAG"
-        />
-        <h3>Training</h3>
-
-        <h4>Recent Jobs</h4>
-        <iframe
-          src="http://104.196.51.205:8080/admin/dagrun/?flt1_dag_id_equals=train_model"
-          style={styles.iframe}
-          title="Train Model DAG"
-        />
+        {jobElements}
       </div>
     );
   }

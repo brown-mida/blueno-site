@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import './App.css';
 
@@ -16,7 +16,7 @@ import PageNotFound from './pages/PageNotFound';
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div>
         <Switch>
           <Route exact path="/" component={MainPage} />
           <Route exact path="/u/:user" component={UserPage} />
