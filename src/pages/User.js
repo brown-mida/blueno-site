@@ -64,57 +64,59 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div>
         <NavbarDataset user={this.props.match.params.user} />
-        <div className="header-name">
-          Dataset {this.props.match.params.user}
-        </div>
-        <div className="row">
-          <div className="col-6">
-            <div className="card upload-card">
-              <div className="card-body">
-                <h5 className="card-title">Currently preprocessing</h5>
-                {this.state.fileLoading.map(file => {
-                  return (
-                    <p key={file.name} className="card-text">
-                      {file.name}
-                    </p>
-                  );
-                })}
+        <div className="App">
+          <div className="header-name">
+            Dataset {this.props.match.params.user}
+          </div>
+          <div className="row">
+            <div className="col-6">
+              <div className="card upload-card">
+                <div className="card-body">
+                  <h5 className="card-title">Currently preprocessing</h5>
+                  {this.state.fileLoading.map(file => {
+                    return (
+                      <p key={file.name} className="card-text">
+                        {file.name}
+                      </p>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <div className="col-6">
+              <div className="card upload-card">
+                <div className="card-body">
+                  <h5 className="card-title">Upload log</h5>
+                  {this.state.recentFiles.map(file => {
+                    return (
+                      <p
+                        style={{ fontSize: '0.8em', marginBottom: '0' }}
+                        key={file.name}
+                        className="card-text"
+                      >
+                        {file.name}: {file.message}
+                      </p>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
-          <div className="col-6">
-            <div className="card upload-card">
-              <div className="card-body">
-                <h5 className="card-title">Upload log</h5>
-                {this.state.recentFiles.map(file => {
-                  return (
-                    <p
-                      style={{ fontSize: '0.8em', marginBottom: '0' }}
-                      key={file.name}
-                      className="card-text"
-                    >
-                      {file.name}: {file.message}
-                    </p>
-                  );
-                })}
+          <div className="row">
+            <div className="col-6">
+              <div className="card upload-card">
+                <div className="card-body">
+                  <h5 className="card-title">Preprocessing log</h5>A
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-6">
-            <div className="card upload-card">
-              <div className="card-body">
-                <h5 className="card-title">Preprocessing log</h5>A
-              </div>
-            </div>
-          </div>
-          <div className="col-6">
-            <div className="card upload-card">
-              <div className="card-body">
-                <h5 className="card-title">Training log</h5>A
+            <div className="col-6">
+              <div className="card upload-card">
+                <div className="card-body">
+                  <h5 className="card-title">Training log</h5>A
+                </div>
               </div>
             </div>
           </div>
