@@ -307,7 +307,9 @@ class Trainer extends Component {
   renderResultsForm() {
     const sortedAllPlots = this.state.allPlots
       .slice()
-      .sort((a, b) => sortByDate(a, b, false));
+      .sort((a, b) => sortByDate(a, b, false))
+      .slice(0, 25); // TODO(luke): Remove after demo.
+    // This solves the slow-performing select issue.
 
     const plotOptions = sortedAllPlots.map(e => (
       <Select.Option key={e} value={e}>
