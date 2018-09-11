@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^1.4.3",
     "antd": "^3.9.0",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
@@ -58,7 +57,7 @@
     "format": "prettier --write 'src/**/*.js'",
     "flask": "FLASK_APP=backend FLASK_ENV=development flask run --port=8080",
     "pytest": "pytest",
-    "deploy": "node scripts/build.js && gcloud beta app deploy --quiet --promote"
+    "deploy": "node scripts/build.js && gcloud app deploy --quiet --promote"
   },
   "jest": {
     "collectCoverageFrom": [
